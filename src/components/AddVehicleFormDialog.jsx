@@ -26,10 +26,10 @@ const AddVehicleFormDialog = ({ user }) => {
 
     return (
         <>
-            <li onClick={openDialog} style={{ cursor: 'pointer' }}>➕ Add New Bus</li>
+            <li onClick={openDialog} style={{ cursor: 'pointer' }}>➕ Adaugă vehicul</li>
 
             <dialog ref={dialogRef} className="bus-dialog">
-                <button onClick={closeDialog} className="close-button secondaryButton">✖ Close</button>
+                <button onClick={closeDialog} className="close-button secondaryButton">✖ Închide</button>
                 <AddVehicleForm user={ user } onClose={ closeDialogAndReload } />
             </dialog>
         </>
