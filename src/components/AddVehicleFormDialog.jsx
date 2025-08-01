@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import AddBusForm from './AddVehicleForm';
+import AddVehicleForm from './AddVehicleForm';
 
 const AddVehicleFormDialog = () => {
     const dialogRef = useRef(null);
@@ -22,7 +22,7 @@ const AddVehicleFormDialog = () => {
 
             <dialog ref={dialogRef} className="bus-dialog">
                 <button onClick={closeDialog} className="close-button">✖ Close</button>
-                <AddBusForm />
+                <AddVehicleForm />
             </dialog>
         </>
     );
