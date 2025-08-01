@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import '../styles/Menu.css';
 import AddVehicleFormDialog from "./AddVehicleFormDialog"; // for optional styling
 
-const Menu = () => {
+const Menu = ({ user }) => {
     const [isOpen, setIsOpen] = useState(false);
 
     const toggleMenu = () => {
@@ -16,7 +16,7 @@ const Menu = () => {
             {isOpen && (
                 <div className="menu-overlay">
                     <ul>
-                        <AddVehicleFormDialog/>
+                        <AddVehicleFormDialog user={ user }/>
                     </ul>
                 </div>
             )}

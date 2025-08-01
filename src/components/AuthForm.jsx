@@ -43,7 +43,7 @@ const AuthForm = () => {
     return (
         <div className="auth-form">
             {user ? (
-                <button onClick={() => supabase.auth.signOut()
+                <button className="secondaryButton" onClick={() => supabase.auth.signOut()
                     .then(() => {
                         setUser(null);
                         window.location.reload();
@@ -73,7 +73,7 @@ const AuthForm = () => {
                             required
                         />
                     </div>
-                    <button type="submit">{isLogin ? 'Login' : 'Sign Up'}</button>
+                    <button type="submit" className="secondaryButton">{isLogin ? 'Login' : 'Sign Up'}</button>
                     {error && <p style={{color: 'red'}}>{error}</p>}
                 </form>
             )}

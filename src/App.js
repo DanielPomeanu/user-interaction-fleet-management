@@ -28,11 +28,11 @@ const App = () => {
                     {user ? (
                         <>
                             <div className="main-heading">
-                                <p>Welcome, {user.email}!</p>
-                                <Menu/>
+                                <p>Salut, { user.email }!</p>
+                                <Menu user={ user }/>
                             </div>
                             <div className="main-content">
-                                <BusTable/>
+                                <BusTable value={user}/>
                             </div>
                         </>
                     ) : (

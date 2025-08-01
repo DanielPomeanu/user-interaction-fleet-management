@@ -1,28 +1,47 @@
-.add-bus-form {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 16px;
+.add-vehicle-form {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
     padding: 20px;
-}
 
-.form-row {
-    display: flex;
-    flex-direction: column;
-    width: 200px;
-}
+    .form-row {
+        padding: 10px;
 
-input {
-    padding: 6px 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
+        &.full-width {
+            grid-column: 1 / -1;
+        }
 
-button {
-    padding: 10px 16px;
-    background-color: #2ecc71;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    margin-top: 20px;
+        &.first {
+            input {
+                width: 93%;
+            }
+        }
+    }
+
+    input {
+        padding: 6px 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    select {
+        height: 30px;
+        text-align: center;
+    }
+
+    input,
+    select {
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    textarea {
+        width: 100%;
+        height: auto;
+        resize: none;       /* prevents manual resizing */
+        box-sizing: border-box; /* ensures padding/border don't overflow the width */
+    }
+
+    button {
+        margin-left: 10px;
+    }
 }

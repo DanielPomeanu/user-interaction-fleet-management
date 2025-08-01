@@ -12,3 +12,37 @@ main {
 
   }
 }
+
+button.primaryButton {
+  width: 100px;
+  height: 40px;
+  background-color: #b42592;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+
+  &:hover {
+    border: 3px solid #b42592;
+    background-color: #fff;
+    color: #b42592;
+  }
+}
+
+button.secondaryButton {
+  width: 100px;
+  height: 40px;
+  background-color: white;
+  color: #b42592;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+
+  &:hover {
+    border: 3px solid #fff;
+    background-color: #b42592;
+    color: #fff;
+  }
+}

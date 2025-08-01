@@ -4,7 +4,7 @@ import 'react-tooltip/dist/react-tooltip.css';
 import { supabase } from '../utils/supabase.ts'
 import '../styles/BusTable.css';
 
-const BusTable = () => {
+const BusTable = ({ user }) => {
     const [buses, setBuses] = useState([]);
 
     useEffect(() => {
@@ -30,7 +30,7 @@ const BusTable = () => {
         yellow: '🟡',
         red: '🔴',
         missing: '⚪',
-        '': '❓'
+        unknown: '❓',
     };
 
     return (
@@ -46,8 +46,8 @@ const BusTable = () => {
                 <div className="bus-cell">LED int. fata</div>
                 <div className="bus-cell">LED int. spate</div>
                 <div className="bus-cell">LED ext. fata</div>
-                <div className="bus-cell">LED ext. lateral 1</div>
-                <div className="bus-cell">LED ext. lateral 2</div>
+                <div className="bus-cell">LED ext. lateral față</div>
+                <div className="bus-cell">LED ext. lateral spate</div>
                 <div className="bus-cell">LED ext. spate</div>
                 <div className="bus-cell">Audio interior</div>
                 <div className="bus-cell">Audio exterior</div>
@@ -57,7 +57,16 @@ const BusTable = () => {
             {/* Data Rows */}
             {buses.map((bus) => (
                 <div key={bus.id} className="bus-row">
-                    <div className="bus-cell sticky">{bus.id}</div>
+                    <div className="bus-cell sticky"
+                         data-tooltip-id="bus-tooltip"
+                         data-tooltip-content={
+                            bus.last_modified_by ?
+                                `Ultima modificare: ${bus.last_modified_by} în ${bus.created_at}` :
+                                undefined
+                        }
+                    >
+                        {bus.id}
+                    </div>
                     <div className="bus-cell">{bus.type}</div>
                     <div className="bus-cell" data-tooltip-id="bus-tooltip" data-tooltip-content={bus.D22FrontError}>
                         {statusMap[bus.D22Front]}
