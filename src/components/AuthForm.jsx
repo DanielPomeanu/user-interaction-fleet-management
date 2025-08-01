@@ -6,7 +6,7 @@ const AuthForm = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
-    const [isLogin, setIsLogin] = useState(true);
+    const [isLogin] = useState(true);
     const [user, setUser] = useState(null);
 
     useEffect(() => {
