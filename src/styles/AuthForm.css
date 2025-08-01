@@ -1,0 +1,48 @@
+.auth-form {
+    display: flex;
+
+    button {
+        width: 100px;
+        height: 40px;
+        background-color: white;
+        color: #b42592;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: bold;
+
+        &:hover {
+            border: 3px solid #fff;
+            background-color: #b42592;
+            color: #fff;
+        }
+    }
+
+    form {
+        display: flex;
+        justify-content: center;
+        align-items: end;
+        padding: 20px;
+        font-size: 14px;
+
+        .auth-form-email-container,
+        .auth-form-password-container {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 5px;
+        }
+
+        input {
+            margin-right: 10px;
+            height: 25px;
+        }
+    }
+
+    p {
+        display: flex;
+        flex-direction: column;
+    }
+}

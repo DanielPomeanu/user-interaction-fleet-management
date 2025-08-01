@@ -1,98 +1,29 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import { Tooltip } from 'react-tooltip';
 import 'react-tooltip/dist/react-tooltip.css';
+import { supabase } from '../utils/supabase.ts'
 import '../styles/BusTable.css';
 
 const BusTable = () => {
-    const [buses] = useState([
-        {
-            id: 830,
-            type: 'Solaris Urbino 18',
-            D22Front: 'green',
-            D22FrontError: '',
-            D22Back: 'green',
-            D22BackError: '',
-            D29Front: 'missing',
-            D29FrontError: '',
-            D29Back: 'missing',
-            D29BackError: '',
-            ledIntFront: 'green',
-            ledIntFrontError: '',
-            ledIntBack: 'green',
-            ledIntBackError: '',
-            ledExtFront: 'green',
-            ledExtFrontError: '',
-            ledExtSide1: 'green',
-            ledExtSide1Error: '',
-            ledExtSide2: 'missing',
-            ledExtSide2Error: '',
-            ledExtBack: 'green',
-            ledExtBackError: '',
-            audioInt: 'green',
-            audioIntError: '',
-            audioExt: 'missing',
-            audioExtError: '',
-            details: 'Adaugat'
-        },
-        {
-            id: 229,
-            type: 'Solaris Urbino Electric 12',
-            D22Front: 'red',
-            D22FrontError: 'Afișaj blocat la Disp. Grigorescu.',
-            D22Back: 'missing',
-            D22BackError: '',
-            D29Front: 'missing',
-            D29FrontError: '',
-            D29Back: 'missing',
-            D29BackError: '',
-            ledIntFront: 'yellow',
-            ledIntFrontError: 'Nu arată decât ora.',
-            ledIntBack: 'missing',
-            ledIntBackError: '',
-            ledExtFront: 'green',
-            ledExtFrontError: '',
-            ledExtSide1: 'green',
-            ledExtSide1Error: '',
-            ledExtSide2: 'missing',
-            ledExtSide2Error: '',
-            ledExtBack: 'green',
-            ledExtBackError: '',
-            audioInt: 'red',
-            audioIntError: 'Anunțurile interioare nu funcționează.',
-            audioExt: 'missing',
-            audioExtError: '',
-            details: 'Adaugat'
-        },
-        {
-            id: 901,
-            type: 'Mercedes Conecto G 18',
-            D22Front: 'yellow',
-            D22FrontError: 'Afișează grafica veche Thoreb (cu reclama mică în mijloc).',
-            D22Back: 'yellow',
-            D22BackError: 'Afișează grafica veche Thoreb (cu reclama mică în mijloc).',
-            D29Front: 'green',
-            D29FrontError: '',
-            D29Back: 'green',
-            D29BackError: '',
-            ledIntFront: 'green',
-            ledIntFrontError: '',
-            ledIntBack: 'green',
-            ledIntBackError: '',
-            ledExtFront: 'green',
-            ledExtFrontError: '',
-            ledExtSide1: 'green',
-            ledExtSide1Error: '',
-            ledExtSide2: 'green',
-            ledExtSide2Error: '',
-            ledExtBack: 'green',
-            ledExtBackError: '',
-            audioInt: 'yellow',
-            audioIntError: 'Anunțurile interioare se aud încet.',
-            audioExt: 'green',
-            audioExtError: '',
-            details: 'Adaugat'
-        }
-    ]);
+    const [buses, setBuses] = useState([]);
+
+    useEffect(() => {
+        const fetchBuses = async () => {
+            const { data, error } = await supabase
+                .from('Buses')
+                .select('*')
+                .order('id', { ascending: true });
+
+            if (error) {
+                console.error('Error fetching buses:', error);
+            } else {
+                setBuses(data);
+            }
+        };
+
+        fetchBuses();
+    }, []);
+
 
     const statusMap = {
         green: '🟢',
@@ -106,7 +37,7 @@ const BusTable = () => {
         <div className="bus-table">
             {/* Header Row */}
             <div className="bus-row bus-header">
-                <div className="bus-cell">Nr. parc</div>
+                <div className="bus-cell sticky">Nr. parc</div>
                 <div className="bus-cell">Vehicul</div>
                 <div className="bus-cell">D22 fata</div>
                 <div className="bus-cell">D22 spate</div>
@@ -126,7 +57,7 @@ const BusTable = () => {
             {/* Data Rows */}
             {buses.map((bus) => (
                 <div key={bus.id} className="bus-row">
-                    <div className="bus-cell">{bus.id}</div>
+                    <div className="bus-cell sticky">{bus.id}</div>
                     <div className="bus-cell">{bus.type}</div>
                     <div className="bus-cell" data-tooltip-id="bus-tooltip" data-tooltip-content={bus.D22FrontError}>
                         {statusMap[bus.D22Front]}
