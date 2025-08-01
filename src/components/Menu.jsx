@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import '../styles/Menu.css';
-import AddVehicleForm from "./AddVehicleForm";
 import AddVehicleFormDialog from "./AddVehicleFormDialog"; // for optional styling
 
 const Menu = () => {
