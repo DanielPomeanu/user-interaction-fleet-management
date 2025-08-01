@@ -1,0 +1,15 @@
+.bus-dialog {
+    padding: 20px;
+    border: none;
+    border-radius: 8px;
+    max-width: 600px;
+    width: 90%;
+}
+
+.close-button {
+    background: transparent;
+    border: none;
+    font-size: 20px;
+    float: right;
+    cursor: pointer;
+}

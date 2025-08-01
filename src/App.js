@@ -3,6 +3,7 @@ import React, {useEffect, useState} from 'react';
 import Header from './components/Header';
 import BusTable from './components/BusTable';
 import {supabase} from "./utils/supabase.ts";
+import Menu from "./components/Menu";
 
 const App = () => {
     const [user, setUser] = useState(null);
@@ -19,7 +20,6 @@ const App = () => {
 
     if (loading) return <div>Loading...</div>;
 
-
     return (
         <div>
             <Header />
@@ -27,8 +27,13 @@ const App = () => {
                 <div>
                     {user ? (
                         <>
-                            <p>Welcome, {user.email}!</p>
-                            <BusTable />
+                            <div className="main-heading">
+                                <p>Welcome, {user.email}!</p>
+                                <Menu/>
+                            </div>
+                            <div className="main-content">
+                                <BusTable/>
+                            </div>
                         </>
                     ) : (
                         <div>

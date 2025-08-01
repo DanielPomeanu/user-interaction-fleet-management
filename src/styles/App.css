@@ -4,4 +4,11 @@
 
 main {
   padding: 20px;
+
+  .main-heading {
+    display: flex;
+    justify-content: space-between;
+
+
+  }
 }
