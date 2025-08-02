@@ -6,7 +6,7 @@ import {useUser} from "./UserContext"; // for optional styling
 const Menu = ({ setQuery }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [showDialog, setShowDialog] = useState(false);
-    const { user, loading } = useUser();
+    const { user } = useUser();
     const menuRef = useRef(null);
 
     const openDialog = () => setShowDialog(true);

@@ -5,7 +5,7 @@ import {useUser} from "./UserContext";
 import ConfirmationDialog from "./ConfirmationDialog";
 
 const AddVehicleForm = ({ busId, onClose, setQuery }) => {
-    const { user, loading } = useUser();
+    const { user } = useUser();
 
     const initialFormData = useMemo(() => ({
         id: '',

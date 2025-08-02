@@ -6,35 +6,40 @@ import Menu from "./components/Menu";
 import { UserProvider } from "./components/UserContext";
 import { useUser } from './components/UserContext';
 import Filter from "./components/Filter";
+import BusLoadingScreen from "./components/BusLoadingScreen";
 
 const App = () => {
-    const { user, loading } = useUser();
+    const { user, setUser, loading } = useUser();
 
     const [query, setQuery] = useState({});
 
     return (
         <div>
-            <Header />
+            <Header user={ user } setUser={ setUser } />
             <main>
                 <div>
-                    {user ? (
-                        <>
-                            <div className="main-heading">
-                                <p>Salut, {user.email}!</p>
-                                <div className="main-actions">
-                                    <Filter setQuery={ setQuery } />
-                                    <Menu setQuery={ setQuery } />
+                    <BusLoadingScreen loading={ loading } />
+
+                    {
+                        user ? (
+                            <>
+                                <div className="main-heading">
+                                    <p>Salut, {user.email}!</p>
+                                    <div className="main-actions">
+                                        <Filter setQuery={ setQuery } />
+                                        <Menu setQuery={ setQuery } />
+                                    </div>
                                 </div>
+                                <div className="main-content">
+                                    <BusTable setQuery={ setQuery } query={ query } />
+                                </div>
+                            </>
+                        ) : (
+                            <div>
+                                <p>Pentru a vizualiza datele, trebuie să vă autentificați.</p>
                             </div>
-                            <div className="main-content">
-                                <BusTable setQuery={ setQuery } query={ query } />
-                            </div>
-                        </>
-                    ) : (
-                        <div>
-                            <p>You must be logged in to view the bus table.</p>
-                        </div>
-                    )}
+                        )
+                    }
                 </div>
             </main>
         </div>

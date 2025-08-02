@@ -1,8 +1,7 @@
-import {useEffect, useRef, useState} from 'react';
+import {useEffect, useRef } from 'react';
 import { supabase } from '../utils/supabase.ts';
 import '../styles/AuthForm.css';
 import '../styles/ConfirmationDialog.css';
-import AddVehicleForm from "./AddVehicleForm";
 
 const ConfirmationDialog = ({ busId, onClose, setQuery }) => {
     const dialogRef = useRef(null);

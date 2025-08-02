@@ -2,10 +2,10 @@ import React from 'react';
 import '../styles/Header.css'
 import AuthForm from "./AuthForm";
 
-const Header = () => (
+const Header = ({ user, setUser} ) => (
     <header className="Header">
         <h1 className="Header-logo">UI Fleet Management</h1>
-        <AuthForm />
+        <AuthForm user={ user } setUser={ setUser } />
     </header>
 );
 
