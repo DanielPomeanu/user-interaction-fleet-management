@@ -71,25 +71,27 @@ const AuthForm = ({ user, setUser }) => {
                     </button>
                 ) : (
                     <form onSubmit={handleSubmit}>
-                        <div className="auth-form-email-container">
-                            <label>E-mail</label>
-                            <input
-                                type="email"
-                                placeholder="Email"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                required
-                            />
-                        </div>
-                        <div className="auth-form-password-container">
-                            <label>Parolă</label>
-                            <input
-                                type="password"
-                                placeholder="Password"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                required
-                            />
+                        <div className="auth-form-inputs">
+                            <div className="auth-form-email-container">
+                                <label>E-mail</label>
+                                <input
+                                    type="email"
+                                    placeholder="Email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    required
+                                />
+                            </div>
+                            <div className="auth-form-password-container">
+                                <label>Parolă</label>
+                                <input
+                                    type="password"
+                                    placeholder="Password"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    required
+                                />
+                            </div>
                         </div>
                         <button type="submit" className="secondaryButton">{isLogin ? 'Login' : 'Sign Up'}</button>
                         {error && <p style={{color: 'red'}}>{error}</p>}

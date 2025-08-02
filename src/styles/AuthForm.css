@@ -1,15 +1,31 @@
 .auth-form {
-    display: flex;
+    padding: 20px 0 0;
+
+    @media screen and (min-width: 764px) {
+        padding: 0;
+    }
 
     form {
         display: flex;
+        flex-direction: column;
         justify-content: center;
-        align-items: end;
-        padding: 15px;
+        align-items: center;
         font-size: 14px;
 
-        @media screen and (max-width: 764px) {
-            padding: 20px;
+        @media screen and (min-width: 764px) {
+            flex-direction: row;
+            align-items: end;
+            padding: 15px;
+        }
+
+        .auth-form-inputs {
+            display: flex;
+            flex-direction: row;
+            margin-bottom: 20px;
+
+            @media screen and (min-width: 764px) {
+                margin-bottom: 0;
+            }
         }
 
         .auth-form-email-container,
