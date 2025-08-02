@@ -1,9 +1,8 @@
 import './styles/App.css';
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import Header from './components/Header';
 import BusTable from './components/BusTable';
 import Menu from "./components/Menu";
-import { UserProvider } from "./components/UserContext";
 import { useUser } from './components/UserContext';
 import Filter from "./components/Filter";
 import BusLoadingScreen from "./components/BusLoadingScreen";
