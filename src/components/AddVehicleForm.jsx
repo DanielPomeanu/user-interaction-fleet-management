@@ -1,11 +1,15 @@
-import React, { useState } from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import { supabase } from '../utils/supabase.ts'; // your Supabase config
 import "../styles/AddVehicleForm.css"
+import {useUser} from "./UserContext";
+import ConfirmationDialog from "./ConfirmationDialog";
 
-const AddVehicleForm = ({ user, onClose }) => {
-    const initialFormData = {
+const AddVehicleForm = ({ busId, onClose, setQuery }) => {
+    const { user, loading } = useUser();
+
+    const initialFormData = useMemo(() => ({
         id: '',
-        created_at: new Date().toISOString().replace('T', ' ').replace('Z', '+00'),
+        created_at: new Date().toISOString(),
         type: '',
         D22Front: 'green',
         D22FrontError: '',
@@ -33,9 +37,36 @@ const AddVehicleForm = ({ user, onClose }) => {
         audioExtError: '',
         details: '',
         last_modified_by: user.email,
-    };
+    }), [user.email]);
 
     const [formData, setFormData] = useState(initialFormData);
+    const [deleteRequest, setDeleteRequest] = useState(false);
+
+    const handleClickOnDelete = () => {
+        setDeleteRequest(true);
+    }
+
+    useEffect(() => {
+        const retrievedBusData = async () => {
+            const {data, error} = await supabase
+                .from('Buses')
+                .select('*')
+                .eq('id', busId);
+
+            if (error) {
+                console.error('Error fetching buses:', error);
+            } else {
+                if (data && data.length > 0) {
+                    setFormData({
+                        ...initialFormData, // optional: to ensure all fields exist
+                        ...data[0],
+                    });
+                }
+            }
+        }
+
+        retrievedBusData();
+    }, [busId, initialFormData]); // run once after mount
 
     const handleChange = e => {
         const { name, value } = e.target;
@@ -45,17 +76,33 @@ const AddVehicleForm = ({ user, onClose }) => {
     const handleSubmit = async e => {
         e.preventDefault();
 
-        const { error } = await supabase.from('Buses').insert([formData]);
+        const { error } =
+            busId ?
+                await supabase.from('Buses')
+                    .update([formData])
+                    .eq('id', busId) :
+                await supabase.from('Buses').insert([formData]);
 
         if (error) {
-            alert('Failed to add bus: ' + error.message);
+            busId ?
+                console.log('Eroare la modificarea vehiculului: ' + error.message) :
+                console.log('Eroare la adăugarea vehiculului: ' + error.message);
         } else {
-            alert('Bus added successfully!');
+            busId ?
+                console.log('Vehicul modificat cu succes!') :
+                console.log('Vehicul adăugat cu succes!');
+
+            setQuery({ type: '', timestamp: Date.now() });
+
             setFormData(initialFormData);
             onClose(); // 👈 closes dialog from parent
-            // setFormData(Object.fromEntries(Object.keys(formData).map(key => [key, ''])));
         }
     };
+
+    const handleConfirmationClose = () => {
+        setDeleteRequest(false);
+        onClose();
+    }
 
     return (
         <form onSubmit={handleSubmit} className="add-vehicle-form">
@@ -65,6 +112,7 @@ const AddVehicleForm = ({ user, onClose }) => {
                     <input
                         type="text"
                         name="id"
+                        value={formData.id || ''}
                         onChange={handleChange}
                         required
                     />
@@ -77,6 +125,7 @@ const AddVehicleForm = ({ user, onClose }) => {
                     <input
                         type="text"
                         name="type"
+                        value={formData.type || ''}
                         onChange={handleChange}
                     />
                 </label>
@@ -103,6 +152,7 @@ const AddVehicleForm = ({ user, onClose }) => {
                     <input
                         type="text"
                         name="D22FrontError"
+                        value={formData.D22FrontError || ''}
                         onChange={handleChange}
                     />
                 </label>
@@ -129,6 +179,7 @@ const AddVehicleForm = ({ user, onClose }) => {
                     <input
                         type="text"
                         name="D22BackError"
+                        value={formData.D22BackError || ''}
                         onChange={handleChange}
                     />
                 </label>
@@ -155,6 +206,7 @@ const AddVehicleForm = ({ user, onClose }) => {
                     <input
                         type="text"
                         name="D29FrontError"
+                        value={formData.D29FrontError || ''}
                         onChange={handleChange}
                     />
                 </label>
@@ -181,6 +233,7 @@ const AddVehicleForm = ({ user, onClose }) => {
                     <input
                         type="text"
                         name="D29BackError"
+                        value={formData.D29BackError || ''}
                         onChange={handleChange}
                     />
                 </label>
@@ -207,6 +260,7 @@ const AddVehicleForm = ({ user, onClose }) => {
                     <input
                         type="text"
                         name="ledIntFrontError"
+                        value={formData.ledIntFrontError || ''}
                         onChange={handleChange}
                     />
                 </label>
@@ -233,6 +287,7 @@ const AddVehicleForm = ({ user, onClose }) => {
                     <input
                         type="text"
                         name="ledIntBackError"
+                        value={formData.ledIntBackError || ''}
                         onChange={handleChange}
                     />
                 </label>
@@ -259,6 +314,7 @@ const AddVehicleForm = ({ user, onClose }) => {
                     <input
                         type="text"
                         name="ledExtFrontError"
+                        value={formData.ledExtFrontError || ''}
                         onChange={handleChange}
                     />
                 </label>
@@ -285,6 +341,7 @@ const AddVehicleForm = ({ user, onClose }) => {
                     <input
                         type="text"
                         name="ledExtSide1Error"
+                        value={formData.ledExtSide1Error || ''}
                         onChange={handleChange}
                     />
                 </label>
@@ -311,6 +368,7 @@ const AddVehicleForm = ({ user, onClose }) => {
                     <input
                         type="text"
                         name="ledExtSide2Error"
+                        value={formData.ledExtSide2Error || ''}
                         onChange={handleChange}
                     />
                 </label>
@@ -337,6 +395,7 @@ const AddVehicleForm = ({ user, onClose }) => {
                     <input
                         type="text"
                         name="ledExtBackError"
+                        value={formData.ledExtBackError || ''}
                         onChange={handleChange}
                     />
                 </label>
@@ -363,6 +422,7 @@ const AddVehicleForm = ({ user, onClose }) => {
                     <input
                         type="text"
                         name="audioIntError"
+                        value={formData.audioIntError || ''}
                         onChange={handleChange}
                     />
                 </label>
@@ -389,6 +449,7 @@ const AddVehicleForm = ({ user, onClose }) => {
                     <input
                         type="text"
                         name="audioExtError"
+                        value={formData.audioExtError || ''}
                         onChange={handleChange}
                     />
                 </label>
@@ -399,11 +460,17 @@ const AddVehicleForm = ({ user, onClose }) => {
                     <textarea
                         name="details"
                         rows="4"
+                        value={formData.details || ''}
                         onChange={handleChange}
                     />
                 </label>
             </div>
-            <button type="submit" className="primaryButton">Adaugă</button>
+            <div className="form-row full-width buttons">
+                <button type="submit" className="primaryButton">{ busId ? "Modifică" : "Adaugă" }</button>
+                { busId ? <button type="button" className="deleteButton" onClick={ handleClickOnDelete }>Șterge</button> : '' }
+            </div>
+
+            { deleteRequest && <ConfirmationDialog busId={busId} onClose={ handleConfirmationClose } setQuery={ setQuery } /> }
         </form>
     );
 };

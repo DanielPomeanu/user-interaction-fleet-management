@@ -10,17 +10,25 @@ main {
     justify-content: space-between;
     align-items: center;
   }
+
+  .main-actions {
+    display: flex;
+    align-items: center;
+  }
 }
 
-button.primaryButton {
-  width: 100px;
+button {
+  width: 120px;
   height: 40px;
-  background-color: #b42592;
-  color: #fff;
   border: none;
   cursor: pointer;
   font-size: 16px;
   font-weight: bold;
+}
+
+button.primaryButton {
+  background-color: #b42592;
+  color: #fff;
 
   &:hover {
     border: 3px solid #b42592;
@@ -30,18 +38,31 @@ button.primaryButton {
 }
 
 button.secondaryButton {
-  width: 100px;
-  height: 40px;
   background-color: white;
   color: #b42592;
-  border: none;
-  cursor: pointer;
-  font-size: 16px;
-  font-weight: bold;
 
   &:hover {
     border: 3px solid #fff;
     background-color: #b42592;
     color: #fff;
+  }
+}
+
+button.deleteButton {
+  background-color: #a41010;
+  color: #fff;
+
+  &:hover {
+    border: 3px solid #a41010;
+    background-color: #fff;
+    color: #a41010;
+  }
+}
+
+button.filter {
+  font-size: 14px;
+
+  &:hover {
+    border: none;
   }
 }

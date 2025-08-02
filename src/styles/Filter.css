@@ -1,0 +1,51 @@
+.filter-wrapper {
+    position: relative;
+    display: inline-block;
+
+    .filter-button {
+        background: none;
+        cursor: pointer;
+        width: auto;
+
+        &:after {
+            content: '';
+            display: block;
+            background-image: url("../assets/filter_icon.svg");
+            background-size: cover;
+            width: 36px;
+            height: 36px;
+        }
+    }
+
+    .filter-content {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: calc(100% + 5px); /* appears below the button */
+        left: -384px;
+        z-index: 10;
+        width: 450px;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        animation: fadeIn 0.2s ease-in;
+        font-size: 14px;
+        padding: 10px;
+
+        .filter-include {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .filter_byinput {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+
+            .filter-input {
+                width: 300px;
+            }
+        }
+    }
+}

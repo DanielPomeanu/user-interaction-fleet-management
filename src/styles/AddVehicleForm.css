@@ -41,7 +41,7 @@
         box-sizing: border-box; /* ensures padding/border don't overflow the width */
     }
 
-    button {
+    .deleteButton {
         margin-left: 10px;
     }
 }

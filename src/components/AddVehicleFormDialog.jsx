@@ -1,7 +1,8 @@
-import React, {useRef} from 'react';
+import React, {useEffect, useRef} from 'react';
 import AddVehicleForm from './AddVehicleForm';
+import '../styles/AddVehicleFormDialog.css'
 
-const AddVehicleFormDialog = ({ user }) => {
+const AddVehicleFormDialog = ({ busId, onCloseDialog, setQuery }) => {
     const dialogRef = useRef(null);
 
     const openDialog = () => {
@@ -14,25 +15,25 @@ const AddVehicleFormDialog = ({ user }) => {
         if (dialogRef.current) {
             dialogRef.current.close();
         }
+
+        onCloseDialog();
     };
 
-    const closeDialogAndReload = () => {
-        if (dialogRef.current) {
-            dialogRef.current.close();
-        }
-
-        window.location.reload();
-    };
+    useEffect(() => {
+        openDialog();
+    }, []); // run once after mount
 
     return (
         <>
-            <li onClick={openDialog} style={{ cursor: 'pointer' }}>➕ Adaugă vehicul</li>
-
             <dialog ref={dialogRef} className="bus-dialog">
-                <button onClick={closeDialog} className="close-button secondaryButton">✖ Închide</button>
-                <AddVehicleForm user={ user } onClose={ closeDialogAndReload } />
+                <div className="bus-dialog-header">
+                    <h3 className="bus-dialog-title">{busId ? "Modifică vehicul" : "Adaugă vehicul"}</h3>
+                    <button onClick={closeDialog} className="close-button secondaryButton">✖ Închide</button>
+                </div>
+                <AddVehicleForm busId={ busId } onClose={ closeDialog } setQuery={ setQuery } />
             </dialog>
         </>
+
     );
 };
 

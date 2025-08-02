@@ -1,0 +1,14 @@
+.confirmation-dialog {
+    .confirmation-dialog-buttons {
+        display: flex;
+        justify-content: center;
+    }
+
+    .secondaryButton {
+        margin-left: 10px;
+
+        &:hover {
+            border: none;
+        }
+    }
+}

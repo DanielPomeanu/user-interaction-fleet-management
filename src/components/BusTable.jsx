@@ -3,26 +3,123 @@ import { Tooltip } from 'react-tooltip';
 import 'react-tooltip/dist/react-tooltip.css';
 import { supabase } from '../utils/supabase.ts'
 import '../styles/BusTable.css';
+import AddVehicleFormDialog from "./AddVehicleFormDialog";
 
-const BusTable = ({ user }) => {
+const BusTable = ({ setQuery, query }) => {
     const [buses, setBuses] = useState([]);
+    const [selectedBus, setSelectedBus] = useState({});
+    const [showDialog, setShowDialog] = useState(false);
+
+    const openDialog = () => setShowDialog(true);
+    const closeDialog = () => setShowDialog(false);
 
     useEffect(() => {
         const fetchBuses = async () => {
-            const { data, error } = await supabase
-                .from('Buses')
-                .select('*')
-                .order('id', { ascending: true });
+            if (!query.type) {
+                const { data, error } = await supabase
+                    .from('Buses')
+                    .select('*')
+                    .order('id', { ascending: true });
 
-            if (error) {
-                console.error('Error fetching buses:', error);
-            } else {
-                setBuses(data);
+                if (error) {
+                    console.error('Error fetching buses:', error);
+                } else {
+                    setBuses(data);
+                }
+            }
+
+            if (query.type === 'errors') {
+                const { data, error } = await supabase
+                    .from('Buses')
+                    .select('*')
+                    .or(
+                        "D22Front.in.(red,yellow),D22Back.in.(red,yellow),D29Front.in.(red,yellow),D29Front.in.(red,yellow),D29Back.in.(red,yellow),ledIntFront.in.(red,yellow),ledIntBack.in.(red,yellow),ledExtFront.in.(red,yellow),ledExtSide1.in.(red,yellow),ledExtSide2.in.(red,yellow),ledExtBack.in.(red,yellow),audioInt.in.(red,yellow),audioExt.in.(red,yellow)"
+                    )
+                    .order('id', { ascending: true });
+
+                if (error) {
+                    console.error('Error fetching buses:', error);
+                } else {
+                    setBuses(data);
+                }
+            }
+
+            if (query.type === 'no-errors') {
+                const { data, error } = await supabase
+                    .from('Buses')
+                    .select('*')
+                    .not('D22Front', 'eq', 'red')
+                    .not('D22Front', 'eq', 'yellow')
+                    .not('D22Back', 'eq', 'red')
+                    .not('D22Back', 'eq', 'yellow')
+                    .not('D29Front', 'eq', 'red')
+                    .not('D29Front', 'eq', 'yellow')
+                    .not('D29Back', 'eq', 'red')
+                    .not('D29Back', 'eq', 'yellow')
+                    .not('ledIntFront', 'eq', 'red')
+                    .not('ledIntFront', 'eq', 'yellow')
+                    .not('ledIntBack', 'eq', 'red')
+                    .not('ledIntBack', 'eq', 'yellow')
+                    .not('ledExtFront', 'eq', 'red')
+                    .not('ledExtFront', 'eq', 'yellow')
+                    .not('ledExtSide1', 'eq', 'red')
+                    .not('ledExtSide1', 'eq', 'yellow')
+                    .not('ledExtSide2', 'eq', 'red')
+                    .not('ledExtSide2', 'eq', 'yellow')
+                    .not('ledExtBack', 'eq', 'red')
+                    .not('ledExtBack', 'eq', 'yellow')
+                    .not('audioInt', 'eq', 'red')
+                    .not('audioInt', 'eq', 'yellow')
+                    .not('audioExt', 'eq', 'red')
+                    .not('audioExt', 'eq', 'yellow')
+                    .order('id', { ascending: true });
+
+                if (error) {
+                    console.error('Error fetching buses:', error);
+                } else {
+                    setBuses(data);
+                }
+            }
+
+            if (query.type === 'search') {
+                const filters = isNaN(query.term)
+                    ? `type.ilike.%${query.term}%`
+                    : `id.eq.${query.term},type.ilike.%${query.term}%`;
+
+                const { data, error } = await supabase
+                    .from('Buses')
+                    .select('*')
+                    .or(filters)
+                    .order('id', { ascending: true });
+
+                if (error) {
+                    console.error('Error fetching buses:', error);
+                } else {
+                    setBuses(data);
+                }
             }
         };
 
         fetchBuses();
-    }, []);
+    }, [query]);
+
+    const handleBusIdClick = (busId) => {
+        const fetchBus = async () => {
+            const { data, error } = await supabase
+                .from('Buses')
+                .select('*')
+                .eq('id', busId);
+
+            if (error) {
+                console.error('Error fetching buses:', error);
+            } else {
+                setSelectedBus(data);
+            }
+        };
+
+        fetchBus()
+            .then(openDialog);
+    }
 
 
     const statusMap = {
@@ -33,19 +130,33 @@ const BusTable = ({ user }) => {
         unknown: '❓',
     };
 
+    function formatDateWithTimezone(date) {
+        const pad = num => String(num).padStart(2, '0');
+
+        const day = pad(date.getDate());
+        const month = pad(date.getMonth() + 1); // months are 0-indexed
+        const year = date.getFullYear();
+
+        const hours = pad(date.getHours());
+        const minutes = pad(date.getMinutes());
+        const seconds = pad(date.getSeconds());
+
+        return `${day}/${month}/${year} la ${hours}:${minutes}:${seconds}`;
+    }
+
     return (
         <div className="bus-table">
             {/* Header Row */}
             <div className="bus-row bus-header">
                 <div className="bus-cell sticky">Nr. parc</div>
                 <div className="bus-cell">Vehicul</div>
-                <div className="bus-cell">D22 fata</div>
+                <div className="bus-cell">D22 față</div>
                 <div className="bus-cell">D22 spate</div>
-                <div className="bus-cell">D29 fata</div>
+                <div className="bus-cell">D29 față</div>
                 <div className="bus-cell">D29 spate</div>
-                <div className="bus-cell">LED int. fata</div>
+                <div className="bus-cell">LED int. față</div>
                 <div className="bus-cell">LED int. spate</div>
-                <div className="bus-cell">LED ext. fata</div>
+                <div className="bus-cell">LED ext. față</div>
                 <div className="bus-cell">LED ext. lateral față</div>
                 <div className="bus-cell">LED ext. lateral spate</div>
                 <div className="bus-cell">LED ext. spate</div>
@@ -57,13 +168,14 @@ const BusTable = ({ user }) => {
             {/* Data Rows */}
             {buses.map((bus) => (
                 <div key={bus.id} className="bus-row">
-                    <div className="bus-cell sticky"
+                    <div className="bus-cell sticky bus-id"
                          data-tooltip-id="bus-tooltip"
                          data-tooltip-content={
                             bus.last_modified_by ?
-                                `Ultima modificare: ${bus.last_modified_by} în ${bus.created_at}` :
+                                `Ultima modificare: ${bus.last_modified_by} în ${formatDateWithTimezone(new Date(bus.created_at))}` :
                                 undefined
                         }
+                         onClick={ () => handleBusIdClick(bus.id) }
                     >
                         {bus.id}
                     </div>
@@ -114,6 +226,14 @@ const BusTable = ({ user }) => {
                 delayShow={100}
                 className="custom-tooltip"
             />
+
+            { (selectedBus && showDialog) && (
+                <AddVehicleFormDialog
+                    busId={ selectedBus[0].id }
+                    onCloseDialog={ closeDialog }
+                    setQuery={ setQuery }
+                />
+            )}
         </div>
     );
 };
