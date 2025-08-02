@@ -17,7 +17,7 @@ const AuthForm = ({ user, setUser }) => {
         };
 
         checkUser();
-    }, []);
+    });
 
     const handleSubmit = async (e) => {
         e.preventDefault();
