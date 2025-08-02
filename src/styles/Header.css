@@ -1,15 +1,27 @@
 .Header {
     background-color: #b42592;
-    height: 50px;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    flex-direction: column;
+    height: 130px;
     font-size: 24px;
     color: white;
     padding: 20px;
     box-shadow: 1px 2px 10px black;
 
+    @media screen and (min-width: 764px) {
+        flex-direction: row;
+        height: 50px;
+    }
+
+
     .Header-logo {
         font-size: 32px;
+        margin: 20px 0 0;
+
+        @media screen and (min-width: 764px) {
+            margin: 0;
+        }
     }
 }
