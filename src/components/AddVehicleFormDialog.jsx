@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useRef} from 'react';
 import AddVehicleForm from './AddVehicleForm';
 import '../styles/AddVehicleFormDialog.css'
 
@@ -18,10 +18,6 @@ const AddVehicleFormDialog = ({ busId, onCloseDialog, setQuery, setIsLoading }) 
 
         onCloseDialog();
     };
-
-    // useEffect(() => {
-    //     openDialog();
-    // }, []); // run once after mount
 
     return (
         <>
