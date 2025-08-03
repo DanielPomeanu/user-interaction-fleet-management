@@ -3,7 +3,7 @@ import '../styles/Menu.css';
 import AddVehicleFormDialog from "./AddVehicleFormDialog";
 import {useUser} from "./UserContext"; // for optional styling
 
-const Menu = ({ setQuery }) => {
+const Menu = ({ setQuery, setIsLoading }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [showDialog, setShowDialog] = useState(false);
     const { user } = useUser();
@@ -55,6 +55,7 @@ const Menu = ({ setQuery }) => {
                     busId={''}
                     onCloseDialog={closeDialog}
                     setQuery={setQuery}
+                    setIsLoading={ setIsLoading }
                 />
             )}
         </div>

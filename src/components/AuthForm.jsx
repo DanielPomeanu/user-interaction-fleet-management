@@ -1,14 +1,12 @@
 import {useEffect, useState} from 'react';
 import { supabase } from '../utils/supabase.ts';
 import '../styles/AuthForm.css';
-import BusLoadingScreen from "./BusLoadingScreen";
 
-const AuthForm = ({ user, setUser }) => {
+const AuthForm = ({ user, setUser, setIsLoading }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
     const [isLogin] = useState(true);
-    const [isLoading, setIsLoading] = useState(null);
 
     useEffect(() => {
         const checkUser = async () => {
@@ -59,11 +57,6 @@ const AuthForm = ({ user, setUser }) => {
 
     return (
         <>
-            { isLoading && (
-                <BusLoadingScreen loading={ isLoading } />
-            )}
-
-
             <div className="auth-form">
                 { user ? (
                     <button className="secondaryButton" onClick={ handleSignOutClick }>

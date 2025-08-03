@@ -4,7 +4,7 @@ import "../styles/AddVehicleForm.css"
 import {useUser} from "./UserContext";
 import ConfirmationDialog from "./ConfirmationDialog";
 
-const AddVehicleForm = ({ busId, onClose, setQuery }) => {
+const AddVehicleForm = ({ busId, openDialog, onClose, setQuery, setIsLoading }) => {
     const { user } = useUser();
 
     const initialFormData = useMemo(() => ({
@@ -65,8 +65,12 @@ const AddVehicleForm = ({ busId, onClose, setQuery }) => {
             }
         }
 
-        retrievedBusData();
-    }, [busId, initialFormData]); // run once after mount
+        retrievedBusData()
+            .then(() => {
+                openDialog();
+                setIsLoading(false);
+            });
+    }, [busId, initialFormData, setIsLoading]); // run once after mount
 
     const handleChange = e => {
         const { name, value } = e.target;

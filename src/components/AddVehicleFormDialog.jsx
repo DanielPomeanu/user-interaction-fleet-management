@@ -2,7 +2,7 @@ import React, {useEffect, useRef} from 'react';
 import AddVehicleForm from './AddVehicleForm';
 import '../styles/AddVehicleFormDialog.css'
 
-const AddVehicleFormDialog = ({ busId, onCloseDialog, setQuery }) => {
+const AddVehicleFormDialog = ({ busId, onCloseDialog, setQuery, setIsLoading }) => {
     const dialogRef = useRef(null);
 
     const openDialog = () => {
@@ -19,9 +19,9 @@ const AddVehicleFormDialog = ({ busId, onCloseDialog, setQuery }) => {
         onCloseDialog();
     };
 
-    useEffect(() => {
-        openDialog();
-    }, []); // run once after mount
+    // useEffect(() => {
+    //     openDialog();
+    // }, []); // run once after mount
 
     return (
         <>
@@ -30,7 +30,7 @@ const AddVehicleFormDialog = ({ busId, onCloseDialog, setQuery }) => {
                     <h3 className="bus-dialog-title">{busId ? "Modifică vehicul" : "Adaugă vehicul"}</h3>
                     <button onClick={closeDialog} className="close-button secondaryButton">✖ Închide</button>
                 </div>
-                <AddVehicleForm busId={ busId } onClose={ closeDialog } setQuery={ setQuery } />
+                <AddVehicleForm busId={ busId } openDialog={ openDialog } onClose={ closeDialog } setQuery={ setQuery } setIsLoading = { setIsLoading } />
             </dialog>
         </>
 

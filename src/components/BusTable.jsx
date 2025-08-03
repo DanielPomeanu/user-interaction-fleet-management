@@ -1,11 +1,11 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import { Tooltip } from 'react-tooltip';
 import 'react-tooltip/dist/react-tooltip.css';
 import { supabase } from '../utils/supabase.ts'
 import '../styles/BusTable.css';
 import AddVehicleFormDialog from "./AddVehicleFormDialog";
 
-const BusTable = ({ setQuery, query }) => {
+const BusTable = ({ setQuery, query, setIsLoading }) => {
     const [buses, setBuses] = useState([]);
     const [selectedBus, setSelectedBus] = useState({});
     const [showDialog, setShowDialog] = useState(false);
@@ -13,19 +13,32 @@ const BusTable = ({ setQuery, query }) => {
     const openDialog = () => setShowDialog(true);
     const closeDialog = () => setShowDialog(false);
 
+    // Memoize filters string for search queries
+    const searchFilters = useMemo(() => {
+        if (query.type !== 'search') return null;
+        return isNaN(query.term)
+            ? `type.ilike.%${query.term}%`
+            : `id.eq.${query.term},type.ilike.%${query.term}%`;
+    }, [query]);
+
     useEffect(() => {
+        let isCancelled = false;
+        setIsLoading(true);
+
         const fetchBuses = async () => {
+            if (isCancelled) return;
+
             if (!query.type) {
                 const { data, error } = await supabase
                     .from('Buses')
                     .select('*')
                     .order('id', { ascending: true });
-
-                if (error) {
-                    console.error('Error fetching buses:', error);
-                } else {
-                    setBuses(data);
+                if (!isCancelled) {
+                    if (error) console.error('Error fetching buses:', error);
+                    else setBuses(data);
                 }
+                setIsLoading(false);
+                return;
             }
 
             if (query.type === 'errors') {
@@ -33,82 +46,73 @@ const BusTable = ({ setQuery, query }) => {
                     .from('Buses')
                     .select('*')
                     .or(
-                        "D22Front.in.(red,yellow),D22Back.in.(red,yellow),D29Front.in.(red,yellow),D29Front.in.(red,yellow),D29Back.in.(red,yellow),ledIntFront.in.(red,yellow),ledIntBack.in.(red,yellow),ledExtFront.in.(red,yellow),ledExtSide1.in.(red,yellow),ledExtSide2.in.(red,yellow),ledExtBack.in.(red,yellow),audioInt.in.(red,yellow),audioExt.in.(red,yellow)"
+                        'D22Front.in.(red,yellow),D22Back.in.(red,yellow),D29Front.in.(red,yellow),D29Back.in.(red,yellow),' +
+                        'ledIntFront.in.(red,yellow),ledIntBack.in.(red,yellow),ledExtFront.in.(red,yellow),ledExtSide1.in.(red,yellow),' +
+                        'ledExtSide2.in.(red,yellow),ledExtBack.in.(red,yellow),audioInt.in.(red,yellow),audioExt.in.(red,yellow)'
                     )
                     .order('id', { ascending: true });
 
-                if (error) {
-                    console.error('Error fetching buses:', error);
-                } else {
-                    setBuses(data);
+                if (!isCancelled) {
+                    if (error) console.error('Error fetching buses:', error);
+                    else setBuses(data);
                 }
+                setIsLoading(false);
+                return;
             }
 
             if (query.type === 'no-errors') {
+                // Fetch all then filter in memory for better clarity and performance
+                const { data, error } = await supabase.from('Buses').select('*');
+                if (!isCancelled) {
+                    if (error) {
+                        console.error('Error fetching buses:', error);
+                        setIsLoading(false);
+                        return;
+                    }
+                    // Filter buses without red/yellow status in any error fields
+                    const filtered = data.filter((bus) => {
+                        const errorFields = [
+                            bus.D22Front, bus.D22Back, bus.D29Front, bus.D29Back,
+                            bus.ledIntFront, bus.ledIntBack, bus.ledExtFront,
+                            bus.ledExtSide1, bus.ledExtSide2, bus.ledExtBack,
+                            bus.audioInt, bus.audioExt
+                        ];
+                        return errorFields.every(status => status !== 'red' && status !== 'yellow');
+                    });
+                    setBuses(filtered);
+                    setIsLoading(false);
+                }
+                return;
+            }
+
+            if (query.type === 'search' && searchFilters) {
                 const { data, error } = await supabase
                     .from('Buses')
                     .select('*')
-                    .not('D22Front', 'eq', 'red')
-                    .not('D22Front', 'eq', 'yellow')
-                    .not('D22Back', 'eq', 'red')
-                    .not('D22Back', 'eq', 'yellow')
-                    .not('D29Front', 'eq', 'red')
-                    .not('D29Front', 'eq', 'yellow')
-                    .not('D29Back', 'eq', 'red')
-                    .not('D29Back', 'eq', 'yellow')
-                    .not('ledIntFront', 'eq', 'red')
-                    .not('ledIntFront', 'eq', 'yellow')
-                    .not('ledIntBack', 'eq', 'red')
-                    .not('ledIntBack', 'eq', 'yellow')
-                    .not('ledExtFront', 'eq', 'red')
-                    .not('ledExtFront', 'eq', 'yellow')
-                    .not('ledExtSide1', 'eq', 'red')
-                    .not('ledExtSide1', 'eq', 'yellow')
-                    .not('ledExtSide2', 'eq', 'red')
-                    .not('ledExtSide2', 'eq', 'yellow')
-                    .not('ledExtBack', 'eq', 'red')
-                    .not('ledExtBack', 'eq', 'yellow')
-                    .not('audioInt', 'eq', 'red')
-                    .not('audioInt', 'eq', 'yellow')
-                    .not('audioExt', 'eq', 'red')
-                    .not('audioExt', 'eq', 'yellow')
+                    .or(searchFilters)
                     .order('id', { ascending: true });
 
-                if (error) {
-                    console.error('Error fetching buses:', error);
-                } else {
-                    setBuses(data);
+                if (!isCancelled) {
+                    if (error) console.error('Error fetching buses:', error);
+                    else setBuses(data);
+                    setIsLoading(false);
                 }
+                return;
             }
 
-            if (query.type === 'search') {
-                const filters = isNaN(query.term)
-                    ? `type.ilike.%${query.term}%`
-                    : `id.eq.${query.term},type.ilike.%${query.term}%`;
-
-                const { data, error } = await supabase
-                    .from('Buses')
-                    .select('*')
-                    .or(filters)
-                    .order('id', { ascending: true });
-
-                if (error) {
-                    console.error('Error fetching buses:', error);
-                } else {
-                    setBuses(data);
-                }
-            }
+            // Fallback: just stop loading if none of above
+            setIsLoading(false);
         };
 
-        let timer = {};
+        fetchBuses();
 
-        fetchBuses()
-
-        // Cleanup in case component unmounts before timer fires
-        return () => clearTimeout(timer);
-    }, [query]);
+        return () => {
+            isCancelled = true;
+        };
+    }, [query, searchFilters, setIsLoading]);
 
     const handleBusIdClick = (busId) => {
+        setIsLoading(true);
         const fetchBus = async () => {
             const { data, error } = await supabase
                 .from('Buses')
@@ -251,6 +255,7 @@ const BusTable = ({ setQuery, query }) => {
                             busId={selectedBus[0].id}
                             onCloseDialog={closeDialog}
                             setQuery={setQuery}
+                            setIsLoading={setIsLoading}
                         />
                     )}
                 </div>

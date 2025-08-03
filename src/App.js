@@ -1,5 +1,5 @@
 import './styles/App.css';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Header from './components/Header';
 import BusTable from './components/BusTable';
 import Menu from "./components/Menu";
@@ -8,17 +8,23 @@ import Filter from "./components/Filter";
 import BusLoadingScreen from "./components/BusLoadingScreen";
 
 const App = () => {
-    const { user, setUser, loading } = useUser();
+    const { user, setUser } = useUser();
 
     const [query, setQuery] = useState({});
+    const [isLoading, setIsLoading] = useState(false);
+
+    useEffect(() => {
+        setIsLoading(true);
+    }, []);
 
     return (
         <div>
-            <Header user={ user } setUser={ setUser } />
+            <BusLoadingScreen
+                loading={ isLoading }
+            />
+            <Header user={ user } setUser={ setUser } setIsLoading={ setIsLoading } />
             <main>
                 <div>
-                    <BusLoadingScreen loading={ loading } />
-
                     {
                         user ? (
                             <>
@@ -26,11 +32,11 @@ const App = () => {
                                     <p>Salut, {user.email}!</p>
                                     <div className="main-actions">
                                         <Filter setQuery={ setQuery } />
-                                        <Menu setQuery={ setQuery } />
+                                        <Menu setQuery={ setQuery } setIsLoading={ setIsLoading } />
                                     </div>
                                 </div>
                                 <div className="main-content">
-                                    <BusTable setQuery={ setQuery } query={ query } />
+                                    <BusTable setQuery={ setQuery } query={ query } setIsLoading={ setIsLoading } />
                                 </div>
                             </>
                         ) : (
