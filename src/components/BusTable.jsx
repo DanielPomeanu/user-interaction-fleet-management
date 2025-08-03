@@ -26,7 +26,10 @@ const BusTable = ({ setQuery, query, setIsLoading }) => {
         setIsLoading(true);
 
         const fetchBuses = async () => {
-            if (isCancelled) return;
+            if (isCancelled) {
+                setIsLoading(false);
+                return;
+            }
 
             if (!query.type) {
                 const { data, error } = await supabase
@@ -113,21 +116,8 @@ const BusTable = ({ setQuery, query, setIsLoading }) => {
 
     const handleBusIdClick = (busId) => {
         setIsLoading(true);
-        const fetchBus = async () => {
-            const { data, error } = await supabase
-                .from('Buses')
-                .select('*')
-                .eq('id', busId);
-
-            if (error) {
-                console.error('Error fetching buses:', error);
-            } else {
-                setSelectedBus(data);
-            }
-        };
-
-        fetchBus()
-            .then(openDialog);
+        setSelectedBus(busId);
+        openDialog();
     }
 
 
@@ -252,7 +242,7 @@ const BusTable = ({ setQuery, query, setIsLoading }) => {
 
                     {(selectedBus && showDialog) && (
                         <AddVehicleFormDialog
-                            busId={selectedBus[0].id}
+                            busId={selectedBus}
                             onCloseDialog={closeDialog}
                             setQuery={setQuery}
                             setIsLoading={setIsLoading}

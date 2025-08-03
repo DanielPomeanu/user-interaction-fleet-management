@@ -47,29 +47,34 @@ const AddVehicleForm = ({ busId, openDialog, onClose, setQuery, setIsLoading }) 
     }
 
     useEffect(() => {
-        const retrievedBusData = async () => {
-            const {data, error} = await supabase
-                .from('Buses')
-                .select('*')
-                .eq('id', busId);
+        if (busId) {
+            const retrievedBusData = async () => {
+                const {data, error} = await supabase
+                    .from('Buses')
+                    .select('*')
+                    .eq('id', busId);
 
-            if (error) {
-                console.error('Error fetching buses:', error);
-            } else {
-                if (data && data.length > 0) {
-                    setFormData({
-                        ...initialFormData, // optional: to ensure all fields exist
-                        ...data[0],
-                    });
+                if (error) {
+                    console.error('Error fetching buses:', error);
+                } else {
+                    if (data && data.length > 0) {
+                        setFormData({
+                            ...initialFormData, // optional: to ensure all fields exist
+                            ...data[0],
+                        });
+                    }
                 }
             }
-        }
 
-        retrievedBusData()
-            .then(() => {
-                openDialog();
-                setIsLoading(false);
-            });
+            retrievedBusData()
+                .then(() => {
+                    openDialog();
+                    setIsLoading(false);
+                });
+        }
+        else {
+            openDialog();
+        }
     }, [busId, initialFormData, openDialog, setIsLoading]); // run once after mount
 
     const handleChange = e => {
