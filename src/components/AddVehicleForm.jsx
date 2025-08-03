@@ -70,7 +70,7 @@ const AddVehicleForm = ({ busId, openDialog, onClose, setQuery, setIsLoading }) 
                 openDialog();
                 setIsLoading(false);
             });
-    }, [busId, initialFormData, setIsLoading]); // run once after mount
+    }, [busId, initialFormData, openDialog, setIsLoading]); // run once after mount
 
     const handleChange = e => {
         const { name, value } = e.target;
