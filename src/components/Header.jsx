@@ -2,7 +2,7 @@ import React from 'react';
 import '../styles/Header.css'
 import AuthForm from "./AuthForm";
 
-const Header = ({ user, setUser, setIsLoading  } ) => (
+const Header = ({ setIsLoading  } ) => (
     <header className="Header">
         <h1 className="Header-logo">UI Fleet Management</h1>
         <AuthForm setIsLoading={ setIsLoading } />

@@ -35,7 +35,7 @@ const baseFormData = {
     details: '',
 };
 
-const AddVehicleForm = ({ busId, openDialog, onClose, setQuery, setIsLoading }) => {
+const AddVehicleForm = ({ busId, openDialog, onClose, setQuery }) => {
     const { user } = useUser();
     console.log("RERENDER:", { busId, user });
 
@@ -51,7 +51,6 @@ const AddVehicleForm = ({ busId, openDialog, onClose, setQuery, setIsLoading }) 
         let isCancelled = false;
 
         const fetchBus = async () => {
-            setIsLoading(true);
 
             try {
                 const { data, error } = await supabase
@@ -75,7 +74,6 @@ const AddVehicleForm = ({ busId, openDialog, onClose, setQuery, setIsLoading }) 
                 console.error('Unexpected error:', err);
             } finally {
                 if (!isCancelled) {
-                    setIsLoading(false);
                     openDialog();
                 }
             }
@@ -90,7 +88,7 @@ const AddVehicleForm = ({ busId, openDialog, onClose, setQuery, setIsLoading }) 
         return () => {
             isCancelled = true;
         };
-    }, [busId, openDialog, setIsLoading, user]);
+    }, [busId, openDialog, user]);
 
     const handleChange = e => {
         const { name, value } = e.target;

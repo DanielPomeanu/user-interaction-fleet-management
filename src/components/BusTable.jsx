@@ -6,7 +6,7 @@ import '../styles/BusTable.css';
 import AddVehicleFormDialog from "./AddVehicleFormDialog";
 import {useUser} from "./UserContext";
 
-const BusTable = ({ setQuery, query, setIsLoading }) => {
+const BusTable = ({ setQuery, query }) => {
     console.log('BusTable RERENDER');
     const [buses, setBuses] = useState([]);
     const [selectedBus, setSelectedBus] = useState({});
@@ -32,8 +32,6 @@ const BusTable = ({ setQuery, query, setIsLoading }) => {
         let isCancelled = false;
 
         const fetchBuses = async () => {
-            setIsLoading(true);
-
             const cacheKey = JSON.stringify(query);
 
             if (cache.current[cacheKey]) {
@@ -42,7 +40,6 @@ const BusTable = ({ setQuery, query, setIsLoading }) => {
             }
 
             if (isCancelled) {
-                setIsLoading(false);
                 return;
             }
 
@@ -58,7 +55,6 @@ const BusTable = ({ setQuery, query, setIsLoading }) => {
                         setBuses(data);
                     }
                 }
-                setIsLoading(false);
                 return;
             }
 
@@ -80,7 +76,6 @@ const BusTable = ({ setQuery, query, setIsLoading }) => {
                         setBuses(data);
                     }
                 }
-                setIsLoading(false);
                 return;
             }
 
@@ -90,7 +85,6 @@ const BusTable = ({ setQuery, query, setIsLoading }) => {
                 if (!isCancelled) {
                     if (error) {
                         console.error('Error fetching buses:', error);
-                        setIsLoading(false);
                         return;
                     }
                     // Filter buses without red/yellow status in any error fields
@@ -105,7 +99,6 @@ const BusTable = ({ setQuery, query, setIsLoading }) => {
                     });
                     cache.current[cacheKey] = data;
                     setBuses(filtered);
-                    setIsLoading(false);
                 }
                 return;
             }
@@ -123,13 +116,9 @@ const BusTable = ({ setQuery, query, setIsLoading }) => {
                         cache.current[cacheKey] = data;
                         setBuses(data);
                     }
-                    setIsLoading(false);
                 }
                 return;
             }
-
-            // Fallback: just stop loading if none of above
-            setIsLoading(false);
         };
 
         fetchBuses();
@@ -137,7 +126,7 @@ const BusTable = ({ setQuery, query, setIsLoading }) => {
         return () => {
             isCancelled = true;
         };
-    }, [query, searchFilters, setIsLoading, user]);
+    }, [query, searchFilters, user]);
 
     const handleBusIdClick = (busId) => {
         setSelectedBus(busId);
@@ -270,7 +259,6 @@ const BusTable = ({ setQuery, query, setIsLoading }) => {
                                 busId={selectedBus}
                                 onCloseDialog={closeDialog}
                                 setQuery={setQuery}
-                                setIsLoading={setIsLoading}
                             />
                         )}
                 </div>

@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useEffect, useRef, useState} from 'react';
 import { supabase } from '../utils/supabase';
 import '../styles/AuthForm.css';
 import {useUser} from "./UserContext";
@@ -8,7 +8,7 @@ const AuthForm = ({ setIsLoading }) => {
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
     const [isLogin] = useState(true);
-    const { user } = useUser();
+    const { user, loading } = useUser();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -28,7 +28,8 @@ const AuthForm = ({ setIsLoading }) => {
             if (!isLogin) {
                 alert('Signed up! Check your email for confirmation.');
             } else {
-                setIsLoading(false);
+                // delayed intentionally for the animation to load on sign-in
+                setTimeout(() => { setIsLoading(false) }, 500);
             }
         }
     };
@@ -47,6 +48,8 @@ const AuthForm = ({ setIsLoading }) => {
                 setIsLoading(false);
             })
     };
+
+    if (loading) return null;
 
     return (
         <>
