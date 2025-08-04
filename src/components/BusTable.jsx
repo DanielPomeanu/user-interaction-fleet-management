@@ -4,7 +4,6 @@ import 'react-tooltip/dist/react-tooltip.css';
 import { supabase } from '../utils/supabase'
 import '../styles/BusTable.css';
 import AddVehicleFormDialog from "./AddVehicleFormDialog";
-import {useUser} from "./UserContext";
 
 const BusTable = ({ setQuery, query }) => {
     console.log('BusTable RERENDER');
@@ -12,7 +11,6 @@ const BusTable = ({ setQuery, query }) => {
     const [selectedBus, setSelectedBus] = useState({});
     const [showDialog, setShowDialog] = useState(false);
     const cache = useRef({});
-    const user = useUser();
 
     const openDialog = useCallback(() => { setShowDialog(true)}, []);
     const closeDialog = useCallback(() => { setShowDialog(false) }, []);
@@ -27,12 +25,14 @@ const BusTable = ({ setQuery, query }) => {
 
     useEffect(() => {
         console.log('BusTable useEffect');
-        if (!user) return;
 
         let isCancelled = false;
 
         const fetchBuses = async () => {
-            const cacheKey = JSON.stringify(query);
+            const cacheKey = JSON.stringify({
+                type: query.type || '',
+                term: query.term || ''
+            });
 
             if (cache.current[cacheKey]) {
                 setBuses(cache.current[cacheKey]);
@@ -97,7 +97,7 @@ const BusTable = ({ setQuery, query }) => {
                         ];
                         return errorFields.every(status => status !== 'red' && status !== 'yellow');
                     });
-                    cache.current[cacheKey] = data;
+                    cache.current[cacheKey] = filtered;
                     setBuses(filtered);
                 }
                 return;
@@ -126,7 +126,7 @@ const BusTable = ({ setQuery, query }) => {
         return () => {
             isCancelled = true;
         };
-    }, [query, searchFilters, user]);
+    }, [query, searchFilters]);
 
     const handleBusIdClick = (busId) => {
         setSelectedBus(busId);
@@ -183,7 +183,7 @@ const BusTable = ({ setQuery, query }) => {
                     {buses.map((bus) => (
                         <div key={bus.id} className="bus-row">
                             <div className="bus-cell sticky bus-id"
-                                 data-tooltip-id="bus-tooltip"
+                                 data-tooltip-id="last-modified-tooltip"
                                  data-tooltip-content={
                                      bus.last_modified_by ?
                                          `Ultima modificare: ${bus.last_modified_by} în ${formatDateWithTimezone(new Date(bus.created_at))}` :
@@ -194,51 +194,51 @@ const BusTable = ({ setQuery, query }) => {
                                 {bus.id}
                             </div>
                             <div className="bus-cell">{bus.type}</div>
-                            <div className="bus-cell" data-tooltip-id="bus-tooltip"
+                            <div className="bus-cell" data-tooltip-id="error-message-tooltip"
                                  data-tooltip-content={bus.D22FrontError}>
                                 {statusMap[bus.D22Front]}
                             </div>
-                            <div className="bus-cell" data-tooltip-id="bus-tooltip"
+                            <div className="bus-cell" data-tooltip-id="error-message-tooltip"
                                  data-tooltip-content={bus.D22BackError}>
                                 {statusMap[bus.D22Back]}
                             </div>
-                            <div className="bus-cell" data-tooltip-id="bus-tooltip"
+                            <div className="bus-cell" data-tooltip-id="error-message-tooltip"
                                  data-tooltip-content={bus.D29FrontError}>
                                 {statusMap[bus.D29Front]}
                             </div>
-                            <div className="bus-cell" data-tooltip-id="bus-tooltip"
+                            <div className="bus-cell" data-tooltip-id="error-message-tooltip"
                                  data-tooltip-content={bus.D29BackError}>
                                 {statusMap[bus.D29Back]}
                             </div>
-                            <div className="bus-cell" data-tooltip-id="bus-tooltip"
+                            <div className="bus-cell" data-tooltip-id="error-message-tooltip"
                                  data-tooltip-content={bus.ledIntFrontError}>
                                 {statusMap[bus.ledIntFront]}
                             </div>
-                            <div className="bus-cell" data-tooltip-id="bus-tooltip"
+                            <div className="bus-cell" data-tooltip-id="error-message-tooltip"
                                  data-tooltip-content={bus.ledIntBackError}>
                                 {statusMap[bus.ledIntBack]}
                             </div>
-                            <div className="bus-cell" data-tooltip-id="bus-tooltip"
+                            <div className="bus-cell" data-tooltip-id="error-message-tooltip"
                                  data-tooltip-content={bus.ledExtFrontError}>
                                 {statusMap[bus.ledExtFront]}
                             </div>
-                            <div className="bus-cell" data-tooltip-id="bus-tooltip"
+                            <div className="bus-cell" data-tooltip-id="error-message-tooltip"
                                  data-tooltip-content={bus.ledExtSide1Error}>
                                 {statusMap[bus.ledExtSide1]}
                             </div>
-                            <div className="bus-cell" data-tooltip-id="bus-tooltip"
+                            <div className="bus-cell" data-tooltip-id="error-message-tooltip"
                                  data-tooltip-content={bus.ledExtSide2Error}>
                                 {statusMap[bus.ledExtSide2]}
                             </div>
-                            <div className="bus-cell" data-tooltip-id="bus-tooltip"
+                            <div className="bus-cell" data-tooltip-id="error-message-tooltip"
                                  data-tooltip-content={bus.ledExtBackError}>
                                 {statusMap[bus.ledExtBack]}
                             </div>
-                            <div className="bus-cell" data-tooltip-id="bus-tooltip"
+                            <div className="bus-cell" data-tooltip-id="error-message-tooltip"
                                  data-tooltip-content={bus.audioIntError}>
                                 {statusMap[bus.audioInt]}
                             </div>
-                            <div className="bus-cell" data-tooltip-id="bus-tooltip"
+                            <div className="bus-cell" data-tooltip-id="error-message-tooltip"
                                  data-tooltip-content={bus.audioExtError}>
                                 {statusMap[bus.audioExt]}
                             </div>
@@ -247,10 +247,15 @@ const BusTable = ({ setQuery, query }) => {
                     ))}
 
                     <Tooltip
-                        id="bus-tooltip"
+                        id="error-message-tooltip"
                         place="top"
-                        delayShow={100}
-                        className="custom-tooltip"
+                        className="custom-error-message-tooltip"
+                    />
+
+                    <Tooltip
+                        id="last-modified-tooltip"
+                        place="top"
+                        className="custom-last-modified-tooltip"
                     />
 
                     {

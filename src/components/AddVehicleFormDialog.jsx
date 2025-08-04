@@ -9,12 +9,14 @@ const AddVehicleFormDialog = ({ busId, onCloseDialog, setQuery }) => {
     const openDialog = useCallback(() => {
         if (dialogRef.current && !dialogRef.current.open) {
             dialogRef.current.showModal();
+            document.body.style.overflow = 'hidden'; // Disable scroll
         }
     }, []);
 
     const closeDialog = useCallback(() => {
         if (dialogRef.current) {
             dialogRef.current.close();
+            document.body.style.overflow = ''; // Re-enable scroll
         }
 
         onCloseDialog();

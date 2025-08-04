@@ -34,25 +34,24 @@ const Menu = ({ setQuery, setIsLoading }) => {
         <div className="menu-wrapper" ref={menuRef}>
             <button onClick={toggleMenu} className="menu-button"></button>
 
-            {isOpen && (
-                <div className="menu-overlay">
-                    <ul>
-                        <li className="menuItem" onClick={() => {
-                            openDialog();
-                            toggleMenu();
-                        }}
-                        >
-                            ➕ Adaugă vehicul
-                        </li>
-                    </ul>
-                </div>
-            )}
-            { showDialog && (
+            <div className={`menu-overlay ${isOpen ? 'open' : ''}`} tabIndex={0}>
+                <ul>
+                    <li className="menuItem" onClick={() => {
+                        openDialog();
+                        toggleMenu();
+                    }}
+                    >
+                        ➕ Adaugă vehicul
+                    </li>
+                </ul>
+            </div>
+
+            {showDialog && (
                 <AddVehicleFormDialog
                     busId={''}
                     onCloseDialog={closeDialog}
                     setQuery={setQuery}
-                    setIsLoading={ setIsLoading }
+                    setIsLoading={setIsLoading}
                 />
             )}
         </div>

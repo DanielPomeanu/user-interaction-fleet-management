@@ -28,16 +28,23 @@
         background-color: #fff;
         border: 1px solid #ddd;
         box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        animation: fadeIn 0.2s ease-in;
         font-size: 14px;
         padding: 10px;
+        opacity: 0;
+        transform: translateY(-5px);
+        pointer-events: none;
+        transition: opacity 0.2s ease, transform 0.2s ease;
 
         @media screen and (min-width: 764px) {
             width: 450px;
             left: -384px;
         }
 
-
+        &.open {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
 
         .filter-include {
             display: flex;

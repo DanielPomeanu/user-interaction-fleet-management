@@ -5,15 +5,15 @@
     max-width: 600px;
     width: 90%;
 
+    &::backdrop {
+        background: rgb(180, 37, 146, 0.5);
+    }
+
     .bus-dialog-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
         padding: 0 0 0 30px;
-
-        .bus-dialog-title {
-            color: #b42592;
-        }
     }
 
     .close-button {

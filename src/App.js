@@ -8,7 +8,7 @@ import Filter from "./components/Filter";
 import BusLoadingScreen from "./components/BusLoadingScreen";
 
 const App = () => {
-    const { user, setUser } = useUser();
+    const { user, setUser, loading } = useUser();
 
     const [query, setQuery] = useState({});
     const [isLoading, setIsLoading] = useState(false);
@@ -35,7 +35,11 @@ const App = () => {
                                     </div>
                                 </div>
                                 <div className="main-content">
-                                    <BusTable setQuery={ setQuery } query={ query } setIsLoading={ setIsLoading } />
+                                    {
+                                        !loading && (
+                                            <BusTable setQuery={ setQuery } query={ query } />
+                                        )
+                                    }
                                 </div>
                             </>
                         ) : (

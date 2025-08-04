@@ -49,31 +49,29 @@ const Filter = ({ setQuery }) => {
         <div className="filter-wrapper" ref={menuRef}>
             <button className="filter-button" onClick={handleFilterButtonClick}></button>
 
-            {openFilterMenu && (
-                <div className="filter-content">
-                    <div className="filter-include">
-                        <p>Arată: </p>
-                        <button className="filter filter-all secondaryButton" onClick={handleFilterByAllVehicles}>Toate vehiculele</button>
-                        <button className="filter filter-errors secondaryButton" onClick={handleFilterByErrors}>Doar vehiculele cu erori</button>
-                        <button className="filter filter-no-errors secondaryButton" onClick={handleFilterByNoErrors}>Doar vehiculele fără erori</button>
-                    </div>
-                    <div className="filter_byinput">
-                        <input
-                            type="text"
-                            name="query"
-                            className="filter-input"
-                            value={inputValue}
-                            onChange={ handleInputChange }
-                            onKeyDown={(e) => {
-                                if (e.key === 'Enter') {
-                                    handleSearch();
-                                }
-                            }}
-                        />
-                        <button type="button" className="filter-search-button primaryButton" onClick={ handleSearch }>Caută</button>
-                    </div>
+            <div className={`filter-content ${openFilterMenu ? 'open' : ''}`} tabIndex={0}>
+                <div className="filter-include">
+                    <p>Arată: </p>
+                    <button className="filter filter-all secondaryButton" onClick={handleFilterByAllVehicles}>Toate vehiculele</button>
+                    <button className="filter filter-errors secondaryButton" onClick={handleFilterByErrors}>Doar vehiculele cu erori</button>
+                    <button className="filter filter-no-errors secondaryButton" onClick={handleFilterByNoErrors}>Doar vehiculele fără erori</button>
                 </div>
-            )}
+                <div className="filter_byinput">
+                    <input
+                        type="text"
+                        name="query"
+                        className="filter-input"
+                        value={inputValue}
+                        onChange={ handleInputChange }
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                                handleSearch();
+                            }
+                        }}
+                    />
+                    <button type="button" className="filter-search-button primaryButton" onClick={ handleSearch }>Caută</button>
+                </div>
+            </div>
         </div>
     );
 };
