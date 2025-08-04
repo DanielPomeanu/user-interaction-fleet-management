@@ -3,7 +3,7 @@ import { supabase } from '../utils/supabase';
 import '../styles/AuthForm.css';
 import '../styles/ConfirmationDialog.css';
 
-const ConfirmationDialog = ({ busId, onClose, setQuery }) => {
+const ConfirmationDialog = ({ busId, onClose, setQuery, setForceCacheReload }) => {
     const dialogRef = useRef(null);
 
     const openDialog = () => {
@@ -33,6 +33,7 @@ const ConfirmationDialog = ({ busId, onClose, setQuery }) => {
                 //alert ('Vehiculul a fost șters cu succes!');
                 closeDialog();
                 setQuery({ type: '', timestamp: Date.now() });
+                setForceCacheReload(true);
             }
         }
 

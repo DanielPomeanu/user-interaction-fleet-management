@@ -5,12 +5,11 @@ import { supabase } from '../utils/supabase'
 import '../styles/BusTable.css';
 import AddVehicleFormDialog from "./AddVehicleFormDialog";
 
-const BusTable = ({ setQuery, query }) => {
+const BusTable = ({ setQuery, query, forceCacheReload, setForceCacheReload }) => {
     console.log('BusTable RERENDER');
     const [buses, setBuses] = useState([]);
     const [selectedBus, setSelectedBus] = useState({});
     const [showDialog, setShowDialog] = useState(false);
-    const [forceCacheReload, setForceCacheReload] = useState(false);
     const cache = useRef({});
 
     const openDialog = useCallback(() => { setShowDialog(true)}, []);

@@ -492,7 +492,14 @@ const AddVehicleForm = ({ busId, openDialog, onClose, setQuery, setForceCacheRel
                 { busId ? <button type="button" className="deleteButton" onClick={ handleClickOnDelete }>Șterge</button> : '' }
             </div>
 
-            { deleteRequest && <ConfirmationDialog busId={busId} onClose={ handleConfirmationClose } setQuery={ setQuery } /> }
+            { deleteRequest &&
+                <ConfirmationDialog
+                    busId={busId}
+                    onClose={ handleConfirmationClose }
+                    setQuery={ setQuery }
+                    setForceCacheReload={ setForceCacheReload }
+                />
+            }
         </form>
     );
 };

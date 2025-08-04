@@ -2,7 +2,7 @@ import React, {useCallback, useEffect, useRef, useState} from 'react';
 import '../styles/Menu.css';
 import AddVehicleFormDialog from "./AddVehicleFormDialog";
 
-const Menu = ({ setQuery, setIsLoading }) => {
+const Menu = ({ setQuery, setIsLoading, setForceCacheReload }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [showDialog, setShowDialog] = useState(false);
     const menuRef = useRef(null);
@@ -52,6 +52,7 @@ const Menu = ({ setQuery, setIsLoading }) => {
                     onCloseDialog={closeDialog}
                     setQuery={setQuery}
                     setIsLoading={setIsLoading}
+                    setForceCacheReload={setForceCacheReload}
                 />
             )}
         </div>

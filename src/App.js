@@ -12,6 +12,7 @@ const App = () => {
 
     const [query, setQuery] = useState({});
     const [isLoading, setIsLoading] = useState(false);
+    const [forceCacheReload, setForceCacheReload] = useState(false);
 
     return (
         <div>
@@ -31,13 +32,13 @@ const App = () => {
                                     <p>Salut, {user.email}!</p>
                                     <div className="main-actions">
                                         <Filter setQuery={ setQuery } />
-                                        <Menu setQuery={ setQuery } setIsLoading={ setIsLoading } />
+                                        <Menu setQuery={ setQuery } setIsLoading={ setIsLoading } setForceCacheReload={ setForceCacheReload } />
                                     </div>
                                 </div>
                                 <div className="main-content">
                                     {
                                         !loading && (
-                                            <BusTable setQuery={ setQuery } query={ query } />
+                                            <BusTable setQuery={ setQuery } query={ query } forceCacheReload={ forceCacheReload } setForceCacheReload={ setForceCacheReload } />
                                         )
                                     }
                                 </div>
