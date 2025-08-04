@@ -90,7 +90,7 @@ const AddVehicleForm = ({ busId, openDialog, onClose, setQuery, setIsLoading }) 
         return () => {
             isCancelled = true;
         };
-    }, [busId, openDialog, user.email]);
+    }, [busId, openDialog, setIsLoading, user]);
 
     const handleChange = e => {
         const { name, value } = e.target;

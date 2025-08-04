@@ -137,7 +137,7 @@ const BusTable = ({ setQuery, query, setIsLoading }) => {
         return () => {
             isCancelled = true;
         };
-    }, [query, searchFilters, setIsLoading]);
+    }, [query, searchFilters, setIsLoading, user]);
 
     const handleBusIdClick = (busId) => {
         setSelectedBus(busId);
