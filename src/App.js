@@ -44,9 +44,10 @@ const App = () => {
                                 </div>
                             </>
                         ) : (
-                            <div>
-                                <p>Pentru a vizualiza datele, trebuie să vă autentificați.</p>
-                            </div>
+                            !loading &&
+                                <div>
+                                    <p>Pentru a vizualiza datele, trebuie să vă autentificați.</p>
+                                </div>
                         )
                     }
                 </div>
