@@ -35,7 +35,7 @@ const baseFormData = {
     details: '',
 };
 
-const AddVehicleForm = ({ busId, openDialog, onClose, setQuery }) => {
+const AddVehicleForm = ({ busId, openDialog, onClose, setQuery, setForceCacheReload }) => {
     const { user } = useUser();
     console.log("RERENDER:", { busId, user });
 
@@ -115,7 +115,7 @@ const AddVehicleForm = ({ busId, openDialog, onClose, setQuery }) => {
                 console.log('Vehicul adăugat cu succes!');
 
             setQuery({ type: '', timestamp: Date.now() });
-
+            setForceCacheReload(true);
             setFormData(baseFormData);
             onClose(); // 👈 closes dialog from parent
         }

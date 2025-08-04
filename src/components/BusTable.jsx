@@ -10,6 +10,7 @@ const BusTable = ({ setQuery, query }) => {
     const [buses, setBuses] = useState([]);
     const [selectedBus, setSelectedBus] = useState({});
     const [showDialog, setShowDialog] = useState(false);
+    const [forceCacheReload, setForceCacheReload] = useState(false);
     const cache = useRef({});
 
     const openDialog = useCallback(() => { setShowDialog(true)}, []);
@@ -33,6 +34,12 @@ const BusTable = ({ setQuery, query }) => {
                 type: query.type || '',
                 term: query.term || ''
             });
+
+            // 🔄 Invalidate cache if needed
+            if (forceCacheReload) {
+                delete cache.current[cacheKey];
+                setForceCacheReload(false); // Reset flag
+            }
 
             if (cache.current[cacheKey]) {
                 setBuses(cache.current[cacheKey]);
@@ -126,6 +133,7 @@ const BusTable = ({ setQuery, query }) => {
         return () => {
             isCancelled = true;
         };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [query, searchFilters]);
 
     const handleBusIdClick = (busId) => {
@@ -264,6 +272,7 @@ const BusTable = ({ setQuery, query }) => {
                                 busId={selectedBus}
                                 onCloseDialog={closeDialog}
                                 setQuery={setQuery}
+                                setForceCacheReload={setForceCacheReload}
                             />
                         )}
                 </div>

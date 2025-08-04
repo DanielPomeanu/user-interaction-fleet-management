@@ -2,7 +2,7 @@ import React, {useCallback, useRef} from 'react';
 import AddVehicleForm from './AddVehicleForm';
 import '../styles/AddVehicleFormDialog.css'
 
-const AddVehicleFormDialog = ({ busId, onCloseDialog, setQuery }) => {
+const AddVehicleFormDialog = ({ busId, onCloseDialog, setQuery, setForceCacheReload }) => {
     console.log('AddVehicleFormDialog RERENDER');
     const dialogRef = useRef(null);
 
@@ -29,7 +29,7 @@ const AddVehicleFormDialog = ({ busId, onCloseDialog, setQuery }) => {
                     <h3 className="bus-dialog-title">{busId ? "Modifică vehicul" : "Adaugă vehicul"}</h3>
                     <button onClick={closeDialog} className="close-button secondaryButton">✖ Închide</button>
                 </div>
-                <AddVehicleForm busId={ busId } openDialog={ openDialog } onClose={ closeDialog } setQuery={ setQuery } />
+                <AddVehicleForm busId={ busId } openDialog={ openDialog } onClose={ closeDialog } setQuery={ setQuery } setForceCacheReload={ setForceCacheReload } />
             </dialog>
         </>
 
