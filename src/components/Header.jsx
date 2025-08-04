@@ -2,10 +2,12 @@ import React from 'react';
 import '../styles/Header.css'
 import AuthForm from "./AuthForm";
 
+import busLogo from '../assets/bus_logo.png';
+
 const Header = ({ setIsLoading  } ) => (
     <header className="Header">
-        <h1 className="Header-logo">UI Fleet Management</h1>
-        <AuthForm setIsLoading={ setIsLoading } />
+        <img className="Header-logo" src={busLogo} alt="Bus Logo"/>
+        <AuthForm setIsLoading={setIsLoading}/>
     </header>
 );
 

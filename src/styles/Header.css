@@ -14,9 +14,7 @@
         height: 50px;
     }
 
-
     .Header-logo {
-        font-size: 32px;
-        margin: 0;
+        width: 200px;
     }
 }
