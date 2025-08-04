@@ -6,7 +6,8 @@ import ConfirmationDialog from "./ConfirmationDialog";
 
 const baseFormData = {
     id: '',
-    created_at: new Date().toISOString(),
+    created_at: '',
+    last_modified_by: '',
     type: '',
     D22Front: 'green',
     D22FrontError: '',
@@ -51,7 +52,6 @@ const AddVehicleForm = ({ busId, openDialog, onClose, setQuery, setForceCacheRel
         let isCancelled = false;
 
         const fetchBus = async () => {
-
             try {
                 const { data, error } = await supabase
                     .from('Buses')
@@ -65,7 +65,8 @@ const AddVehicleForm = ({ busId, openDialog, onClose, setQuery, setForceCacheRel
                         const newData = {
                             ...baseFormData,
                             ...data[0],
-                            last_modified_by: user.email
+                            last_modified_by: user.email,
+                            created_at: new Date().toISOString()
                         };
                         return JSON.stringify(prev) !== JSON.stringify(newData) ? newData : prev;
                     });
@@ -98,12 +99,18 @@ const AddVehicleForm = ({ busId, openDialog, onClose, setQuery, setForceCacheRel
     const handleSubmit = async e => {
         e.preventDefault();
 
+        const submissionData = {
+            ...formData,
+            last_modified_by: user.email,
+            created_at: new Date().toISOString()
+        };
+
         const { error } =
             busId ?
                 await supabase.from('Buses')
-                    .update([formData])
+                    .update([submissionData])
                     .eq('id', busId) :
-                await supabase.from('Buses').insert([formData]);
+                await supabase.from('Buses').insert([submissionData]);
 
         if (error) {
             busId ?
