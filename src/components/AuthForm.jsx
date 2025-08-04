@@ -1,4 +1,4 @@
-import {useEffect, useRef, useState} from 'react';
+import {useState} from 'react';
 import { supabase } from '../utils/supabase';
 import '../styles/AuthForm.css';
 import {useUser} from "./UserContext";
