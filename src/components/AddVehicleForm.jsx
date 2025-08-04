@@ -1,45 +1,45 @@
-import React, {useEffect, useMemo, useState} from 'react';
-import { supabase } from '../utils/supabase.ts'; // your Supabase config
+import React, {useEffect, useState} from 'react';
+import { supabase } from '../utils/supabase'; // your Supabase config
 import "../styles/AddVehicleForm.css"
 import {useUser} from "./UserContext";
 import ConfirmationDialog from "./ConfirmationDialog";
 
+const baseFormData = {
+    id: '',
+    created_at: new Date().toISOString(),
+    type: '',
+    D22Front: 'green',
+    D22FrontError: '',
+    D22Back: 'green',
+    D22BackError: '',
+    D29Front: 'green',
+    D29FrontError: '',
+    D29Back: 'green',
+    D29BackError: '',
+    ledIntFront: 'green',
+    ledIntFrontError: '',
+    ledIntBack: 'green',
+    ledIntBackError: '',
+    ledExtFront: 'green',
+    ledExtFrontError: '',
+    ledExtSide1: 'green',
+    ledExtSide1Error: '',
+    ledExtSide2: 'green',
+    ledExtSide2Error: '',
+    ledExtBack: 'green',
+    ledExtBackError: '',
+    audioInt: 'green',
+    audioIntError: '',
+    audioExt: 'green',
+    audioExtError: '',
+    details: '',
+};
+
 const AddVehicleForm = ({ busId, openDialog, onClose, setQuery, setIsLoading }) => {
     const { user } = useUser();
+    console.log("RERENDER:", { busId, user });
 
-    const initialFormData = useMemo(() => ({
-        id: '',
-        created_at: new Date().toISOString(),
-        type: '',
-        D22Front: 'green',
-        D22FrontError: '',
-        D22Back: 'green',
-        D22BackError: '',
-        D29Front: 'green',
-        D29FrontError: '',
-        D29Back: 'green',
-        D29BackError: '',
-        ledIntFront: 'green',
-        ledIntFrontError: '',
-        ledIntBack: 'green',
-        ledIntBackError: '',
-        ledExtFront: 'green',
-        ledExtFrontError: '',
-        ledExtSide1: 'green',
-        ledExtSide1Error: '',
-        ledExtSide2: 'green',
-        ledExtSide2Error: '',
-        ledExtBack: 'green',
-        ledExtBackError: '',
-        audioInt: 'green',
-        audioIntError: '',
-        audioExt: 'green',
-        audioExtError: '',
-        details: '',
-        last_modified_by: user.email,
-    }), [user.email]);
-
-    const [formData, setFormData] = useState(initialFormData);
+    const [formData, setFormData] = useState(baseFormData);
     const [deleteRequest, setDeleteRequest] = useState(false);
 
     const handleClickOnDelete = () => {
@@ -47,35 +47,50 @@ const AddVehicleForm = ({ busId, openDialog, onClose, setQuery, setIsLoading }) 
     }
 
     useEffect(() => {
-        if (busId) {
-            const retrievedBusData = async () => {
-                const {data, error} = await supabase
+        console.log("Use-effect:", { busId, user });
+        let isCancelled = false;
+
+        const fetchBus = async () => {
+            setIsLoading(true);
+
+            try {
+                const { data, error } = await supabase
                     .from('Buses')
                     .select('*')
                     .eq('id', busId);
 
                 if (error) {
                     console.error('Error fetching buses:', error);
-                } else {
-                    if (data && data.length > 0) {
-                        setFormData({
-                            ...initialFormData, // optional: to ensure all fields exist
+                } else if (data && data.length > 0 && !isCancelled) {
+                    setFormData(prev => {
+                        const newData = {
+                            ...baseFormData,
                             ...data[0],
-                        });
-                    }
+                            last_modified_by: user.email
+                        };
+                        return JSON.stringify(prev) !== JSON.stringify(newData) ? newData : prev;
+                    });
+                }
+            } catch (err) {
+                console.error('Unexpected error:', err);
+            } finally {
+                if (!isCancelled) {
+                    setIsLoading(false);
+                    openDialog();
                 }
             }
+        };
 
-            retrievedBusData()
-                .then(() => {
-                    openDialog();
-                    setIsLoading(false);
-                });
+        if (busId) {
+            fetchBus();
+        } else {
+            openDialog(); // create mode, no fetch
         }
-        else {
-            openDialog();
-        }
-    }, [busId, initialFormData, openDialog, setIsLoading]); // run once after mount
+
+        return () => {
+            isCancelled = true;
+        };
+    }, [busId, openDialog, user.email]);
 
     const handleChange = e => {
         const { name, value } = e.target;
@@ -103,7 +118,7 @@ const AddVehicleForm = ({ busId, openDialog, onClose, setQuery, setIsLoading }) 
 
             setQuery({ type: '', timestamp: Date.now() });
 
-            setFormData(initialFormData);
+            setFormData(baseFormData);
             onClose(); // 👈 closes dialog from parent
         }
     };
@@ -484,4 +499,4 @@ const AddVehicleForm = ({ busId, openDialog, onClose, setQuery, setIsLoading }) 
     );
 };
 
-export default AddVehicleForm;
+export default React.memo(AddVehicleForm);

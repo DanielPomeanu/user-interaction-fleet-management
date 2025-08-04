@@ -1,23 +1,24 @@
-import React, {useRef} from 'react';
+import React, {useCallback, useRef} from 'react';
 import AddVehicleForm from './AddVehicleForm';
 import '../styles/AddVehicleFormDialog.css'
 
 const AddVehicleFormDialog = ({ busId, onCloseDialog, setQuery, setIsLoading }) => {
+    console.log('AddVehicleFormDialog RERENDER');
     const dialogRef = useRef(null);
 
-    const openDialog = () => {
-        if (dialogRef.current) {
+    const openDialog = useCallback(() => {
+        if (dialogRef.current && !dialogRef.current.open) {
             dialogRef.current.showModal();
         }
-    };
+    }, []);
 
-    const closeDialog = () => {
+    const closeDialog = useCallback(() => {
         if (dialogRef.current) {
             dialogRef.current.close();
         }
 
         onCloseDialog();
-    };
+    }, [onCloseDialog]);
 
     return (
         <>

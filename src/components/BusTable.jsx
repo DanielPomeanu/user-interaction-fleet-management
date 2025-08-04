@@ -1,17 +1,21 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import { Tooltip } from 'react-tooltip';
 import 'react-tooltip/dist/react-tooltip.css';
-import { supabase } from '../utils/supabase.ts'
+import { supabase } from '../utils/supabase'
 import '../styles/BusTable.css';
 import AddVehicleFormDialog from "./AddVehicleFormDialog";
+import {useUser} from "./UserContext";
 
 const BusTable = ({ setQuery, query, setIsLoading }) => {
+    console.log('BusTable RERENDER');
     const [buses, setBuses] = useState([]);
     const [selectedBus, setSelectedBus] = useState({});
     const [showDialog, setShowDialog] = useState(false);
+    const cache = useRef({});
+    const user = useUser();
 
-    const openDialog = () => setShowDialog(true);
-    const closeDialog = () => setShowDialog(false);
+    const openDialog = useCallback(() => { setShowDialog(true)}, []);
+    const closeDialog = useCallback(() => { setShowDialog(false) }, []);
 
     // Memoize filters string for search queries
     const searchFilters = useMemo(() => {
@@ -22,10 +26,21 @@ const BusTable = ({ setQuery, query, setIsLoading }) => {
     }, [query]);
 
     useEffect(() => {
+        console.log('BusTable useEffect');
+        if (!user) return;
+
         let isCancelled = false;
-        setIsLoading(true);
 
         const fetchBuses = async () => {
+            setIsLoading(true);
+
+            const cacheKey = JSON.stringify(query);
+
+            if (cache.current[cacheKey]) {
+                setBuses(cache.current[cacheKey]);
+                return;
+            }
+
             if (isCancelled) {
                 setIsLoading(false);
                 return;
@@ -38,7 +53,10 @@ const BusTable = ({ setQuery, query, setIsLoading }) => {
                     .order('id', { ascending: true });
                 if (!isCancelled) {
                     if (error) console.error('Error fetching buses:', error);
-                    else setBuses(data);
+                    else {
+                        cache.current[cacheKey] = data;
+                        setBuses(data);
+                    }
                 }
                 setIsLoading(false);
                 return;
@@ -57,7 +75,10 @@ const BusTable = ({ setQuery, query, setIsLoading }) => {
 
                 if (!isCancelled) {
                     if (error) console.error('Error fetching buses:', error);
-                    else setBuses(data);
+                    else {
+                        cache.current[cacheKey] = data;
+                        setBuses(data);
+                    }
                 }
                 setIsLoading(false);
                 return;
@@ -82,6 +103,7 @@ const BusTable = ({ setQuery, query, setIsLoading }) => {
                         ];
                         return errorFields.every(status => status !== 'red' && status !== 'yellow');
                     });
+                    cache.current[cacheKey] = data;
                     setBuses(filtered);
                     setIsLoading(false);
                 }
@@ -97,7 +119,10 @@ const BusTable = ({ setQuery, query, setIsLoading }) => {
 
                 if (!isCancelled) {
                     if (error) console.error('Error fetching buses:', error);
-                    else setBuses(data);
+                    else {
+                        cache.current[cacheKey] = data;
+                        setBuses(data);
+                    }
                     setIsLoading(false);
                 }
                 return;
@@ -115,10 +140,9 @@ const BusTable = ({ setQuery, query, setIsLoading }) => {
     }, [query, searchFilters, setIsLoading]);
 
     const handleBusIdClick = (busId) => {
-        setIsLoading(true);
         setSelectedBus(busId);
         openDialog();
-    }
+    };
 
 
     const statusMap = {
@@ -176,7 +200,7 @@ const BusTable = ({ setQuery, query, setIsLoading }) => {
                                          `Ultima modificare: ${bus.last_modified_by} în ${formatDateWithTimezone(new Date(bus.created_at))}` :
                                          undefined
                                  }
-                                 onClick={() => handleBusIdClick(bus.id)}
+                                 onClick={() => handleBusIdClick(bus.id) }
                             >
                                 {bus.id}
                             </div>
@@ -240,14 +264,15 @@ const BusTable = ({ setQuery, query, setIsLoading }) => {
                         className="custom-tooltip"
                     />
 
-                    {(selectedBus && showDialog) && (
-                        <AddVehicleFormDialog
-                            busId={selectedBus}
-                            onCloseDialog={closeDialog}
-                            setQuery={setQuery}
-                            setIsLoading={setIsLoading}
-                        />
-                    )}
+                    {
+                        showDialog && (
+                            <AddVehicleFormDialog
+                                busId={selectedBus}
+                                onCloseDialog={closeDialog}
+                                setQuery={setQuery}
+                                setIsLoading={setIsLoading}
+                            />
+                        )}
                 </div>
             }
         </>

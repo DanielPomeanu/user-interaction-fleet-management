@@ -1,24 +1,18 @@
-import {useEffect, useState} from 'react';
-import { supabase } from '../utils/supabase.ts';
+import {useState} from 'react';
+import { supabase } from '../utils/supabase';
 import '../styles/AuthForm.css';
+import {useUser} from "./UserContext";
 
-const AuthForm = ({ user, setUser, setIsLoading }) => {
+const AuthForm = ({ setIsLoading }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
     const [isLogin] = useState(true);
-
-    useEffect(() => {
-        const checkUser = async () => {
-            const { data: { user } } = await supabase.auth.getUser();
-            setUser(user); // Will be `null` if not logged in
-        };
-
-        checkUser();
-    });
+    const { user } = useUser();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setIsLoading(true);
         setError(null);
 
         let result;
@@ -34,7 +28,7 @@ const AuthForm = ({ user, setUser, setIsLoading }) => {
             if (!isLogin) {
                 alert('Signed up! Check your email for confirmation.');
             } else {
-                window.location.reload();
+                setIsLoading(false);
             }
         }
     };
@@ -50,7 +44,6 @@ const AuthForm = ({ user, setUser, setIsLoading }) => {
     const handleSignOut = () => {
         supabase.auth.signOut()
             .then(() => {
-                setUser(null);
                 setIsLoading(false);
             })
     };

@@ -1,16 +1,14 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import '../styles/Menu.css';
 import AddVehicleFormDialog from "./AddVehicleFormDialog";
-import {useUser} from "./UserContext"; // for optional styling
 
 const Menu = ({ setQuery, setIsLoading }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [showDialog, setShowDialog] = useState(false);
-    const { user } = useUser();
     const menuRef = useRef(null);
 
     const openDialog = () => setShowDialog(true);
-    const closeDialog = () => setShowDialog(false);
+    const closeDialog = useCallback(() => { setShowDialog(false) }, []);
 
     const toggleMenu = () => {
         setIsOpen(prev => !prev);
@@ -51,7 +49,6 @@ const Menu = ({ setQuery, setIsLoading }) => {
             )}
             { showDialog && (
                 <AddVehicleFormDialog
-                    user={user}
                     busId={''}
                     onCloseDialog={closeDialog}
                     setQuery={setQuery}

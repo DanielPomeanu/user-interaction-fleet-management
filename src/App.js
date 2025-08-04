@@ -1,5 +1,5 @@
 import './styles/App.css';
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import Header from './components/Header';
 import BusTable from './components/BusTable';
 import Menu from "./components/Menu";
@@ -13,15 +13,14 @@ const App = () => {
     const [query, setQuery] = useState({});
     const [isLoading, setIsLoading] = useState(false);
 
-    useEffect(() => {
-        setIsLoading(true);
-    }, []);
-
     return (
         <div>
-            <BusLoadingScreen
-                loading={ isLoading }
-            />
+            {
+                isLoading && (
+                    <BusLoadingScreen />
+                )
+            }
+
             <Header user={ user } setUser={ setUser } setIsLoading={ setIsLoading } />
             <main>
                 <div>

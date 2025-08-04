@@ -1,5 +1,5 @@
 import {useEffect, useRef} from 'react';
-import { supabase } from '../utils/supabase.ts';
+import { supabase } from '../utils/supabase';
 import '../styles/AuthForm.css';
 import '../styles/ConfirmationDialog.css';
 
