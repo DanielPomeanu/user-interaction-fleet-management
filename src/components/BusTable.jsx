@@ -2,6 +2,7 @@ import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import { Tooltip } from 'react-tooltip';
 import 'react-tooltip/dist/react-tooltip.css';
 import { supabase } from '../utils/supabase'
+import '../styles/Table.css';
 import '../styles/BusTable.css';
 import AddVehicleFormDialog from "./AddVehicleFormDialog";
 
@@ -166,30 +167,30 @@ const BusTable = ({ setQuery, query, forceCacheReload, setForceCacheReload }) =>
     return (
         <>
             {
-                <div className="bus-table">
+                <div className="bus-table table">
                     {/* Header Row */}
-                    <div className="bus-row bus-header">
-                        <div className="bus-cell sticky">Nr. parc</div>
-                        <div className="bus-cell">Vehicul</div>
-                        <div className="bus-cell">D22 față</div>
-                        <div className="bus-cell">D22 spate</div>
-                        <div className="bus-cell">D29 față</div>
-                        <div className="bus-cell">D29 spate</div>
-                        <div className="bus-cell">LED int. față</div>
-                        <div className="bus-cell">LED int. spate</div>
-                        <div className="bus-cell">LED ext. față</div>
-                        <div className="bus-cell">LED ext. lateral față</div>
-                        <div className="bus-cell">LED ext. lateral spate</div>
-                        <div className="bus-cell">LED ext. spate</div>
-                        <div className="bus-cell">Audio interior</div>
-                        <div className="bus-cell">Audio exterior</div>
-                        <div className="bus-cell">Detalii</div>
+                    <div className="bus-row table-row bus-header table-header">
+                        <div className="bus-cell table-cell sticky">Nr. parc</div>
+                        <div className="bus-cell table-cell">Vehicul</div>
+                        <div className="bus-cell table-cell">D22 față</div>
+                        <div className="bus-cell table-cell">D22 spate</div>
+                        <div className="bus-cell table-cell">D29 față</div>
+                        <div className="bus-cell table-cell">D29 spate</div>
+                        <div className="bus-cell table-cell">LED int. față</div>
+                        <div className="bus-cell table-cell">LED int. spate</div>
+                        <div className="bus-cell table-cell">LED ext. față</div>
+                        <div className="bus-cell table-cell">LED ext. lateral față</div>
+                        <div className="bus-cell table-cell">LED ext. lateral spate</div>
+                        <div className="bus-cell table-cell">LED ext. spate</div>
+                        <div className="bus-cell table-cell">Audio interior</div>
+                        <div className="bus-cell table-cell">Audio exterior</div>
+                        <div className="bus-cell table-cell">Detalii</div>
                     </div>
 
                     {/* Data Rows */}
                     {buses.map((bus) => (
-                        <div key={bus.id} className="bus-row">
-                            <div className="bus-cell sticky bus-id"
+                        <div key={bus.id} className="bus-row table-row">
+                            <div className="bus-cell table-cell sticky bus-id"
                                  data-tooltip-id="last-modified-tooltip"
                                  data-tooltip-content={
                                      bus.last_modified_by ?
@@ -200,69 +201,69 @@ const BusTable = ({ setQuery, query, forceCacheReload, setForceCacheReload }) =>
                             >
                                 {bus.id}
                             </div>
-                            <div className="bus-cell">{bus.type}</div>
-                            <div className="bus-cell" data-tooltip-id="error-message-tooltip"
+                            <div className="bus-cell table-cell">{bus.type}</div>
+                            <div className="bus-cell table-cell" data-tooltip-id="error-message-tooltip"
                                  data-tooltip-content={bus.D22FrontError}>
                                 {statusMap[bus.D22Front]}
                             </div>
-                            <div className="bus-cell" data-tooltip-id="error-message-tooltip"
+                            <div className="bus-cell table-cell" data-tooltip-id="error-message-tooltip"
                                  data-tooltip-content={bus.D22BackError}>
                                 {statusMap[bus.D22Back]}
                             </div>
-                            <div className="bus-cell" data-tooltip-id="error-message-tooltip"
+                            <div className="bus-cell table-cell" data-tooltip-id="error-message-tooltip"
                                  data-tooltip-content={bus.D29FrontError}>
                                 {statusMap[bus.D29Front]}
                             </div>
-                            <div className="bus-cell" data-tooltip-id="error-message-tooltip"
+                            <div className="bus-cell table-cell" data-tooltip-id="error-message-tooltip"
                                  data-tooltip-content={bus.D29BackError}>
                                 {statusMap[bus.D29Back]}
                             </div>
-                            <div className="bus-cell" data-tooltip-id="error-message-tooltip"
+                            <div className="bus-cell table-cell" data-tooltip-id="error-message-tooltip"
                                  data-tooltip-content={bus.ledIntFrontError}>
                                 {statusMap[bus.ledIntFront]}
                             </div>
-                            <div className="bus-cell" data-tooltip-id="error-message-tooltip"
+                            <div className="bus-cell table-cell" data-tooltip-id="error-message-tooltip"
                                  data-tooltip-content={bus.ledIntBackError}>
                                 {statusMap[bus.ledIntBack]}
                             </div>
-                            <div className="bus-cell" data-tooltip-id="error-message-tooltip"
+                            <div className="bus-cell table-cell" data-tooltip-id="error-message-tooltip"
                                  data-tooltip-content={bus.ledExtFrontError}>
                                 {statusMap[bus.ledExtFront]}
                             </div>
-                            <div className="bus-cell" data-tooltip-id="error-message-tooltip"
+                            <div className="bus-cell table-cell" data-tooltip-id="error-message-tooltip"
                                  data-tooltip-content={bus.ledExtSide1Error}>
                                 {statusMap[bus.ledExtSide1]}
                             </div>
-                            <div className="bus-cell" data-tooltip-id="error-message-tooltip"
+                            <div className="bus-cell table-cell" data-tooltip-id="error-message-tooltip"
                                  data-tooltip-content={bus.ledExtSide2Error}>
                                 {statusMap[bus.ledExtSide2]}
                             </div>
-                            <div className="bus-cell" data-tooltip-id="error-message-tooltip"
+                            <div className="bus-cell table-cell" data-tooltip-id="error-message-tooltip"
                                  data-tooltip-content={bus.ledExtBackError}>
                                 {statusMap[bus.ledExtBack]}
                             </div>
-                            <div className="bus-cell" data-tooltip-id="error-message-tooltip"
+                            <div className="bus-cell table-cell" data-tooltip-id="error-message-tooltip"
                                  data-tooltip-content={bus.audioIntError}>
                                 {statusMap[bus.audioInt]}
                             </div>
-                            <div className="bus-cell" data-tooltip-id="error-message-tooltip"
+                            <div className="bus-cell table-cell" data-tooltip-id="error-message-tooltip"
                                  data-tooltip-content={bus.audioExtError}>
                                 {statusMap[bus.audioExt]}
                             </div>
-                            <div className="bus-cell">{bus.details}</div>
+                            <div className="bus-cell table-cell">{bus.details}</div>
                         </div>
                     ))}
 
                     <Tooltip
                         id="error-message-tooltip"
                         place="top"
-                        className="custom-error-message-tooltip"
+                        className="custom-tooltip-all"
                     />
 
                     <Tooltip
                         id="last-modified-tooltip"
                         place="top"
-                        className="custom-last-modified-tooltip"
+                        className="custom-tooltip-desktop-only"
                     />
 
                     {

@@ -1,0 +1,61 @@
+.table {
+    border-right: 2px solid #ccc;
+    border-bottom: 2px solid #ccc;
+    font-size: 14px;
+
+    .table-header {
+        background-color: #f4f4f4;
+        font-weight: bold;
+        border-bottom: 2px solid #ccc;
+    }
+
+    .table-row {
+        display: grid;
+        border-bottom: 1px solid #eee;
+    }
+
+    .table-cell {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 10px;
+        border-right: 1px solid #f0f0f0;
+        text-align: center;
+
+        &.sticky {
+            position: sticky;
+            left: 0;
+            background: white; /* or match your theme */
+            z-index: 2; /* make sure it stays above others */
+            box-shadow: 2px 0 2px rgba(0, 0, 0, 0.05); /* optional visual cue */
+        }
+
+        &:first-child {
+            border-left: 2px solid #ccc;
+        }
+
+        &:last-child {
+            border-right: none;
+        }
+    }
+}
+
+/* Custom tooltip styling */
+.custom-tooltip-all,
+.custom-tooltip-desktop-only {
+    display: block;
+    background-color: #333;
+    color: #fff;
+    font-size: 0.875rem;
+    padding: 6px 10px;
+    border-radius: 4px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.custom-tooltip-desktop-only {
+    display: none;
+
+    @media screen and (min-width: 764px) {
+        display: block;
+    }
+}

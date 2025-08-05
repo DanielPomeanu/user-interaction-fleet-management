@@ -15,6 +15,36 @@ main {
     display: flex;
     align-items: center;
   }
+
+  .main-content {
+    display: inline-grid;
+    overflow-x: scroll;
+    width: 100%;
+
+    .main-content-tabs {
+      display: flex;
+      margin-top: 20px;
+      background-color: #b42592;
+      color: #fff;
+      border-radius: 6px 6px 0 0;
+
+      .tabs-tab {
+        display: flex;
+        justify-content: center;
+        min-width: 100px;
+        cursor: pointer;
+        padding: 20px;
+
+        &:hover {
+          background-color: white;
+          box-shadow: 2px 2px 0 0 #b42592 inset;
+          border-radius: 6px 6px 0 0;
+          color: #b42592;
+          height: 18px;
+        }
+      }
+    }
+  }
 }
 
 button {

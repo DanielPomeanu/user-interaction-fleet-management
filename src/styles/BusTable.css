@@ -1,30 +1,9 @@
-.bus-table {
-    width: 100%;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    overflow-x: scroll;
-    font-size: 14px;
-    margin-top: 20px;
-}
-
 .bus-row {
-    display: grid;
     grid-template-columns: 100px 4fr repeat(12, 1fr) 3fr;
-    border-bottom: 1px solid #eee;
     min-width: 1500px;
 }
 
-.bus-header {
-    background-color: #f4f4f4;
-    font-weight: bold;
-    border-bottom: 2px solid #ccc;
-}
-
 .bus-cell {
-    padding: 10px;
-    border-right: 1px solid #f0f0f0;
-    text-align: center;
-
     &.bus-id {
         font-weight: bold;
         cursor: pointer;
@@ -32,37 +11,5 @@
         &:hover {
             color: #b42592;
         }
-    }
-}
-
-.bus-cell.sticky {
-    position: sticky;
-    left: 0;
-    background: white; /* or match your theme */
-    z-index: 2; /* make sure it stays above others */
-    box-shadow: 2px 0 2px rgba(0, 0, 0, 0.05); /* optional visual cue */
-}
-
-.bus-cell:last-child {
-    border-right: none;
-}
-
-/* Custom tooltip styling */
-.custom-error-message-tooltip,
-.custom-last-modified-tooltip {
-    display: block;
-    background-color: #333;
-    color: #fff;
-    font-size: 0.875rem;
-    padding: 6px 10px;
-    border-radius: 4px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-}
-
-.custom-last-modified-tooltip {
-    display: none;
-
-    @media screen and (min-width: 764px) {
-        display: block;
     }
 }
