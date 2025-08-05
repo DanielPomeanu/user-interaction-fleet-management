@@ -1,14 +1,18 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import '../styles/Menu.css';
-import AddVehicleFormDialog from "./AddVehicleFormDialog";
+import CRUDFormDialog from "./CRUDFormDialog";
 
 const Menu = ({ setQuery, setIsLoading, setForceCacheReload }) => {
     const [isOpen, setIsOpen] = useState(false);
-    const [showDialog, setShowDialog] = useState(false);
+    const [showVehicleDialog, setShowVehicleDialog] = useState(false);
+    const [showTicketDialog, setShowTicketDialog] = useState(false);
     const menuRef = useRef(null);
 
-    const openDialog = () => setShowDialog(true);
-    const closeDialog = useCallback(() => { setShowDialog(false) }, []);
+    const openVehicleDialog = () => setShowVehicleDialog(true);
+    const closeVehicleDialog = useCallback(() => { setShowVehicleDialog(false) }, []);
+
+    const openTicketDialog = () => setShowTicketDialog(true);
+    const closeTicketDialog = useCallback(() => { setShowTicketDialog(false) }, []);
 
     const toggleMenu = () => {
         setIsOpen(prev => !prev);
@@ -37,24 +41,49 @@ const Menu = ({ setQuery, setIsLoading, setForceCacheReload }) => {
             <div className={`menu-overlay ${isOpen ? 'open' : ''}`} tabIndex={0}>
                 <ul>
                     <li className="menuItem" onClick={() => {
-                        openDialog();
+                        openVehicleDialog();
                         toggleMenu();
                     }}
                     >
                         ➕ Adaugă vehicul
                     </li>
+                    <li className="menuItem" onClick={() => {
+                        openTicketDialog();
+                        toggleMenu();
+                    }}
+                    >
+                        ➕ Adaugă sesizare
+                    </li>
                 </ul>
             </div>
 
-            {showDialog && (
-                <AddVehicleFormDialog
-                    busId={''}
-                    onCloseDialog={closeDialog}
-                    setQuery={setQuery}
-                    setIsLoading={setIsLoading}
-                    setForceCacheReload={setForceCacheReload}
-                />
-            )}
+            {
+                showVehicleDialog && (
+                    <CRUDFormDialog
+                        type={'bus'}
+                        id={''}
+                        title={'Adaugă vehicul'}
+                        onCloseDialog={closeVehicleDialog}
+                        setQuery={setQuery}
+                        setIsLoading={setIsLoading}
+                        setForceCacheReload={setForceCacheReload}
+                    />
+                )
+            }
+
+            {
+                showTicketDialog && (
+                    <CRUDFormDialog
+                        type={'ticket'}
+                        id={''}
+                        title={'Adaugă sesizare'}
+                        onCloseDialog={closeTicketDialog}
+                        setQuery={setQuery}
+                        setIsLoading={setIsLoading}
+                        setForceCacheReload={setForceCacheReload}
+                    />
+                )
+            }
         </div>
     );
 };

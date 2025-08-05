@@ -3,10 +3,11 @@ import {useEffect, useRef, useState} from "react";
 import "../styles/Table.css"
 import "../styles/TicketsTable.css"
 
-const TicketsTable = ((query, forceCacheReload, setForceCacheReload) => {
+const TicketsTable = ({query, forceCacheReload, setForceCacheReload}) => {
     console.log('RERENDER TicketsTable');
 
     const [tickets, setTickets] = useState([]);
+    const [correspondenceMap, setCorrespondenceMap] = useState({});
     const cache = useRef({});
 
     useEffect(() => {
@@ -121,27 +122,31 @@ const TicketsTable = ((query, forceCacheReload, setForceCacheReload) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [query]);
 
-    const fetchCorrespondence = async (ticket) => {
-        if (ticket.category === 'bus') {
-            return ticket.busId;
-        }
+    useEffect( () => {
+        const loadCorrespondence = async () => {
+            const map = {};
 
-        if (ticket.category === 'station') {
-            const {data, error} = await supabase
-                .from('Stations')
-                .select('name')
-                .eq('id', ticket.station_id);
+            for (const ticket of tickets) {
+                if (ticket.category === 'bus') {
+                    map[ticket.id] = ticket.bus_id;
+                } else if (ticket.category === 'station') {
+                    const { data, error } = await supabase
+                        .from('Stations')
+                        .select('name')
+                        .eq('id', ticket.station_id)
+                        .single();
 
-            if (error) console.error('Error fetching buses:', error);
-            else {
-                return data;
+                    map[ticket.id] = error ? '??' : data.name;
+                }
             }
-        }
 
-        return '';
-    };
+            setCorrespondenceMap(map);
+        };
 
-    const generateReporter = async (ticket) => {
+        loadCorrespondence();
+    },[tickets]);
+
+    const generateReporter = (ticket) => {
         let reporter = '';
         if (ticket.reporter_name) {
             reporter += ticket.reporter_name;
@@ -163,7 +168,7 @@ const TicketsTable = ((query, forceCacheReload, setForceCacheReload) => {
             {
                 <div className="tickets-table table">
                     {/* Header Row */}
-                    <div className="tickets-row table-row tickets-header table-header">
+                    <div className="ticket-row table-row tickets-header table-header">
                         <div className="ticket-cell table-cell sticky">Corespondență</div>
                         <div className="ticket-cell table-cell">Tip sesizare</div>
                         <div className="ticket-cell table-cell">Nume / Email</div>
@@ -176,10 +181,10 @@ const TicketsTable = ((query, forceCacheReload, setForceCacheReload) => {
                     {tickets.map((ticket) => (
                         <div key={ticket.id} className="ticket-row table-row">
                             <div className="ticket-cell table-cell sticky">
-                                {fetchCorrespondence(ticket)}
+                                {correspondenceMap[ticket.id]}
                             </div>
                             <div className="ticket-cell table-cell">
-                                {ticket.category}
+                                {ticket.category === 'bus' ? 'Autovehicul' : 'Stație'}
                             </div>
                             <div className="ticket-cell table-cell">
                                 {generateReporter(ticket)}
@@ -188,10 +193,33 @@ const TicketsTable = ((query, forceCacheReload, setForceCacheReload) => {
                                 {ticket.details}
                             </div>
                             <div className="ticket-cell table-cell">
-                                {ticket.image_url}
+                                {
+                                    ticket.image_url ? (
+                                            <a
+                                                href="#"
+                                                onClick={(e) => {
+                                                    e.preventDefault();
+                                                    window.open(
+                                                        ticket.image_url,
+                                                        '_blank',
+                                                        'width=800,height=600,noopener,noreferrer'
+                                                    );
+                                                }}
+                                            >
+                                                Vizualizează
+                                            </a>
+                                        ) :
+                                        ''
+                                }
                             </div>
                             <div className="ticket-cell table-cell">
-                                {ticket.status}
+                                {
+                                    ticket.status === 'open' ? "Deschis" :
+                                        ticket.status === 'in-progress' ? "În progres" :
+                                            ticket.status === 'pending' ? 'În așteptare' :
+                                                ticket.status === '' ? "Deschis" :
+                                                    "Rezolvat"
+                                }
                             </div>
                         </div>
                     ))}
@@ -199,6 +227,6 @@ const TicketsTable = ((query, forceCacheReload, setForceCacheReload) => {
             }
         </>
     );
-});
+};
 
 export default TicketsTable;

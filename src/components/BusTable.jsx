@@ -4,7 +4,7 @@ import 'react-tooltip/dist/react-tooltip.css';
 import { supabase } from '../utils/supabase'
 import '../styles/Table.css';
 import '../styles/BusTable.css';
-import AddVehicleFormDialog from "./AddVehicleFormDialog";
+import CRUDFormDialog from "./CRUDFormDialog";
 
 const BusTable = ({ setQuery, query, forceCacheReload, setForceCacheReload }) => {
     console.log('BusTable RERENDER');
@@ -268,8 +268,10 @@ const BusTable = ({ setQuery, query, forceCacheReload, setForceCacheReload }) =>
 
                     {
                         showDialog && (
-                            <AddVehicleFormDialog
-                                busId={selectedBus}
+                            <CRUDFormDialog
+                                type={'bus'}
+                                id={selectedBus}
+                                title={'Modifică vehicul'}
                                 onCloseDialog={closeDialog}
                                 setQuery={setQuery}
                                 setForceCacheReload={setForceCacheReload}

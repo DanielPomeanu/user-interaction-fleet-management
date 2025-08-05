@@ -37,6 +37,16 @@
         &:last-child {
             border-right: none;
         }
+
+        a {
+            text-decoration: none;
+            color: #b42592;
+            cursor: pointer;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
     }
 }
 

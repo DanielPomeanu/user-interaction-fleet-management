@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import { supabase } from '../utils/supabase'; // your Supabase config
-import "../styles/AddVehicleForm.css"
+import "../styles/Form.css"
+import "../styles/VehicleForm.css"
 import {useUser} from "./UserContext";
 import ConfirmationDialog from "./ConfirmationDialog";
 
@@ -36,9 +37,9 @@ const baseFormData = {
     details: '',
 };
 
-const AddVehicleForm = ({ busId, openDialog, onClose, setQuery, setForceCacheReload }) => {
+const VehicleForm = ({ busId, openDialog, onClose, setQuery, setForceCacheReload }) => {
     const { user } = useUser();
-    console.log("RERENDER:", { busId, user });
+    console.log("RERENDER VehicleForm:", { busId, user });
 
     const [formData, setFormData] = useState(baseFormData);
     const [deleteRequest, setDeleteRequest] = useState(false);
@@ -134,7 +135,7 @@ const AddVehicleForm = ({ busId, openDialog, onClose, setQuery, setForceCacheRel
     }
 
     return (
-        <form onSubmit={handleSubmit} className="add-vehicle-form">
+        <form onSubmit={handleSubmit} className="add-vehicle-form custom-form">
             <div className="form-row first">
                 <label>
                     Nr. parc
@@ -511,4 +512,4 @@ const AddVehicleForm = ({ busId, openDialog, onClose, setQuery, setForceCacheRel
     );
 };
 
-export default React.memo(AddVehicleForm);
+export default React.memo(VehicleForm);

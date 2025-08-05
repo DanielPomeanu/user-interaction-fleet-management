@@ -1,4 +1,4 @@
-.bus-dialog {
+.crud-dialog {
     padding: 20px;
     border: none;
     border-radius: 8px;
@@ -9,7 +9,7 @@
         background: rgb(180, 37, 146, 0.5);
     }
 
-    .bus-dialog-header {
+    .crud-dialog-header {
         display: flex;
         justify-content: space-between;
         align-items: center;

@@ -1,6 +1,5 @@
-.add-vehicle-form {
+.custom-form {
     display: grid;
-    grid-template-columns: 1fr 2fr;
     padding: 20px;
 
     .form-row {
@@ -8,12 +7,6 @@
 
         &.full-width {
             grid-column: 1 / -1;
-        }
-
-        &.first {
-            input {
-                width: 93%;
-            }
         }
     }
 
@@ -29,16 +22,17 @@
     }
 
     input,
-    select {
+    select,
+    textarea {
         width: 100%;
+        width: -moz-available;          /* WebKit-based browsers will ignore this. */
+        width: -webkit-fill-available;  /* Mozilla-based browsers will ignore this. */
         margin-top: 10px;
+        box-sizing: border-box; /* ensures padding/border don't overflow the width */
     }
 
     textarea {
-        width: 100%;
-        height: auto;
         resize: none;       /* prevents manual resizing */
-        box-sizing: border-box; /* ensures padding/border don't overflow the width */
     }
 
     .deleteButton {

@@ -4,12 +4,15 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {UserProvider} from "./components/UserContext";
+import {ImageUploader} from "./components/ImageUploader";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
       <UserProvider>
-        <App />
+          <ImageUploader>
+              <App />
+          </ImageUploader>
       </UserProvider>
   </React.StrictMode>
 );
