@@ -1,5 +1,5 @@
-import {useEffect, useId, useState} from "react";
-import ConfirmationDialog from "./ConfirmationDialog";
+import {useEffect, useState} from "react";
+//import ConfirmationDialog from "./ConfirmationDialog";
 import {supabase} from "../utils/supabase";
 import {useUser} from "./UserContext";
 import {useImageUploader} from "./ImageUploader";

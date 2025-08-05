@@ -6,10 +6,6 @@ import Menu from "./components/Menu";
 import { useUser } from './components/UserContext';
 import Filter from "./components/Filter";
 import BusLoadingScreen from "./components/BusLoadingScreen";
-import {auto} from "@cloudinary/url-gen/actions/resize";
-import {autoGravity} from "@cloudinary/url-gen/qualifiers/gravity";
-import {Cloudinary} from "@cloudinary/url-gen";
-import {AdvancedImage} from "@cloudinary/react";
 import TicketsTable from "./components/TicketsTable";
 
 const App = () => {

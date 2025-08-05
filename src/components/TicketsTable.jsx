@@ -195,6 +195,7 @@ const TicketsTable = ({query, forceCacheReload, setForceCacheReload}) => {
                             <div className="ticket-cell table-cell">
                                 {
                                     ticket.image_url ? (
+                                            // eslint-disable-next-line jsx-a11y/anchor-is-valid
                                             <a
                                                 href="#"
                                                 onClick={(e) => {
