@@ -1,4 +1,14 @@
 .ticket-row {
     grid-template-columns: 2fr 2fr 2fr 4fr 1fr 1fr;
     min-width: 1500px;
+
+    .ticket-cell {
+        &.sticky {
+            width: 125px;
+
+            @media screen and (min-width: 764px) {
+                width: auto;
+            }
+        }
+    }
 }
