@@ -12,6 +12,7 @@
     .table-row {
         display: grid;
         border-bottom: 1px solid #eee;
+        font-size: 14px;
 
         &.row-details {
             display: block; /* make it full-width */
@@ -21,7 +22,6 @@
 
             p {
                 margin: 10px 0;
-                font-size: 14px;
             }
 
             .row-actions {

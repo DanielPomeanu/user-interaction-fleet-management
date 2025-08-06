@@ -1,3 +1,8 @@
+html {
+  -webkit-text-size-adjust: 100%; /* Prevent font scaling in Safari */
+  text-size-adjust: 100%;         /* Prevent font scaling in other mobile browsers */
+}
+
 body {
   margin: 0;
   font-family: 'Lexend', sans-serif;
