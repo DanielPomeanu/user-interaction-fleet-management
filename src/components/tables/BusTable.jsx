@@ -4,16 +4,29 @@ import { supabase } from '../../utils/supabase'
 import '../../styles/tables/Table.css';
 import '../../styles/tables/BusTable.css';
 import CRUDFormDialog from "../dialogs/CRUDFormDialog";
+import {AnimatePresence, motion} from "framer-motion";
+import ConfirmationDialog from "../dialogs/ConfirmationDialog";
 
 const BusTable = ({ setQuery, query, forceCacheReload, setForceCacheReload }) => {
     console.log('BusTable RERENDER');
+
     const [buses, setBuses] = useState([]);
     const [selectedBus, setSelectedBus] = useState({});
+    const [selectedBusId, setSelectedBusId] = useState('');
     const [showDialog, setShowDialog] = useState(false);
+    const [deleteRequest, setDeleteRequest] = useState(false);
+
     const cache = useRef({});
+    const expandedRowRef = useRef(null);
+    const tableRef = useRef(null);
+    const editDialogRef = useRef(null);
 
     const openDialog = useCallback(() => { setShowDialog(true)}, []);
-    const closeDialog = useCallback(() => { setShowDialog(false) }, []);
+    const closeDialog = useCallback(() => {
+        setShowDialog(false);
+    }, []);
+
+    const sendDeleteRequest = useCallback(() => { setDeleteRequest(true)}, []);
 
     // Memoize filters string for search queries
     const searchFilters = useMemo(() => {
@@ -22,6 +35,39 @@ const BusTable = ({ setQuery, query, forceCacheReload, setForceCacheReload }) =>
             ? `type.ilike.%${query.term}%`
             : `id.eq.${query.term},type.ilike.%${query.term}%`;
     }, [query]);
+
+    useEffect(() => {
+        if (!selectedBusId) {
+            setSelectedBus({});
+            return;
+        }
+
+        const updatedBus = buses.find(bus => bus.id === selectedBusId);
+        if (updatedBus) {
+            setSelectedBus(updatedBus);
+        }
+    }, [buses, selectedBusId]);
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (
+                tableRef.current &&
+                !tableRef.current.contains(event.target) &&
+                (!editDialogRef.current || !editDialogRef.current.contains(event.target))
+            ) {
+                setSelectedBus({});
+                setSelectedBusId('');
+            }
+        };
+
+        if (selectedBusId) {
+            document.addEventListener('click', handleClickOutside);
+        }
+
+        return () => {
+            document.removeEventListener('click', handleClickOutside);
+        };
+    }, [selectedBusId]);
 
     useEffect(() => {
         console.log('BusTable useEffect');
@@ -133,9 +179,16 @@ const BusTable = ({ setQuery, query, forceCacheReload, setForceCacheReload }) =>
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [query, searchFilters]);
 
-    const handleBusIdClick = (busId) => {
-        setSelectedBus(busId);
-        openDialog();
+    const handleBusIdClick = (bus) => {
+        if (selectedBus?.id === bus.id) {
+            // Collapse the row if it's already selected
+            setSelectedBus({});
+            setSelectedBusId('');
+        } else {
+            // Select the new row
+            setSelectedBus(bus);
+            setSelectedBusId(bus.id);
+        }
     };
 
 
@@ -164,7 +217,7 @@ const BusTable = ({ setQuery, query, forceCacheReload, setForceCacheReload }) =>
     return (
         <>
             {
-                <div className="bus-table table">
+                <div ref={tableRef} className="bus-table table">
                     {/* Header Row */}
                     <div className="bus-row table-row bus-header table-header">
                         <div className="bus-cell table-cell sticky">Nr. parc</div>
@@ -180,63 +233,113 @@ const BusTable = ({ setQuery, query, forceCacheReload, setForceCacheReload }) =>
                     </div>
 
                     {/* Data Rows */}
-                    {buses.map((bus) => (
-                        <div key={bus.id} className="bus-row table-row">
-                            <div className="bus-cell table-cell sticky bus-id"
-                                 data-tooltip-id="last-modified-tooltip"
-                                 data-tooltip-content={
-                                     bus.last_modified_by ?
-                                         `Ultima modificare: ${bus.last_modified_by} în ${formatDateWithTimezone(new Date(bus.created_at))}` :
-                                         undefined
-                                 }
-                                 onClick={() => handleBusIdClick(bus.id) }
-                            >
-                                {bus.id}
-                            </div>
-                            <div className="bus-cell table-cell">{bus.type}</div>
-                            <div className="bus-cell table-cell" data-tooltip-id="error-message-tooltip"
-                                 data-tooltip-content={bus.displays_int_error}>
-                                {statusMap[bus.displays_int]}
-                            </div>
-                            <div className="bus-cell table-cell" data-tooltip-id="error-message-tooltip"
-                                 data-tooltip-content={bus.displays_ext_error}>
-                                {statusMap[bus.displays_ext]}
-                            </div>
-                            <div className="bus-cell table-cell" data-tooltip-id="error-message-tooltip"
-                                 data-tooltip-content={bus.ticketing_machines_error}>
-                                {statusMap[bus.ticketing_machines]}
-                            </div>
-                            <div className="bus-cell table-cell" data-tooltip-id="error-message-tooltip"
-                                 data-tooltip-content={bus.pos_machines_error}>
-                                {statusMap[bus.pos_machines]}
-                            </div>
-                            <div className="bus-cell table-cell" data-tooltip-id="error-message-tooltip"
-                                 data-tooltip-content={bus.environment_error}>
-                                {statusMap[bus.environment]}
-                            </div>
-                            <div className="bus-cell table-cell" data-tooltip-id="error-message-tooltip"
-                                 data-tooltip-content={bus.audio_int_error}>
-                                {statusMap[bus.audio_int]}
-                            </div>
-                            <div className="bus-cell table-cell" data-tooltip-id="error-message-tooltip"
-                                 data-tooltip-content={bus.audio_ext_error}>
-                                {statusMap[bus.audio_ext]}
-                            </div>
-                            <div className="bus-cell table-cell">{bus.details}</div>
-                        </div>
-                    ))}
+                    {
+                        buses.map((bus) => (
+                            <React.Fragment key={bus.id}>
+                                <div className="bus-row table-row">
+                                    <div className="bus-cell table-cell sticky bus-id"
+                                         onClick={() => handleBusIdClick(bus)}
+                                    >
+                                        {bus.id}
+                                    </div>
+                                    <div className="bus-cell table-cell">{bus.type}</div>
+                                    <div className="bus-cell table-cell" data-tooltip-id="error-message-tooltip"
+                                         data-tooltip-content={bus.displays_int_error}>
+                                        {statusMap[bus.displays_int]}
+                                    </div>
+                                    <div className="bus-cell table-cell" data-tooltip-id="error-message-tooltip"
+                                         data-tooltip-content={bus.displays_ext_error}>
+                                        {statusMap[bus.displays_ext]}
+                                    </div>
+                                    <div className="bus-cell table-cell" data-tooltip-id="error-message-tooltip"
+                                         data-tooltip-content={bus.ticketing_machines_error}>
+                                        {statusMap[bus.ticketing_machines]}
+                                    </div>
+                                    <div className="bus-cell table-cell" data-tooltip-id="error-message-tooltip"
+                                         data-tooltip-content={bus.pos_machines_error}>
+                                        {statusMap[bus.pos_machines]}
+                                    </div>
+                                    <div className="bus-cell table-cell" data-tooltip-id="error-message-tooltip"
+                                         data-tooltip-content={bus.environment_error}>
+                                        {statusMap[bus.environment]}
+                                    </div>
+                                    <div className="bus-cell table-cell" data-tooltip-id="error-message-tooltip"
+                                         data-tooltip-content={bus.audio_int_error}>
+                                        {statusMap[bus.audio_int]}
+                                    </div>
+                                    <div className="bus-cell table-cell" data-tooltip-id="error-message-tooltip"
+                                         data-tooltip-content={bus.audio_ext_error}>
+                                        {statusMap[bus.audio_ext]}
+                                    </div>
+                                    <div className="bus-cell table-cell">{bus.details}</div>
+                                </div>
+                                <AnimatePresence>
+                                    {
+                                        selectedBusId === bus.id && (
+                                            <motion.div
+                                                ref={expandedRowRef}
+                                                className="bus-row table-row bus-details row-details"
+                                                initial={{ height: 0, paddingTop: 0, paddingBottom: 0 }}
+                                                animate={{ height: "auto", paddingTop: 8, paddingBottom: 8 }}
+                                                exit={{ height: 0, paddingTop: 0, paddingBottom: 0 }}
+                                                transition={{ duration: 0.3, ease: "easeInOut" }}
+                                                style={{ overflow: "hidden" }}
+                                            >
+                                                <p>
+                                                    {
+                                                        selectedBus.last_modified_by ?
+                                                            `Ultima modificare: ${selectedBus.last_modified_by} în ${formatDateWithTimezone(new Date(selectedBus.created_at))}` :
+                                                            `Ultima modificare: ${formatDateWithTimezone(new Date(selectedBus.created_at))}`
+                                                    }
+                                                </p>
+                                                <div className="bus-details-actions row-actions">
+                                                    <button
+                                                        className="primaryButton"
+                                                        onClick={openDialog}
+                                                    >
+                                                        Modifică
+                                                    </button>
+                                                    <button
+                                                        className="deleteButton"
+                                                        onClick={sendDeleteRequest}
+                                                    >
+                                                        Șterge
+                                                    </button>
+                                                </div>
+
+                                            </motion.div>
+                                        )
+                                    }
+                                </AnimatePresence>
+                            </React.Fragment>
+                        ))
+                    }
 
                     {
-                        showDialog && (
+                    showDialog && (
                             <CRUDFormDialog
+                                ref={editDialogRef}
                                 type={'bus'}
-                                id={selectedBus}
+                                id={selectedBus.id}
                                 title={'Modifică vehicul'}
                                 onCloseDialog={closeDialog}
                                 setQuery={setQuery}
                                 setForceCacheReload={setForceCacheReload}
+                                deleteRequest={deleteRequest}
+                                setDeleteRequest={setDeleteRequest}
                             />
                         )
+                    }
+
+                    { deleteRequest &&
+                        <ConfirmationDialog
+                            id={selectedBus.id}
+                            category={'bus'}
+                            onClose={ closeDialog }
+                            setQuery={ setQuery }
+                            setForceCacheReload={ setForceCacheReload }
+                            setDeleteRequest={setDeleteRequest}
+                        />
                     }
                 </div>
             }

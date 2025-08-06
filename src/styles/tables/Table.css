@@ -12,6 +12,25 @@
     .table-row {
         display: grid;
         border-bottom: 1px solid #eee;
+
+        &.row-details {
+            display: block; /* make it full-width */
+            padding: 20px;
+            background-color: rgba(180, 37, 146, 0.15);
+            border-left: 2px solid #ccc;
+
+            p {
+                margin: 10px 0;
+            }
+
+            .row-actions {
+                padding: 10px 0;
+
+                button {
+                    margin-right: 10px;
+                }
+            }
+        }
     }
 
     .table-cell {

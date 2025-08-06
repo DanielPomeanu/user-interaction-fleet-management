@@ -27,6 +27,7 @@ main {
       background-color: #b42592;
       color: #fff;
       border-radius: 6px 6px 0 0;
+      font-weight: bold;
 
       .tabs-tab {
         display: flex;
@@ -35,7 +36,8 @@ main {
         cursor: pointer;
         padding: 20px;
 
-        &:hover {
+        &:hover,
+        &.active {
           background-color: white;
           box-shadow: 2px 2px 0 0 #b42592 inset;
           border-radius: 6px 6px 0 0;

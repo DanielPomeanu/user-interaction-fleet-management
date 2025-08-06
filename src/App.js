@@ -72,9 +72,9 @@ const App = () => {
                                 </div>
                                 <div className="main-content">
                                     <div className="main-content-tabs">
-                                        <div id="buses-tab" className="tabs-tab" onClick={ handleTabClick }>Vehicule</div>
-                                        <div id="stations-tab" className="tabs-tab" onClick={ handleTabClick }>Stații</div>
-                                        <div id="tickets-tab" className="tabs-tab" onClick={ handleTabClick }>Sesizări</div>
+                                        <div id="buses-tab" className={`tabs-tab ${ busesTabSelected ? 'active' : '' }`} onClick={ handleTabClick }>Vehicule</div>
+                                        <div id="stations-tab" className={`tabs-tab ${ stationsTabSelected ? 'active' : '' }`} onClick={ handleTabClick }>Stații</div>
+                                        <div id="tickets-tab" className={`tabs-tab ${ ticketsTabSelected ? 'active' : '' }`} onClick={ handleTabClick }>Sesizări</div>
                                     </div>
                                     {
                                         !loading && busesTabSelected && (

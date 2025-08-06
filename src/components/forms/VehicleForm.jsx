@@ -3,7 +3,6 @@ import { supabase } from '../../utils/supabase'; // your Supabase config
 import "../../styles/forms/Form.css"
 import "../../styles/forms/VehicleForm.css"
 import {useUser} from "../authentication/UserContext";
-import ConfirmationDialog from "../dialogs/ConfirmationDialog";
 
 const baseFormData = {
     id: '',
@@ -27,12 +26,11 @@ const baseFormData = {
     details: '',
 };
 
-const VehicleForm = ({ busId, openDialog, onClose, setQuery, setForceCacheReload }) => {
+const VehicleForm = ({ busId, openDialog, onClose, setQuery, setForceCacheReload, setDeleteRequest }) => {
     const { user } = useUser();
     console.log("RERENDER VehicleForm:", { busId, user });
 
     const [formData, setFormData] = useState(baseFormData);
-    const [deleteRequest, setDeleteRequest] = useState(false);
 
     const handleClickOnDelete = () => {
         setDeleteRequest(true);
@@ -354,16 +352,6 @@ const VehicleForm = ({ busId, openDialog, onClose, setQuery, setForceCacheReload
                 <button type="submit" className="primaryButton">{ busId ? "Modifică" : "Adaugă" }</button>
                 { busId ? <button type="button" className="deleteButton" onClick={ handleClickOnDelete }>Șterge</button> : '' }
             </div>
-
-            { deleteRequest &&
-                <ConfirmationDialog
-                    id={busId}
-                    category={'bus'}
-                    onClose={ handleConfirmationClose }
-                    setQuery={ setQuery }
-                    setForceCacheReload={ setForceCacheReload }
-                />
-            }
         </form>
     );
 };

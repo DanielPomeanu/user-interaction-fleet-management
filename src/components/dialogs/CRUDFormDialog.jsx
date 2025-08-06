@@ -1,12 +1,14 @@
-import React, {useCallback, useRef} from 'react';
+import React, {forwardRef, useCallback, useImperativeHandle, useRef} from 'react';
 import '../../styles/dialogs/CRUDFormDialog.css'
 import TicketForm from "../forms/TicketForm";
 import VehicleForm from "../forms/VehicleForm";
 import StationForm from "../forms/StationForm";
 
-const CRUDFormDialog = ({ type, id, title, onCloseDialog, setQuery, setForceCacheReload }) => {
+const CRUDFormDialog = forwardRef(({ type, id, title, onCloseDialog, setQuery, setForceCacheReload, deleteRequest, setDeleteRequest }, ref) => {
     console.log('CRUDFormDialog RERENDER');
     const dialogRef = useRef(null);
+
+    useImperativeHandle(ref, () => dialogRef.current);
 
     const openDialog = useCallback(() => {
         if (dialogRef.current && !dialogRef.current.open) {
@@ -33,19 +35,39 @@ const CRUDFormDialog = ({ type, id, title, onCloseDialog, setQuery, setForceCach
                 </div>
                 {
                     type === 'bus' ? (
-                        <VehicleForm busId={ id } openDialog={ openDialog } onClose={ closeDialog } setQuery={ setQuery } setForceCacheReload={ setForceCacheReload } />
+                        <VehicleForm
+                            busId={ id }
+                            openDialog={ openDialog }
+                            onClose={ closeDialog }
+                            setQuery={ setQuery }
+                            setForceCacheReload={ setForceCacheReload }
+                            setDeleteRequest={setDeleteRequest}
+                        />
                     ) : type === 'station' ?
                         (
-                            <StationForm stationName={ id } openDialog={ openDialog } onClose={ closeDialog } setQuery={ setQuery } setForceCacheReload={ setForceCacheReload } />
+                            <StationForm
+                                stationName={ id }
+                                openDialog={ openDialog }
+                                onClose={ closeDialog }
+                                setQuery={ setQuery }
+                                setForceCacheReload={ setForceCacheReload }
+                                deleteRequest={deleteRequest}
+                                setDeleteRequest={setDeleteRequest}
+                            />
                         ) :
                             (
-                                <TicketForm ticketId={ id } openDialog={ openDialog } onClose={ closeDialog } setQuery={ setQuery } setForceCacheReload={ setForceCacheReload } />
+                                <TicketForm
+                                    ticketId={ id }
+                                    openDialog={ openDialog }
+                                    onClose={ closeDialog }
+                                    setQuery={ setQuery }
+                                    setForceCacheReload={ setForceCacheReload } />
                             )
                 }
             </dialog>
         </>
 
     );
-};
+});
 
 export default CRUDFormDialog;

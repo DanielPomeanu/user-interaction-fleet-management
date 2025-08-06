@@ -3,7 +3,7 @@ import { supabase } from '../../utils/supabase';
 import '../../styles/forms/AuthForm.css';
 import '../../styles/dialogs/ConfirmationDialog.css';
 
-const ConfirmationDialog = ({ id, category, onClose, setQuery, setForceCacheReload }) => {
+const ConfirmationDialog = ({ id, category, onClose, setQuery, setForceCacheReload, setDeleteRequest }) => {
     const dialogRef = useRef(null);
 
     const openDialog = () => {
@@ -17,7 +17,7 @@ const ConfirmationDialog = ({ id, category, onClose, setQuery, setForceCacheRelo
             dialogRef.current.close();
         }
 
-        onClose();
+        setDeleteRequest(false);
     };
 
     const handleDeleteClick = () => {
@@ -35,6 +35,8 @@ const ConfirmationDialog = ({ id, category, onClose, setQuery, setForceCacheRelo
             } else {
                 //alert ('Vehiculul a fost șters cu succes!');
                 closeDialog();
+                onClose();
+
                 setQuery({ type: '', timestamp: Date.now() });
                 setForceCacheReload(true);
             }
