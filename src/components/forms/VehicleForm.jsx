@@ -117,11 +117,6 @@ const VehicleForm = ({ busId, openDialog, onClose, setQuery, setForceCacheReload
         }
     };
 
-    const handleConfirmationClose = () => {
-        setDeleteRequest(false);
-        onClose();
-    }
-
     return (
         <form onSubmit={handleSubmit} className="add-vehicle-form custom-form">
             <div className="form-row first">
