@@ -1,10 +1,13 @@
-import {useEffect, useRef} from 'react';
+import {forwardRef, useEffect, useImperativeHandle, useRef} from 'react';
 import { supabase } from '../../utils/supabase';
 import '../../styles/forms/AuthForm.css';
 import '../../styles/dialogs/ConfirmationDialog.css';
 
-const ConfirmationDialog = ({ id, category, onClose, setQuery, setForceCacheReload, setDeleteRequest }) => {
+const ConfirmationDialog = forwardRef(({ id, category, onClose, setQuery, setForceCacheReload, setDeleteRequest, clickedInsideDialogRef }, ref) => {
     const dialogRef = useRef(null);
+
+    // Expose DOM node to parent through ref
+    useImperativeHandle(ref, () => dialogRef.current);
 
     const openDialog = () => {
         if (dialogRef.current) {
@@ -49,17 +52,29 @@ const ConfirmationDialog = ({ id, category, onClose, setQuery, setForceCacheRelo
         openDialog();
     }, []); // run once after mount
 
+    // Set clickedInsideDialogRef true when clicking anywhere inside the dialog,
+    // so BusTable's outside click handler will ignore this click
+    const handleDialogClick = () => {
+        if (clickedInsideDialogRef) {
+            clickedInsideDialogRef.current = true;
+        }
+    };
+
     return (
         <>
-            <dialog ref={dialogRef} className="confirmation-dialog">
+            <dialog
+                ref={dialogRef}
+                className="confirmation-dialog"
+                onClick={handleDialogClick}  // Capture clicks inside dialog
+            >
                 <div className="confirmation-dialog-header">
                     {
                         category === 'bus' ? (
-                            <h3 className="confirmation-dialog-text">Ești sigur că dorești să ștergi vehiculul?</h3>
-                        ) :
-                        (
-                            <h3 className="confirmation-dialog-text">Ești sigur că dorești să ștergi stația?</h3>
-                        )
+                                <h3 className="confirmation-dialog-text">Ești sigur că dorești să ștergi vehiculul?</h3>
+                            ) :
+                            (
+                                <h3 className="confirmation-dialog-text">Ești sigur că dorești să ștergi stația?</h3>
+                            )
                     }
                 </div>
                 <div className="confirmation-dialog-buttons">
@@ -69,6 +84,6 @@ const ConfirmationDialog = ({ id, category, onClose, setQuery, setForceCacheRelo
             </dialog>
         </>
     );
-};
+});
 
 export default ConfirmationDialog;

@@ -20,6 +20,10 @@ const BusTable = ({ setQuery, query, forceCacheReload, setForceCacheReload }) =>
     const expandedRowRef = useRef(null);
     const tableRef = useRef(null);
     const editDialogRef = useRef(null);
+    const confirmationDialogRef = useRef(null);
+
+    // New ref to track clicks inside ConfirmationDialog
+    const clickedInsideDialogRef = useRef(false);
 
     const openDialog = useCallback(() => { setShowDialog(true)}, []);
     const closeDialog = useCallback(() => {
@@ -50,10 +54,17 @@ const BusTable = ({ setQuery, query, forceCacheReload, setForceCacheReload }) =>
 
     useEffect(() => {
         const handleClickOutside = (event) => {
+            if (clickedInsideDialogRef.current) {
+                // Click was inside ConfirmationDialog, ignore closing
+                clickedInsideDialogRef.current = false; // reset
+                return;
+            }
+
             if (
                 tableRef.current &&
                 !tableRef.current.contains(event.target) &&
-                (!editDialogRef.current || !editDialogRef.current.contains(event.target))
+                (!editDialogRef.current || !editDialogRef.current.contains(event.target)) &&
+                (!confirmationDialogRef.current || !confirmationDialogRef.current.contains(event.target))
             ) {
                 setSelectedBus({});
                 setSelectedBusId('');
@@ -176,7 +187,7 @@ const BusTable = ({ setQuery, query, forceCacheReload, setForceCacheReload }) =>
         return () => {
             isCancelled = true;
         };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [query, searchFilters]);
 
     const handleBusIdClick = (bus) => {
@@ -190,7 +201,6 @@ const BusTable = ({ setQuery, query, forceCacheReload, setForceCacheReload }) =>
             setSelectedBusId(bus.id);
         }
     };
-
 
     const statusMap = {
         green: '🟢',
@@ -316,7 +326,7 @@ const BusTable = ({ setQuery, query, forceCacheReload, setForceCacheReload }) =>
                     }
 
                     {
-                    showDialog && (
+                        showDialog && (
                             <CRUDFormDialog
                                 ref={editDialogRef}
                                 type={'bus'}
@@ -333,12 +343,14 @@ const BusTable = ({ setQuery, query, forceCacheReload, setForceCacheReload }) =>
 
                     { deleteRequest &&
                         <ConfirmationDialog
+                            ref={confirmationDialogRef}
                             id={selectedBus.id}
                             category={'bus'}
                             onClose={ closeDialog }
                             setQuery={ setQuery }
                             setForceCacheReload={ setForceCacheReload }
                             setDeleteRequest={setDeleteRequest}
+                            clickedInsideDialogRef={clickedInsideDialogRef}  // Pass the ref here!
                         />
                     }
                 </div>
