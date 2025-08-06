@@ -1,5 +1,5 @@
-import "../styles/BusLoadingScreen.css";
-import busIcon from '../assets/bus_icon.png';
+import "../../styles/utils/BusLoadingScreen.css";
+import busIcon from '../../assets/bus_icon.png';
 
 const BusLoadingScreen = () => {
     return (

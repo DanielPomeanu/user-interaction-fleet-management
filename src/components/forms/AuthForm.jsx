@@ -1,7 +1,7 @@
 import {useState} from 'react';
-import { supabase } from '../utils/supabase';
-import '../styles/AuthForm.css';
-import {useUser} from "./UserContext";
+import { supabase } from '../../utils/supabase';
+import '../../styles/forms/AuthForm.css';
+import {useUser} from "../authentication/UserContext";
 
 const AuthForm = ({ setIsLoading }) => {
     const [email, setEmail] = useState('');

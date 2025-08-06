@@ -10,7 +10,7 @@
         &:after {
             content: '';
             display: block;
-            background-image: url("../assets/filter_icon.svg");
+            background-image: url("../../assets/filter_icon.svg");
             background-size: cover;
             width: 36px;
             height: 36px;

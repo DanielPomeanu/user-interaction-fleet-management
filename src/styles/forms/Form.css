@@ -1,6 +1,7 @@
 .custom-form {
     display: grid;
     padding: 20px;
+    grid-template-columns: 1fr 2fr;
 
     .form-row {
         padding: 10px;

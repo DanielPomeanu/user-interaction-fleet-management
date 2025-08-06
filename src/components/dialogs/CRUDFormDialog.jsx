@@ -1,7 +1,8 @@
 import React, {useCallback, useRef} from 'react';
-import AddVehicleForm from './VehicleForm';
-import '../styles/CRUDFormDialog.css'
-import TicketForm from "./TicketForm";
+import '../../styles/dialogs/CRUDFormDialog.css'
+import TicketForm from "../forms/TicketForm";
+import VehicleForm from "../forms/VehicleForm";
+import StationForm from "../forms/StationForm";
 
 const CRUDFormDialog = ({ type, id, title, onCloseDialog, setQuery, setForceCacheReload }) => {
     console.log('CRUDFormDialog RERENDER');
@@ -32,10 +33,14 @@ const CRUDFormDialog = ({ type, id, title, onCloseDialog, setQuery, setForceCach
                 </div>
                 {
                     type === 'bus' ? (
-                        <AddVehicleForm busId={ id } openDialog={ openDialog } onClose={ closeDialog } setQuery={ setQuery } setForceCacheReload={ setForceCacheReload } />
-                    ) : (
-                        <TicketForm ticketId={ id } openDialog={ openDialog } onClose={ closeDialog } setQuery={ setQuery } setForceCacheReload={ setForceCacheReload } />
-                    )
+                        <VehicleForm busId={ id } openDialog={ openDialog } onClose={ closeDialog } setQuery={ setQuery } setForceCacheReload={ setForceCacheReload } />
+                    ) : type === 'station' ?
+                        (
+                            <StationForm stationName={ id } openDialog={ openDialog } onClose={ closeDialog } setQuery={ setQuery } setForceCacheReload={ setForceCacheReload } />
+                        ) :
+                            (
+                                <TicketForm ticketId={ id } openDialog={ openDialog } onClose={ closeDialog } setQuery={ setQuery } setForceCacheReload={ setForceCacheReload } />
+                            )
                 }
             </dialog>
         </>

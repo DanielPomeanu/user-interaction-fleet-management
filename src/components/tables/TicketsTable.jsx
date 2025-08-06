@@ -1,7 +1,7 @@
-import {supabase} from "../utils/supabase";
+import {supabase} from "../../utils/supabase";
 import {useEffect, useRef, useState} from "react";
-import "../styles/Table.css"
-import "../styles/TicketsTable.css"
+import "../../styles/tables/Table.css"
+import "../../styles/tables/TicketsTable.css"
 
 const TicketsTable = ({query, forceCacheReload, setForceCacheReload}) => {
     console.log('RERENDER TicketsTable');
@@ -56,9 +56,9 @@ const TicketsTable = ({query, forceCacheReload, setForceCacheReload}) => {
             //         .from('Buses')
             //         .select('*')
             //         .or(
-            //             'D22Front.in.(red,yellow),D22Back.in.(red,yellow),D29Front.in.(red,yellow),D29Back.in.(red,yellow),' +
-            //             'ledIntFront.in.(red,yellow),ledIntBack.in.(red,yellow),ledExtFront.in.(red,yellow),ledExtSide1.in.(red,yellow),' +
-            //             'ledExtSide2.in.(red,yellow),ledExtBack.in.(red,yellow),audioInt.in.(red,yellow),audioExt.in.(red,yellow)'
+            //             'displays_int.in.(red,yellow),D22Back.in.(red,yellow),D29Front.in.(red,yellow),D29Back.in.(red,yellow),' +
+            //             'ledIntFront.in.(red,yellow),ledIntBack.in.(red,yellow),displays_ext.in.(red,yellow),ticketing_machines.in.(red,yellow),' +
+            //             'pos_machines.in.(red,yellow),environment.in.(red,yellow),audio_int.in.(red,yellow),audio_ext.in.(red,yellow)'
             //         )
             //         .order('id', { ascending: true });
             //
@@ -83,10 +83,10 @@ const TicketsTable = ({query, forceCacheReload, setForceCacheReload}) => {
             //         // Filter buses without red/yellow status in any error fields
             //         const filtered = data.filter((bus) => {
             //             const errorFields = [
-            //                 bus.D22Front, bus.D22Back, bus.D29Front, bus.D29Back,
-            //                 bus.ledIntFront, bus.ledIntBack, bus.ledExtFront,
-            //                 bus.ledExtSide1, bus.ledExtSide2, bus.ledExtBack,
-            //                 bus.audioInt, bus.audioExt
+            //                 bus.displays_int, bus.D22Back, bus.D29Front, bus.D29Back,
+            //                 bus.ledIntFront, bus.ledIntBack, bus.displays_ext,
+            //                 bus.ticketing_machines, bus.pos_machines, bus.environment,
+            //                 bus.audio_int, bus.audio_ext
             //             ];
             //             return errorFields.every(status => status !== 'red' && status !== 'yellow');
             //         });

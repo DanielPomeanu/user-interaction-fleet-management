@@ -1,4 +1,4 @@
-import "../styles/Filter.css"
+import "../../styles/tables/Filter.css"
 import { useEffect, useRef, useState } from "react";
 
 const Filter = ({ setQuery }) => {

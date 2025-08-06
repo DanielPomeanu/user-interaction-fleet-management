@@ -2,7 +2,7 @@
     padding: 20px;
     border: none;
     border-radius: 8px;
-    max-width: 600px;
+    max-width: 750px;
     width: 90%;
 
     &::backdrop {

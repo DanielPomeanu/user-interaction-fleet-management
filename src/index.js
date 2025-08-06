@@ -3,8 +3,8 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import {UserProvider} from "./components/UserContext";
-import {ImageUploader} from "./components/ImageUploader";
+import {UserProvider} from "./components/authentication/UserContext";
+import {ImageUploader} from "./components/utils/ImageUploader";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

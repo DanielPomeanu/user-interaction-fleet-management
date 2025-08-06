@@ -1,10 +1,10 @@
 import {useEffect, useState} from "react";
 //import ConfirmationDialog from "./ConfirmationDialog";
-import {supabase} from "../utils/supabase";
-import {useUser} from "./UserContext";
-import {useImageUploader} from "./ImageUploader";
-import "../styles/Form.css"
-import "../styles/TicketForm.css"
+import {supabase} from "../../utils/supabase";
+import {useUser} from "../authentication/UserContext";
+import {useImageUploader} from "../utils/ImageUploader";
+import "../../styles/forms/Form.css"
+import "../../styles/forms/TicketForm.css"
 
 const baseFormData = {
     created_at: '',

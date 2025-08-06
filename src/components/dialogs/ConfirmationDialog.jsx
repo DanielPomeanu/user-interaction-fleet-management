@@ -1,9 +1,9 @@
 import {useEffect, useRef} from 'react';
-import { supabase } from '../utils/supabase';
-import '../styles/AuthForm.css';
-import '../styles/ConfirmationDialog.css';
+import { supabase } from '../../utils/supabase';
+import '../../styles/forms/AuthForm.css';
+import '../../styles/dialogs/ConfirmationDialog.css';
 
-const ConfirmationDialog = ({ busId, onClose, setQuery, setForceCacheReload }) => {
+const ConfirmationDialog = ({ id, category, onClose, setQuery, setForceCacheReload }) => {
     const dialogRef = useRef(null);
 
     const openDialog = () => {
@@ -21,14 +21,17 @@ const ConfirmationDialog = ({ busId, onClose, setQuery, setForceCacheReload }) =
     };
 
     const handleDeleteClick = () => {
-        const deleteBus = async () => {
+        const performDelete = async () => {
+            const table = category === 'bus' ? 'Buses' : 'Stations'
+            const identifier = category === 'bus' ? 'id' : 'name'
+
             const {error } = await supabase
-                .from('Buses')
+                .from(table)
                 .delete()
-                .eq('id', busId || '');
+                .eq(identifier, id || '');
 
             if (error) {
-                alert ('Eroare la ștergerea vehiculului: ' + error);
+                alert ('Eroare la ștergere: ' + error);
             } else {
                 //alert ('Vehiculul a fost șters cu succes!');
                 closeDialog();
@@ -37,7 +40,7 @@ const ConfirmationDialog = ({ busId, onClose, setQuery, setForceCacheReload }) =
             }
         }
 
-        deleteBus();
+        performDelete();
     }
 
     useEffect(() => {
@@ -48,7 +51,14 @@ const ConfirmationDialog = ({ busId, onClose, setQuery, setForceCacheReload }) =
         <>
             <dialog ref={dialogRef} className="confirmation-dialog">
                 <div className="confirmation-dialog-header">
-                    <h3 className="confirmation-dialog-text">Ești sigur că dorești să ștergi vehiculul?</h3>
+                    {
+                        category === 'bus' ? (
+                            <h3 className="confirmation-dialog-text">Ești sigur că dorești să ștergi vehiculul?</h3>
+                        ) :
+                        (
+                            <h3 className="confirmation-dialog-text">Ești sigur că dorești să ștergi stația?</h3>
+                        )
+                    }
                 </div>
                 <div className="confirmation-dialog-buttons">
                     <button type="button" className="deleteButton" onClick={ handleDeleteClick }>Da</button>

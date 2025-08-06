@@ -1,11 +1,12 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
-import '../styles/Menu.css';
-import CRUDFormDialog from "./CRUDFormDialog";
+import '../../styles/layout/Menu.css';
+import CRUDFormDialog from "../dialogs/CRUDFormDialog";
 
 const Menu = ({ setQuery, setIsLoading, setForceCacheReload }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [showVehicleDialog, setShowVehicleDialog] = useState(false);
     const [showTicketDialog, setShowTicketDialog] = useState(false);
+    const [showStationDialog, setShowStationDialog] = useState(false);
     const menuRef = useRef(null);
 
     const openVehicleDialog = () => setShowVehicleDialog(true);
@@ -13,6 +14,9 @@ const Menu = ({ setQuery, setIsLoading, setForceCacheReload }) => {
 
     const openTicketDialog = () => setShowTicketDialog(true);
     const closeTicketDialog = useCallback(() => { setShowTicketDialog(false) }, []);
+
+    const openStationDialog = () => setShowStationDialog(true);
+    const closeStationDialog = useCallback(() => { setShowStationDialog(false) }, []);
 
     const toggleMenu = () => {
         setIsOpen(prev => !prev);
@@ -48,6 +52,13 @@ const Menu = ({ setQuery, setIsLoading, setForceCacheReload }) => {
                         ➕ Adaugă vehicul
                     </li>
                     <li className="menuItem" onClick={() => {
+                        openStationDialog();
+                        toggleMenu();
+                    }}
+                    >
+                        ➕ Adaugă stație
+                    </li>
+                    <li className="menuItem" onClick={() => {
                         openTicketDialog();
                         toggleMenu();
                     }}
@@ -78,6 +89,20 @@ const Menu = ({ setQuery, setIsLoading, setForceCacheReload }) => {
                         id={''}
                         title={'Adaugă sesizare'}
                         onCloseDialog={closeTicketDialog}
+                        setQuery={setQuery}
+                        setIsLoading={setIsLoading}
+                        setForceCacheReload={setForceCacheReload}
+                    />
+                )
+            }
+
+            {
+                showStationDialog && (
+                    <CRUDFormDialog
+                        type={'station'}
+                        id={''}
+                        title={'Adaugă stație'}
+                        onCloseDialog={closeStationDialog}
                         setQuery={setQuery}
                         setIsLoading={setIsLoading}
                         setForceCacheReload={setForceCacheReload}

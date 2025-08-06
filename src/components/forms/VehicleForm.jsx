@@ -1,39 +1,29 @@
 import React, {useEffect, useState} from 'react';
-import { supabase } from '../utils/supabase'; // your Supabase config
-import "../styles/Form.css"
-import "../styles/VehicleForm.css"
-import {useUser} from "./UserContext";
-import ConfirmationDialog from "./ConfirmationDialog";
+import { supabase } from '../../utils/supabase'; // your Supabase config
+import "../../styles/forms/Form.css"
+import "../../styles/forms/VehicleForm.css"
+import {useUser} from "../authentication/UserContext";
+import ConfirmationDialog from "../dialogs/ConfirmationDialog";
 
 const baseFormData = {
     id: '',
     created_at: '',
     last_modified_by: '',
     type: '',
-    D22Front: 'green',
-    D22FrontError: '',
-    D22Back: 'green',
-    D22BackError: '',
-    D29Front: 'green',
-    D29FrontError: '',
-    D29Back: 'green',
-    D29BackError: '',
-    ledIntFront: 'green',
-    ledIntFrontError: '',
-    ledIntBack: 'green',
-    ledIntBackError: '',
-    ledExtFront: 'green',
-    ledExtFrontError: '',
-    ledExtSide1: 'green',
-    ledExtSide1Error: '',
-    ledExtSide2: 'green',
-    ledExtSide2Error: '',
-    ledExtBack: 'green',
-    ledExtBackError: '',
-    audioInt: 'green',
-    audioIntError: '',
-    audioExt: 'green',
-    audioExtError: '',
+    displays_int: 'green',
+    displays_int_error: '',
+    displays_ext: 'green',
+    displays_ext_error: '',
+    ticketing_machines: 'green',
+    ticketing_machines_error: '',
+    pos_machines: 'green',
+    pos_machines_error: '',
+    environment: 'green',
+    environment_error: '',
+    audio_int: 'green',
+    audio_int_error: '',
+    audio_ext: 'green',
+    audio_ext_error: '',
     details: '',
 };
 
@@ -162,10 +152,10 @@ const VehicleForm = ({ busId, openDialog, onClose, setQuery, setForceCacheReload
             </div>
             <div className="form-row">
                 <label>
-                    D22 - față
+                    Afișaj interior
                     <select
-                        name="D22Front"
-                        value={formData.D22Front || ''}
+                        name="displays_int"
+                        value={formData.displays_int || ''}
                         onChange={handleChange}
                     >
                         <option value="green">🟢</option>
@@ -178,21 +168,21 @@ const VehicleForm = ({ busId, openDialog, onClose, setQuery, setForceCacheReload
             </div>
             <div className="form-row">
                 <label>
-                    Eroare D22 - față
+                    Probleme afișaj interior
                     <input
                         type="text"
-                        name="D22FrontError"
-                        value={formData.D22FrontError || ''}
+                        name="displays_int_error"
+                        value={formData.displays_int_error || ''}
                         onChange={handleChange}
                     />
                 </label>
             </div>
             <div className="form-row">
                 <label>
-                    D22 - spate
+                    Afișaj exterior
                     <select
-                        name="D22Back"
-                        value={formData.D22Back || ''}
+                        name="displays_ext"
+                        value={formData.displays_ext || ''}
                         onChange={handleChange}
                     >
                         <option value="green">🟢</option>
@@ -205,21 +195,21 @@ const VehicleForm = ({ busId, openDialog, onClose, setQuery, setForceCacheReload
             </div>
             <div className="form-row">
                 <label>
-                    Eroare D22 - spate
+                    Probleme afișaj exterior
                     <input
                         type="text"
-                        name="D22BackError"
-                        value={formData.D22BackError || ''}
+                        name="displays_ext_error"
+                        value={formData.displays_ext_error || ''}
                         onChange={handleChange}
                     />
                 </label>
             </div>
             <div className="form-row">
                 <label>
-                    D29 - față
+                    Validatoare
                     <select
-                        name="D29Front"
-                        value={formData.D29Front || ''}
+                        name="ticketing_machines"
+                        value={formData.ticketing_machines || ''}
                         onChange={handleChange}
                     >
                         <option value="green">🟢</option>
@@ -232,21 +222,21 @@ const VehicleForm = ({ busId, openDialog, onClose, setQuery, setForceCacheReload
             </div>
             <div className="form-row">
                 <label>
-                    Eroare D29 - față
+                    Probleme validatoare
                     <input
                         type="text"
-                        name="D29FrontError"
-                        value={formData.D29FrontError || ''}
+                        name="ticketing_machines_error"
+                        value={formData.ticketing_machines_error || ''}
                         onChange={handleChange}
                     />
                 </label>
             </div>
             <div className="form-row">
                 <label>
-                    D29 - spate
+                    POS
                     <select
-                        name="D29Back"
-                        value={formData.D29Back || ''}
+                        name="pos_machines"
+                        value={formData.pos_machines || ''}
                         onChange={handleChange}
                     >
                         <option value="green">🟢</option>
@@ -259,21 +249,21 @@ const VehicleForm = ({ busId, openDialog, onClose, setQuery, setForceCacheReload
             </div>
             <div className="form-row">
                 <label>
-                    Eroare D29 - spate
+                    Probleme POS
                     <input
                         type="text"
-                        name="D29BackError"
-                        value={formData.D29BackError || ''}
+                        name="pos_machines_error"
+                        value={formData.pos_machines_error || ''}
                         onChange={handleChange}
                     />
                 </label>
             </div>
             <div className="form-row">
                 <label>
-                    LED interior - față
+                    Mediu ambiental
                     <select
-                        name="ledIntFront"
-                        value={formData.ledIntFront || ''}
+                        name="environment"
+                        value={formData.environment || ''}
                         onChange={handleChange}
                     >
                         <option value="green">🟢</option>
@@ -286,146 +276,11 @@ const VehicleForm = ({ busId, openDialog, onClose, setQuery, setForceCacheReload
             </div>
             <div className="form-row">
                 <label>
-                    Eroare LED interior - față
+                    Probleme mediu ambiental
                     <input
                         type="text"
-                        name="ledIntFrontError"
-                        value={formData.ledIntFrontError || ''}
-                        onChange={handleChange}
-                    />
-                </label>
-            </div>
-            <div className="form-row">
-                <label>
-                    LED interior - spate
-                    <select
-                        name="ledIntBack"
-                        value={formData.ledIntBack || ''}
-                        onChange={handleChange}
-                    >
-                        <option value="green">🟢</option>
-                        <option value="red">🔴</option>
-                        <option value="yellow">🟡</option>
-                        <option value="missing">⚪</option>
-                        <option value="unknown">❓</option>
-                    </select>
-                </label>
-            </div>
-            <div className="form-row">
-                <label>
-                    Eroare LED interior - spate
-                    <input
-                        type="text"
-                        name="ledIntBackError"
-                        value={formData.ledIntBackError || ''}
-                        onChange={handleChange}
-                    />
-                </label>
-            </div>
-            <div className="form-row">
-                <label>
-                    LED exterior - față
-                    <select
-                        name="ledExtFront"
-                        value={formData.ledExtFront || ''}
-                        onChange={handleChange}
-                    >
-                        <option value="green">🟢</option>
-                        <option value="red">🔴</option>
-                        <option value="yellow">🟡</option>
-                        <option value="missing">⚪</option>
-                        <option value="unknown">❓</option>
-                    </select>
-                </label>
-            </div>
-            <div className="form-row">
-                <label>
-                    Eroare LED exterior - față
-                    <input
-                        type="text"
-                        name="ledExtFrontError"
-                        value={formData.ledExtFrontError || ''}
-                        onChange={handleChange}
-                    />
-                </label>
-            </div>
-            <div className="form-row">
-                <label>
-                    LED exterior - lateral față
-                    <select
-                        name="ledExtSide1"
-                        value={formData.ledExtSide1 || ''}
-                        onChange={handleChange}
-                    >
-                        <option value="green">🟢</option>
-                        <option value="red">🔴</option>
-                        <option value="yellow">🟡</option>
-                        <option value="missing">⚪</option>
-                        <option value="unknown">❓</option>
-                    </select>
-                </label>
-            </div>
-            <div className="form-row">
-                <label>
-                    Eroare LED exterior - lateral față
-                    <input
-                        type="text"
-                        name="ledExtSide1Error"
-                        value={formData.ledExtSide1Error || ''}
-                        onChange={handleChange}
-                    />
-                </label>
-            </div>
-            <div className="form-row">
-                <label>
-                    LED exterior - lateral spate
-                    <select
-                        name="ledExtSide2"
-                        value={formData.ledExtSide2 || ''}
-                        onChange={handleChange}
-                    >
-                        <option value="green">🟢</option>
-                        <option value="red">🔴</option>
-                        <option value="yellow">🟡</option>
-                        <option value="missing">⚪</option>
-                        <option value="unknown">❓</option>
-                    </select>
-                </label>
-            </div>
-            <div className="form-row">
-                <label>
-                    Eroare LED exterior - lateral spate
-                    <input
-                        type="text"
-                        name="ledExtSide2Error"
-                        value={formData.ledExtSide2Error || ''}
-                        onChange={handleChange}
-                    />
-                </label>
-            </div>
-            <div className="form-row">
-                <label>
-                    LED exterior - spate
-                    <select
-                        name="ledExtBack"
-                        value={formData.ledExtBack || ''}
-                        onChange={handleChange}
-                    >
-                        <option value="green">🟢</option>
-                        <option value="red">🔴</option>
-                        <option value="yellow">🟡</option>
-                        <option value="missing">⚪</option>
-                        <option value="unknown">❓</option>
-                    </select>
-                </label>
-            </div>
-            <div className="form-row">
-                <label>
-                    Eroare LED exterior - spate
-                    <input
-                        type="text"
-                        name="ledExtBackError"
-                        value={formData.ledExtBackError || ''}
+                        name="environment_error"
+                        value={formData.environment_error || ''}
                         onChange={handleChange}
                     />
                 </label>
@@ -434,8 +289,8 @@ const VehicleForm = ({ busId, openDialog, onClose, setQuery, setForceCacheReload
                 <label>
                     Anunțuri audio - interior
                     <select
-                        name="audioInt"
-                        value={formData.audioInt || ''}
+                        name="audio_int"
+                        value={formData.audio_int || ''}
                         onChange={handleChange}
                     >
                         <option value="green">🟢</option>
@@ -448,11 +303,11 @@ const VehicleForm = ({ busId, openDialog, onClose, setQuery, setForceCacheReload
             </div>
             <div className="form-row">
                 <label>
-                    Eroare anunțuri audio - interior
+                    Probleme anunțuri audio - interior
                     <input
                         type="text"
-                        name="audioIntError"
-                        value={formData.audioIntError || ''}
+                        name="audio_int_error"
+                        value={formData.audio_int_error || ''}
                         onChange={handleChange}
                     />
                 </label>
@@ -461,8 +316,8 @@ const VehicleForm = ({ busId, openDialog, onClose, setQuery, setForceCacheReload
                 <label>
                     Anunțuri audio - exterior
                     <select
-                        name="audioExt"
-                        value={formData.audioExt || ''}
+                        name="audio_ext"
+                        value={formData.audio_ext || ''}
                         onChange={handleChange}
                     >
                         <option value="green">🟢</option>
@@ -475,11 +330,11 @@ const VehicleForm = ({ busId, openDialog, onClose, setQuery, setForceCacheReload
             </div>
             <div className="form-row">
                 <label>
-                    Eroare anunțuri audio - exterior
+                    Probleme anunțuri audio - exterior
                     <input
                         type="text"
-                        name="audioExtError"
-                        value={formData.audioExtError || ''}
+                        name="audio_ext_error"
+                        value={formData.audio_ext_error || ''}
                         onChange={handleChange}
                     />
                 </label>
@@ -502,7 +357,8 @@ const VehicleForm = ({ busId, openDialog, onClose, setQuery, setForceCacheReload
 
             { deleteRequest &&
                 <ConfirmationDialog
-                    busId={busId}
+                    id={busId}
+                    category={'bus'}
                     onClose={ handleConfirmationClose }
                     setQuery={ setQuery }
                     setForceCacheReload={ setForceCacheReload }

@@ -1,12 +1,14 @@
 import './styles/App.css';
 import React, {useState} from 'react';
-import Header from './components/Header';
-import BusTable from './components/BusTable';
-import Menu from "./components/Menu";
-import { useUser } from './components/UserContext';
-import Filter from "./components/Filter";
-import BusLoadingScreen from "./components/BusLoadingScreen";
-import TicketsTable from "./components/TicketsTable";
+import Header from './components/layout/Header';
+import BusTable from './components/tables/BusTable';
+import Menu from "./components/layout/Menu";
+import { useUser } from './components/authentication/UserContext';
+import Filter from "./components/tables/Filter";
+import BusLoadingScreen from "./components/utils/BusLoadingScreen";
+import TicketsTable from "./components/tables/TicketsTable";
+import {Tooltip} from "react-tooltip";
+import StationsTable from "./components/tables/StationsTable";
 
 const App = () => {
     const { user, setUser, loading } = useUser();
@@ -82,7 +84,7 @@ const App = () => {
 
                                     {
                                         stationsTabSelected && (
-                                            <div></div>
+                                            <StationsTable setQuery={ setQuery } query={ query } forceCacheReload={ forceCacheReload } setForceCacheReload={ setForceCacheReload } />
                                         )
                                     }
 
@@ -101,6 +103,18 @@ const App = () => {
                         )
                     }
                 </div>
+
+                <Tooltip
+                    id="error-message-tooltip"
+                    place="top"
+                    className="custom-tooltip-all"
+                />
+
+                <Tooltip
+                    id="last-modified-tooltip"
+                    place="top"
+                    className="custom-tooltip-desktop-only"
+                />
             </main>
 
             {/*<AdvancedImage cldImg={img}/>*/}

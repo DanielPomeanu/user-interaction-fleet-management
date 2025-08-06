@@ -1,8 +1,8 @@
 import React from 'react';
-import '../styles/Header.css'
-import AuthForm from "./AuthForm";
+import '../../styles/layout/Header.css'
+import AuthForm from "../forms/AuthForm";
 
-import busLogo from '../assets/bus_logo.png';
+import busLogo from '../../assets/bus_logo.png';
 
 const Header = ({ setIsLoading  } ) => (
     <header className="Header">

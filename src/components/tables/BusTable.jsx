@@ -1,10 +1,9 @@
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
-import { Tooltip } from 'react-tooltip';
 import 'react-tooltip/dist/react-tooltip.css';
-import { supabase } from '../utils/supabase'
-import '../styles/Table.css';
-import '../styles/BusTable.css';
-import CRUDFormDialog from "./CRUDFormDialog";
+import { supabase } from '../../utils/supabase'
+import '../../styles/tables/Table.css';
+import '../../styles/tables/BusTable.css';
+import CRUDFormDialog from "../dialogs/CRUDFormDialog";
 
 const BusTable = ({ setQuery, query, forceCacheReload, setForceCacheReload }) => {
     console.log('BusTable RERENDER');
@@ -70,9 +69,8 @@ const BusTable = ({ setQuery, query, forceCacheReload, setForceCacheReload }) =>
                     .from('Buses')
                     .select('*')
                     .or(
-                        'D22Front.in.(red,yellow),D22Back.in.(red,yellow),D29Front.in.(red,yellow),D29Back.in.(red,yellow),' +
-                        'ledIntFront.in.(red,yellow),ledIntBack.in.(red,yellow),ledExtFront.in.(red,yellow),ledExtSide1.in.(red,yellow),' +
-                        'ledExtSide2.in.(red,yellow),ledExtBack.in.(red,yellow),audioInt.in.(red,yellow),audioExt.in.(red,yellow)'
+                        'displays_int.in.(red,yellow),displays_ext.in.(red,yellow),ticketing_machines.in.(red,yellow),' +
+                        'pos_machines.in.(red,yellow),environment.in.(red,yellow),audio_int.in.(red,yellow),audio_ext.in.(red,yellow)'
                     )
                     .order('id', { ascending: true });
 
@@ -97,10 +95,9 @@ const BusTable = ({ setQuery, query, forceCacheReload, setForceCacheReload }) =>
                     // Filter buses without red/yellow status in any error fields
                     const filtered = data.filter((bus) => {
                         const errorFields = [
-                            bus.D22Front, bus.D22Back, bus.D29Front, bus.D29Back,
-                            bus.ledIntFront, bus.ledIntBack, bus.ledExtFront,
-                            bus.ledExtSide1, bus.ledExtSide2, bus.ledExtBack,
-                            bus.audioInt, bus.audioExt
+                            bus.displays_int, bus.displays_ext,
+                            bus.ticketing_machines, bus.pos_machines, bus.environment,
+                            bus.audio_int, bus.audio_ext
                         ];
                         return errorFields.every(status => status !== 'red' && status !== 'yellow');
                     });
@@ -172,18 +169,13 @@ const BusTable = ({ setQuery, query, forceCacheReload, setForceCacheReload }) =>
                     <div className="bus-row table-row bus-header table-header">
                         <div className="bus-cell table-cell sticky">Nr. parc</div>
                         <div className="bus-cell table-cell">Vehicul</div>
-                        <div className="bus-cell table-cell">D22 față</div>
-                        <div className="bus-cell table-cell">D22 spate</div>
-                        <div className="bus-cell table-cell">D29 față</div>
-                        <div className="bus-cell table-cell">D29 spate</div>
-                        <div className="bus-cell table-cell">LED int. față</div>
-                        <div className="bus-cell table-cell">LED int. spate</div>
-                        <div className="bus-cell table-cell">LED ext. față</div>
-                        <div className="bus-cell table-cell">LED ext. lateral față</div>
-                        <div className="bus-cell table-cell">LED ext. lateral spate</div>
-                        <div className="bus-cell table-cell">LED ext. spate</div>
-                        <div className="bus-cell table-cell">Audio interior</div>
-                        <div className="bus-cell table-cell">Audio exterior</div>
+                        <div className="bus-cell table-cell">Afișaj interior</div>
+                        <div className="bus-cell table-cell">Afișaj exterior</div>
+                        <div className="bus-cell table-cell">Validatoare</div>
+                        <div className="bus-cell table-cell">POS-uri</div>
+                        <div className="bus-cell table-cell">Mediu ambiental</div>
+                        <div className="bus-cell table-cell">Anunțuri audio interior</div>
+                        <div className="bus-cell table-cell">Anunțuri audio exterior</div>
                         <div className="bus-cell table-cell">Detalii</div>
                     </div>
 
@@ -203,68 +195,36 @@ const BusTable = ({ setQuery, query, forceCacheReload, setForceCacheReload }) =>
                             </div>
                             <div className="bus-cell table-cell">{bus.type}</div>
                             <div className="bus-cell table-cell" data-tooltip-id="error-message-tooltip"
-                                 data-tooltip-content={bus.D22FrontError}>
-                                {statusMap[bus.D22Front]}
+                                 data-tooltip-content={bus.displays_int_error}>
+                                {statusMap[bus.displays_int]}
                             </div>
                             <div className="bus-cell table-cell" data-tooltip-id="error-message-tooltip"
-                                 data-tooltip-content={bus.D22BackError}>
-                                {statusMap[bus.D22Back]}
+                                 data-tooltip-content={bus.displays_ext_error}>
+                                {statusMap[bus.displays_ext]}
                             </div>
                             <div className="bus-cell table-cell" data-tooltip-id="error-message-tooltip"
-                                 data-tooltip-content={bus.D29FrontError}>
-                                {statusMap[bus.D29Front]}
+                                 data-tooltip-content={bus.ticketing_machines_error}>
+                                {statusMap[bus.ticketing_machines]}
                             </div>
                             <div className="bus-cell table-cell" data-tooltip-id="error-message-tooltip"
-                                 data-tooltip-content={bus.D29BackError}>
-                                {statusMap[bus.D29Back]}
+                                 data-tooltip-content={bus.pos_machines_error}>
+                                {statusMap[bus.pos_machines]}
                             </div>
                             <div className="bus-cell table-cell" data-tooltip-id="error-message-tooltip"
-                                 data-tooltip-content={bus.ledIntFrontError}>
-                                {statusMap[bus.ledIntFront]}
+                                 data-tooltip-content={bus.environment_error}>
+                                {statusMap[bus.environment]}
                             </div>
                             <div className="bus-cell table-cell" data-tooltip-id="error-message-tooltip"
-                                 data-tooltip-content={bus.ledIntBackError}>
-                                {statusMap[bus.ledIntBack]}
+                                 data-tooltip-content={bus.audio_int_error}>
+                                {statusMap[bus.audio_int]}
                             </div>
                             <div className="bus-cell table-cell" data-tooltip-id="error-message-tooltip"
-                                 data-tooltip-content={bus.ledExtFrontError}>
-                                {statusMap[bus.ledExtFront]}
-                            </div>
-                            <div className="bus-cell table-cell" data-tooltip-id="error-message-tooltip"
-                                 data-tooltip-content={bus.ledExtSide1Error}>
-                                {statusMap[bus.ledExtSide1]}
-                            </div>
-                            <div className="bus-cell table-cell" data-tooltip-id="error-message-tooltip"
-                                 data-tooltip-content={bus.ledExtSide2Error}>
-                                {statusMap[bus.ledExtSide2]}
-                            </div>
-                            <div className="bus-cell table-cell" data-tooltip-id="error-message-tooltip"
-                                 data-tooltip-content={bus.ledExtBackError}>
-                                {statusMap[bus.ledExtBack]}
-                            </div>
-                            <div className="bus-cell table-cell" data-tooltip-id="error-message-tooltip"
-                                 data-tooltip-content={bus.audioIntError}>
-                                {statusMap[bus.audioInt]}
-                            </div>
-                            <div className="bus-cell table-cell" data-tooltip-id="error-message-tooltip"
-                                 data-tooltip-content={bus.audioExtError}>
-                                {statusMap[bus.audioExt]}
+                                 data-tooltip-content={bus.audio_ext_error}>
+                                {statusMap[bus.audio_ext]}
                             </div>
                             <div className="bus-cell table-cell">{bus.details}</div>
                         </div>
                     ))}
-
-                    <Tooltip
-                        id="error-message-tooltip"
-                        place="top"
-                        className="custom-tooltip-all"
-                    />
-
-                    <Tooltip
-                        id="last-modified-tooltip"
-                        place="top"
-                        className="custom-tooltip-desktop-only"
-                    />
 
                     {
                         showDialog && (
@@ -276,7 +236,8 @@ const BusTable = ({ setQuery, query, forceCacheReload, setForceCacheReload }) =>
                                 setQuery={setQuery}
                                 setForceCacheReload={setForceCacheReload}
                             />
-                        )}
+                        )
+                    }
                 </div>
             }
         </>
