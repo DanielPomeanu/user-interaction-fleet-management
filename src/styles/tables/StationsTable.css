@@ -1,5 +1,5 @@
 .station-row {
-    grid-template-columns: 250px repeat(4, 1fr);
+    grid-template-columns: 200px repeat(4, 1fr);
     min-width: 800px;
 
     @media screen and (min-width: 764px) {
