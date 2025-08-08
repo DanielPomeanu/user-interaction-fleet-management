@@ -18,8 +18,7 @@ main {
 
   .main-content {
     display: inline-grid;
-    overflow-x: scroll;
-    width: 100%;
+    position: relative;
 
     .main-content-tabs {
       display: flex;

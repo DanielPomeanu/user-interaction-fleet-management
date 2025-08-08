@@ -1,7 +1,23 @@
 .table {
-    border-right: 2px solid #ccc;
-    border-bottom: 2px solid #ccc;
+    box-shadow:
+            inset -4px 0 4px -4px #ccc,  /* right */
+            inset 0 4px 4px -4px #ccc,   /* top */
+            inset 0 -4px 4px -4px #ccc;  /* bottom */
     font-size: 14px;
+
+    .scroll-indicator {
+        &.left {
+            left: 100px;
+            top: 80px;
+            height: 95.75%;
+        }
+
+        &.right {
+            top: 80px;
+            right: 0;
+            height: 95.75%;
+        }
+    }
 
     .table-header {
         background-color: #f4f4f4;
@@ -47,11 +63,8 @@
             left: 0;
             background: white; /* or match your theme */
             z-index: 2; /* make sure it stays above others */
-            box-shadow: 2px 0 2px rgba(0, 0, 0, 0.05); /* optional visual cue */
-        }
-
-        &:first-child {
-            border-left: 2px solid #ccc;
+            box-shadow: 2px 0 2px rgba(0, 0, 0, 0.05), /* right */
+                        inset 4px 0 4px -4px #ccc;   /* left */
         }
 
         &:last-child {

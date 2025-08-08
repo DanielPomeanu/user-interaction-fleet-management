@@ -1,0 +1,34 @@
+.scrollable-container {
+    overflow-x: auto;
+    width: 100%;
+}
+
+.scroll-indicator {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 20px;
+    pointer-events: none;
+    z-index: 10;
+    backdrop-filter: blur(6px);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+
+    &.visible {
+        opacity: 1;
+    }
+
+    &.hidden {
+        opacity: 0;
+    }
+}
+
+.scroll-indicator.left {
+    left: 0;
+    background: linear-gradient(to right, rgba(180, 37, 146, 0.2), transparent);
+}
+
+.scroll-indicator.right {
+    right: 0;
+    background: linear-gradient(to left, rgba(180, 37, 146, 0.2), transparent);
+}
