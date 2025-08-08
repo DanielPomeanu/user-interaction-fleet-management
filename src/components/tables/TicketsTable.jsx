@@ -2,6 +2,7 @@ import {supabase} from "../../utils/supabase";
 import {useEffect, useRef, useState} from "react";
 import "../../styles/tables/Table.css"
 import "../../styles/tables/TicketsTable.css"
+import ScrollableContainer from "../utils/ScrollableContainer";
 
 const TicketsTable = ({query, forceCacheReload, setForceCacheReload}) => {
     console.log('RERENDER TicketsTable');
@@ -166,7 +167,7 @@ const TicketsTable = ({query, forceCacheReload, setForceCacheReload}) => {
     return (
         <>
             {
-                <div className="tickets-table table">
+                <ScrollableContainer className="tickets-table table">
                     {/* Header Row */}
                     <div className="ticket-row table-row tickets-header table-header">
                         <div className="ticket-cell table-cell sticky">Corespondență</div>
@@ -224,7 +225,7 @@ const TicketsTable = ({query, forceCacheReload, setForceCacheReload}) => {
                             </div>
                         </div>
                     ))}
-                </div>
+                </ScrollableContainer>
             }
         </>
     );

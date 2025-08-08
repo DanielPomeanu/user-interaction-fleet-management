@@ -2,6 +2,7 @@ import {useCallback, useEffect, useRef, useState} from "react";
 import {supabase} from "../../utils/supabase";
 import "../../styles/tables/StationsTable.css"
 import CRUDFormDialog from "../dialogs/CRUDFormDialog";
+import ScrollableContainer from "../utils/ScrollableContainer";
 
 const StationsTable = ({ query, setQuery, forceCacheReload, setForceCacheReload }) => {
     console.log('RERENDER Stations');
@@ -95,7 +96,7 @@ const StationsTable = ({ query, setQuery, forceCacheReload, setForceCacheReload 
     return (
         <>
             {
-                <div className="stations-table table">
+                <ScrollableContainer className="stations-table table">
                     {/* Header Row */}
                     <div className="station-row table-row stations-header table-header">
                         <div className="station-cell table-cell sticky">Nume</div>
@@ -140,7 +141,7 @@ const StationsTable = ({ query, setQuery, forceCacheReload, setForceCacheReload 
                             </div>
                         </div>
                     ))}
-                </div>
+                </ScrollableContainer>
             }
 
             {

@@ -5,20 +5,6 @@
             inset 0 -4px 4px -4px #ccc;  /* bottom */
     font-size: 14px;
 
-    .scroll-indicator {
-        &.left {
-            left: 100px;
-            top: 80px;
-            height: 95.75%;
-        }
-
-        &.right {
-            top: 80px;
-            right: 0;
-            height: 95.75%;
-        }
-    }
-
     .table-header {
         background-color: #f4f4f4;
         font-weight: bold;

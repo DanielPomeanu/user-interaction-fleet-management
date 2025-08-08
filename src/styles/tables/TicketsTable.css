@@ -1,17 +1,32 @@
-.ticket-row {
-    grid-template-columns: 1fr 110px 2fr 5fr 1fr 1fr;
-    min-width: 1500px;
+.tickets-table {
+    .scroll-indicator {
+        &.left {
+            left: 145px;
+            top: 62px;
+            height: calc(100% - 62px);
+        }
 
-    @media screen and (min-width: 764px) {
-        grid-template-columns: 2fr 2fr 2fr 4fr 1fr 1fr;
+        &.right {
+            top: 62px;
+            height: calc(100% - 62px);
+        }
     }
 
-    .ticket-cell {
-        &.sticky {
-            width: 125px;
+    .ticket-row {
+        grid-template-columns: 1fr 110px 2fr 5fr 1fr 1fr;
+        min-width: 1500px;
 
-            @media screen and (min-width: 764px) {
-                width: auto;
+        @media screen and (min-width: 764px) {
+            grid-template-columns: 2fr 2fr 2fr 4fr 1fr 1fr;
+        }
+
+        .ticket-cell {
+            &.sticky {
+                width: 125px;
+
+                @media screen and (min-width: 764px) {
+                    width: auto;
+                }
             }
         }
     }

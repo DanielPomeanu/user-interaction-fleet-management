@@ -1,19 +1,34 @@
-.station-row {
-    grid-template-columns: 200px repeat(4, 1fr);
-    min-width: 800px;
+.stations-table {
+    .scroll-indicator {
+        &.left {
+            left: 199px;
+            top: 62px;
+            height: calc(100% - 62px);
+        }
 
-    @media screen and (min-width: 764px) {
-        grid-template-columns: 500px repeat(4, 1fr);
+        &.right {
+            top: 62px;
+            height: calc(100% - 62px);
+        }
     }
-}
 
-.station-cell {
-    &.station-name {
-        font-weight: bold;
-        cursor: pointer;
+    .station-row {
+        grid-template-columns: 200px repeat(4, 1fr);
+        min-width: 800px;
 
-        &:hover {
-            color: #b42592;
+        @media screen and (min-width: 764px) {
+            grid-template-columns: 500px repeat(4, 1fr);
+        }
+    }
+
+    .station-cell {
+        &.station-name {
+            font-weight: bold;
+            cursor: pointer;
+
+            &:hover {
+                color: #b42592;
+            }
         }
     }
 }

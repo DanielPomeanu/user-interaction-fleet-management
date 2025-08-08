@@ -21,15 +21,15 @@ main {
     display: inline-grid;
     position: relative;
     width: 100%;
+    margin-top: 10px;
 
     .main-content-tabs {
       display: flex;
-      margin-top: 20px;
       background-color: #b42592;
       color: #fff;
       border-radius: 6px 6px 0 0;
       font-weight: bold;
-      overflow-x: scroll;
+      overflow-x: auto;
 
       .tabs-tab {
         display: flex;
@@ -37,6 +37,7 @@ main {
         min-width: 100px;
         cursor: pointer;
         padding: 20px;
+        margin: 1px;
 
         &:hover,
         &.active {

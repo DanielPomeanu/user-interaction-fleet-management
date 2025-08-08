@@ -7,7 +7,7 @@
     position: absolute;
     top: 0;
     height: 100%;
-    width: 20px;
+    width: 10px;
     pointer-events: none;
     z-index: 10;
     backdrop-filter: blur(6px);
@@ -16,6 +16,10 @@
 
     &.visible {
         opacity: 1;
+
+        @media screen and (min-width: 764px) {
+            opacity: 0;
+        }
     }
 
     &.hidden {
