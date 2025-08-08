@@ -19,6 +19,7 @@ main {
   .main-content {
     display: inline-grid;
     position: relative;
+    width: 100%;
 
     .main-content-tabs {
       display: flex;
