@@ -2,13 +2,13 @@
     .scroll-indicator {
         &.left {
             left: 100px;
-            top: 62px;
-            height: calc(100% - 62px);
+            top: 50px;
+            height: calc(100% - 50px);
         }
 
         &.right {
-            top: 62px;
-            height: calc(100% - 62px);
+            top: 50px;
+            height: calc(100% - 50px);
         }
     }
 
