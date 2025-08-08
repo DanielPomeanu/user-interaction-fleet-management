@@ -34,10 +34,17 @@ main {
       .tabs-tab {
         display: flex;
         justify-content: center;
-        min-width: 100px;
+        min-width: 80px;
         cursor: pointer;
-        padding: 20px;
+        padding: 15px;
         margin: 1px;
+        font-size: 14px;
+
+        @media screen and (min-width: 764px) {
+          min-width: 100px;
+          padding: 20px;
+          font-size: 16px;
+        }
 
         &:hover,
         &.active {
@@ -45,7 +52,11 @@ main {
           box-shadow: 2px 2px 0 0 #b42592 inset;
           border-radius: 6px 6px 0 0;
           color: #b42592;
-          height: 18px;
+          height: 15px;
+
+          @media screen and (min-width: 764px) {
+            height: 18px;
+          }
         }
       }
     }
