@@ -24,7 +24,7 @@ main {
 
     .main-content-tabs {
       display: flex;
-      background-color: #b42592;
+      background-color: #a5276b;
       color: #fff;
       border-radius: 6px 6px 0 0;
       font-weight: bold;
@@ -48,9 +48,9 @@ main {
         &:hover,
         &.active {
           background-color: white;
-          box-shadow: 2px 2px 0 0 #b42592 inset;
+          box-shadow: 2px 2px 0 0 #a5276b inset;
           border-radius: 6px 6px 0 0;
-          color: #b42592;
+          color: #a5276b;
           height: 15px;
 
           @media screen and (min-width: 764px) {
@@ -72,23 +72,23 @@ button {
 }
 
 button.primaryButton {
-  background-color: #b42592;
+  background-color: #a5276b;
   color: #fff;
 
   &:hover {
-    border: 3px solid #b42592;
+    border: 3px solid #a5276b;
     background-color: #fff;
-    color: #b42592;
+    color: #a5276b;
   }
 }
 
 button.secondaryButton {
   background-color: white;
-  color: #b42592;
+  color: #a5276b;
 
   &:hover {
     border: 3px solid #fff;
-    background-color: #b42592;
+    background-color: #a5276b;
     color: #fff;
   }
 }
@@ -109,5 +109,25 @@ button.filter {
 
   &:hover {
     border: none;
+  }
+}
+
+.custom-textarea {
+  appearance: none;
+  -webkit-appearance: none;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 100px;
+  padding: 10px;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+  outline: none;
+  font-size: 16px;
+  resize: vertical; /* allow height adjustment, change to none to lock */
+  transition: all 0.3s ease;
+
+  &:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
   }
 }

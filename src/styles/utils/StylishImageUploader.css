@@ -1,0 +1,33 @@
+.image-uploader-container {
+    max-width: 300px;
+    margin: auto;
+    text-align: center;
+}
+
+.file-input-hidden {
+    display: none;
+}
+
+.upload-button {
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 8px;
+    border: 2px dashed #b42592;
+    background: transparent;
+    color: #b42592;
+    font-weight: bold;
+    width: 100%;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.upload-button:hover {
+    background-color: #b42592;
+    color: white;
+}
+
+.preview-image {
+    margin-top: 10px;
+    max-width: 100%;
+    border-radius: 8px;
+    object-fit: contain;
+}

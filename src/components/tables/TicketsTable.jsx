@@ -4,7 +4,7 @@ import "../../styles/tables/Table.css"
 import "../../styles/tables/TicketsTable.css"
 import ScrollableContainer from "../utils/ScrollableContainer";
 
-const TicketsTable = ({query, forceCacheReload, setForceCacheReload}) => {
+const TicketsTable = ({query, forceCacheReload, setForceCacheReload, newTicketSubmitted, setNewTicketSubmitted}) => {
     console.log('RERENDER TicketsTable');
 
     const [tickets, setTickets] = useState([]);
@@ -51,6 +51,8 @@ const TicketsTable = ({query, forceCacheReload, setForceCacheReload}) => {
                 }
                 return;
             }
+
+            setNewTicketSubmitted(false);
 
             // if (query.type === 'errors') {
             //     const { data, error } = await supabase
@@ -121,7 +123,7 @@ const TicketsTable = ({query, forceCacheReload, setForceCacheReload}) => {
             isCancelled = true;
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [query]);
+    }, [query, newTicketSubmitted]);
 
     useEffect( () => {
         const loadCorrespondence = async () => {

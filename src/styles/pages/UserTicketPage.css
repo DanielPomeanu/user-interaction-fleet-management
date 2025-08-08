@@ -1,0 +1,117 @@
+.user-ticket-wrapper {
+    background-color: #a5276b;
+
+    .add-user-ticket-form {
+        color: white;
+
+        .ticket-form-content {
+            padding: 20px 40px;
+
+            .ticket-form-current-vehicle {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                position: relative;
+
+                /* animation setup */
+                opacity: 0;
+                transform: translateY(20px);
+                animation: slideUpFade 1s ease-out forwards;
+
+                .fade-container {
+                    position: relative;
+                    height: 80px; /* enough to fit one h1 */
+                    width: 100%;
+
+                    h1 {
+                        position: absolute;
+                        opacity: 0;
+                        animation: fade 3s normal;
+                        width: 100%;
+                        text-align: center;
+
+                        &:nth-child(1) {
+                            animation: fade 3s forwards;
+                            animation-delay: 0s;
+                        }
+
+                        &:nth-child(2) {
+                            animation: fade 3s forwards;
+                            animation-delay: 4s;
+                        }
+
+                        &:nth-child(3) {
+                            animation: fade 3s forwards;
+                            animation-delay: 8s;
+                        }
+
+                        &:nth-child(4) {
+                            animation: fade 3s forwards;
+                            animation-delay: 12s;
+                        }
+
+                        &:nth-child(5) {
+                            animation: fade 3s forwards;
+                            animation-delay: 16s;
+                        }
+
+                        &:nth-child(6) {
+                            animation: fadeStay 3s forwards;
+                            animation-delay: 20s;
+                        }
+                    }
+                }
+
+                & > * {
+                    /* stagger children slightly for nicer effect */
+                    opacity: 0;
+                    transform: translateY(20px);
+                    animation: slideUpFade 1s ease-out forwards;
+                }
+
+                & > *:nth-child(1) {
+                    animation-delay: 0.1s;
+                }
+
+                & > *:nth-child(2) {
+                    animation-delay: 0.1s;
+                }
+
+                & > *:nth-child(3) {
+                    animation-delay: 0.7s;
+                }
+
+                .ticket-form-current-vehicle-details {
+                    width: 100%;
+                    padding: 20px 0;
+                }
+            }
+
+            img {
+                width: 300px;
+            }
+        }
+    }
+}
+
+/* keyframes */
+@keyframes slideUpFade {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fade {
+    0%   { opacity: 0; }
+    30%  { opacity: 1; }
+    70%  { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+/* Fade in and stay visible for last one */
+@keyframes fadeStay {
+    0%   { opacity: 0; }
+    30%  { opacity: 1; }
+    100% { opacity: 1; }
+}
