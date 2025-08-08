@@ -6,6 +6,7 @@ import '../../styles/tables/BusTable.css';
 import CRUDFormDialog from "../dialogs/CRUDFormDialog";
 import {AnimatePresence, motion} from "framer-motion";
 import ConfirmationDialog from "../dialogs/ConfirmationDialog";
+import ScrollableContainer from "../utils/ScrollableContainer";
 
 const BusTable = ({ setQuery, query, forceCacheReload, setForceCacheReload }) => {
     console.log('BusTable RERENDER');
@@ -225,9 +226,9 @@ const BusTable = ({ setQuery, query, forceCacheReload, setForceCacheReload }) =>
     }
 
     return (
-        <>
+        <ScrollableContainer className="bus-table table">
             {
-                <div ref={tableRef} className="bus-table table">
+                <>
                     {/* Header Row */}
                     <div className="bus-row table-row bus-header table-header">
                         <div className="bus-cell table-cell sticky">Nr. parc</div>
@@ -353,9 +354,9 @@ const BusTable = ({ setQuery, query, forceCacheReload, setForceCacheReload }) =>
                             clickedInsideDialogRef={clickedInsideDialogRef}  // Pass the ref here!
                         />
                     }
-                </div>
+                </>
             }
-        </>
+        </ScrollableContainer>
     );
 };
 
