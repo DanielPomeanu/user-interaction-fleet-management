@@ -9,6 +9,7 @@ main {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    overflow: hidden;
   }
 
   .main-actions {
@@ -28,6 +29,7 @@ main {
       color: #fff;
       border-radius: 6px 6px 0 0;
       font-weight: bold;
+      overflow-x: scroll;
 
       .tabs-tab {
         display: flex;
