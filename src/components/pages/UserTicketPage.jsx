@@ -57,6 +57,28 @@ const UserTicketPage = ({newTicketSubmitted, setNewTicketSubmitted}) => {
         <div className="user-ticket-wrapper">
             <form onSubmit={handleSubmit} className="add-user-ticket-form">
                 <div className="ticket-form-header">
+                    <div className="ticket-form-speech-balloon-wrapper">
+                        <div className="ticket-form-speech-balloon-circle ticket-form-speech-balloon-circle-left"></div>
+                        <div
+                            className="ticket-form-speech-balloon-circle ticket-form-speech-balloon-circle-middle"></div>
+                        <div
+                            className="ticket-form-speech-balloon-circle ticket-form-speech-balloon-circle-right"></div>
+                        <div
+                            className="ticket-form-speech-balloon-circle ticket-form-speech-balloon-circle-small-1"></div>
+                        <div
+                            className="ticket-form-speech-balloon-circle ticket-form-speech-balloon-circle-small-2"></div>
+                        <div
+                            className="ticket-form-speech-balloon-circle ticket-form-speech-balloon-circle-small-3"></div>
+
+                        <div className="fade-container">
+                            <h1>Salut!</h1>
+                            <h1>Hello!</h1>
+                            <h1>Szervus!</h1>
+                            <h1>Hallo!</h1>
+                            <h1>Bonjour!</h1>
+                            <h1>Salut!</h1>
+                        </div>
+                    </div>
                     {
                         currentStep === 3 && (
                             <button type="submit" className="primaryButton">Trimite</button>
@@ -75,14 +97,6 @@ const UserTicketPage = ({newTicketSubmitted, setNewTicketSubmitted}) => {
                             <div className="ticket-form-current-vehicle">
                                 {/*<img className="ticket-form-current-vehicle-icon"*/}
                                 {/*     src={busIcon} alt="Autobuz"/>*/}
-                                <div className="fade-container">
-                                    <h1>Salut!</h1>
-                                    <h1>Hello!</h1>
-                                    <h1>Szervus!</h1>
-                                    <h1>Hallo!</h1>
-                                    <h1>Bonjour!</h1>
-                                    <h1>Salut!</h1>
-                                </div>
                                 <h3 className="ticket-form-current-vehicle-text">
                                     Te afli în vehiculul cu indicativ {id}.
                                     <br/><br/>
