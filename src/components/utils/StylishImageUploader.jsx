@@ -35,10 +35,11 @@ export default function StylishImageUploader({setFormData}) {
                 onChange={handleFileChange}
             />
             <button
+                type="button"
                 onClick={() => fileInputRef.current.click()}
                 className="upload-button"
             >
-                Click or Drag Image to Upload
+                Apasă aici
             </button>
 
             {preview && (

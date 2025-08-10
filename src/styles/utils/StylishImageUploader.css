@@ -12,16 +12,16 @@
     padding: 10px 20px;
     cursor: pointer;
     border-radius: 8px;
-    border: 2px dashed #b42592;
+    border: 2px dashed #fff;
     background: transparent;
-    color: #b42592;
+    color: #fff;
     font-weight: bold;
     width: 100%;
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .upload-button:hover {
-    background-color: #b42592;
+    background-color: #a5276b;
     color: white;
 }
 
