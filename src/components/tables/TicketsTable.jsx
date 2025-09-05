@@ -4,7 +4,7 @@ import "../../styles/tables/Table.css"
 import "../../styles/tables/TicketsTable.css"
 import ScrollableContainer from "../utils/ScrollableContainer";
 
-const TicketsTable = ({query, forceCacheReload, setForceCacheReload, newTicketSubmitted, setNewTicketSubmitted}) => {
+const TicketsTable = ({query, forceCacheReload, setForceCacheReload, newTicketSubmitted, setNewTicketSubmitted, user}) => {
     console.log('RERENDER TicketsTable');
 
     const [tickets, setTickets] = useState([]);
@@ -169,65 +169,67 @@ const TicketsTable = ({query, forceCacheReload, setForceCacheReload, newTicketSu
     return (
         <>
             {
-                <ScrollableContainer className="tickets-table table">
-                    {/* Header Row */}
-                    <div className="ticket-row table-row tickets-header table-header">
-                        <div className="ticket-cell table-cell sticky">Corespondență</div>
-                        <div className="ticket-cell table-cell">Tip sesizare</div>
-                        <div className="ticket-cell table-cell">Nume / Email</div>
-                        <div className="ticket-cell table-cell">Detalii</div>
-                        <div className="ticket-cell table-cell">Atașament</div>
-                        <div className="ticket-cell table-cell">Status</div>
-                    </div>
-
-                    {/* Data Rows */}
-                    {tickets.map((ticket) => (
-                        <div key={ticket.id} className="ticket-row table-row">
-                            <div className="ticket-cell table-cell sticky">
-                                {correspondenceMap[ticket.id]}
-                            </div>
-                            <div className="ticket-cell table-cell">
-                                {ticket.category === 'bus' ? 'Autovehicul' : 'Stație'}
-                            </div>
-                            <div className="ticket-cell table-cell">
-                                {generateReporter(ticket)}
-                            </div>
-                            <div className="ticket-cell table-cell">
-                                {ticket.details}
-                            </div>
-                            <div className="ticket-cell table-cell">
-                                {
-                                    ticket.image_url ? (
-                                            // eslint-disable-next-line jsx-a11y/anchor-is-valid
-                                            <a
-                                                href="#"
-                                                onClick={(e) => {
-                                                    e.preventDefault();
-                                                    window.open(
-                                                        ticket.image_url,
-                                                        '_blank',
-                                                        'width=800,height=600,noopener,noreferrer'
-                                                    );
-                                                }}
-                                            >
-                                                Vizualizează
-                                            </a>
-                                        ) :
-                                        ''
-                                }
-                            </div>
-                            <div className="ticket-cell table-cell">
-                                {
-                                    ticket.status === 'open' ? "Deschis" :
-                                        ticket.status === 'in-progress' ? "În progres" :
-                                            ticket.status === 'pending' ? 'În așteptare' :
-                                                ticket.status === '' ? "Deschis" :
-                                                    "Rezolvat"
-                                }
-                            </div>
+                user && (
+                    <ScrollableContainer className="tickets-table table">
+                        {/* Header Row */}
+                        <div className="ticket-row table-row tickets-header table-header">
+                            <div className="ticket-cell table-cell sticky">Corespondență</div>
+                            <div className="ticket-cell table-cell">Tip sesizare</div>
+                            <div className="ticket-cell table-cell">Nume / Email</div>
+                            <div className="ticket-cell table-cell">Detalii</div>
+                            <div className="ticket-cell table-cell">Atașament</div>
+                            <div className="ticket-cell table-cell">Status</div>
                         </div>
-                    ))}
-                </ScrollableContainer>
+
+                        {/* Data Rows */}
+                        {tickets.map((ticket) => (
+                            <div key={ticket.id} className="ticket-row table-row">
+                                <div className="ticket-cell table-cell sticky">
+                                    {correspondenceMap[ticket.id]}
+                                </div>
+                                <div className="ticket-cell table-cell">
+                                    {ticket.category === 'bus' ? 'Autovehicul' : 'Stație'}
+                                </div>
+                                <div className="ticket-cell table-cell">
+                                    {generateReporter(ticket)}
+                                </div>
+                                <div className="ticket-cell table-cell">
+                                    {ticket.details}
+                                </div>
+                                <div className="ticket-cell table-cell">
+                                    {
+                                        ticket.image_url ? (
+                                                // eslint-disable-next-line jsx-a11y/anchor-is-valid
+                                                <a
+                                                    href="#"
+                                                    onClick={(e) => {
+                                                        e.preventDefault();
+                                                        window.open(
+                                                            ticket.image_url,
+                                                            '_blank',
+                                                            'width=800,height=600,noopener,noreferrer'
+                                                        );
+                                                    }}
+                                                >
+                                                    Vizualizează
+                                                </a>
+                                            ) :
+                                            ''
+                                    }
+                                </div>
+                                <div className="ticket-cell table-cell">
+                                    {
+                                        ticket.status === 'open' ? "Deschis" :
+                                            ticket.status === 'in-progress' ? "În progres" :
+                                                ticket.status === 'pending' ? 'În așteptare' :
+                                                    ticket.status === '' ? "Deschis" :
+                                                        "Rezolvat"
+                                    }
+                                </div>
+                            </div>
+                        ))}
+                    </ScrollableContainer>
+                )
             }
         </>
     );

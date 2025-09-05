@@ -96,6 +96,7 @@ const AdministratorPage = ({ query, setQuery, loading, user, setUser, isLoading,
                                     setForceCacheReload={setForceCacheReload}
                                     newTicketSubmitted={newTicketSubmitted}
                                     setNewTicketSubmitted={setNewTicketSubmitted}
+                                    user={user}
                                 />
                             )}
                         </div>
