@@ -4,7 +4,7 @@ import "../../styles/tables/StationsTable.css"
 import CRUDFormDialog from "../dialogs/CRUDFormDialog";
 import ScrollableContainer from "../utils/ScrollableContainer";
 
-const StationsTable = ({ query, setQuery, forceCacheReload, setForceCacheReload }) => {
+const StationsTable = ({ query, setQuery, forceCacheReload, setForceCacheReload, user }) => {
     console.log('RERENDER Stations');
 
     const [stations, setStations] = useState([]);
@@ -116,7 +116,7 @@ const StationsTable = ({ query, setQuery, forceCacheReload, setForceCacheReload 
                                          `Ultima modificare: ${station.last_modified_by} în ${formatDateWithTimezone(new Date(station.created_at))}` :
                                          undefined
                                  }
-                                 onClick={() => handleStationNameClick(station.name) }>
+                                 onClick={ user ? () => handleStationNameClick(station.name) : null }>
                                 {station.name}
                             </div>
                             <div className="station-cell table-cell"

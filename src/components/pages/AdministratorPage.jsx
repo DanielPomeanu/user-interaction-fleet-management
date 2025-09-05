@@ -25,76 +25,81 @@ const AdministratorPage = ({ query, setQuery, loading, user, setUser, isLoading,
             <Header user={user} setUser={setUser} setIsLoading={setIsLoading} />
             <main>
                 <div>
-                    {user ? (
-                        <>
-                            <div className="main-heading">
-                                <p>Salut, {user.email}!</p>
-                                <div className="main-actions">
-                                    <Filter setQuery={setQuery} />
-                                    <Menu setQuery={setQuery} setIsLoading={setIsLoading} setForceCacheReload={setForceCacheReload} />
+                    <>
+                        <div className="main-heading">
+                            {
+                                user?.email ? (
+                                    <p>Salut, {user.email}!</p>
+                                ) : (
+                                    <p>Salut!</p>
+                                )
+                            }
+
+                            <div className="main-actions">
+                                <Filter setQuery={setQuery} />
+                                {
+                                    user && (
+                                        <Menu setQuery={setQuery} setIsLoading={setIsLoading} setForceCacheReload={setForceCacheReload} />
+                                    )
+                                }
+                            </div>
+                        </div>
+                        <div className="main-content">
+                            <div className="main-content-tabs">
+                                <div
+                                    id="buses-tab"
+                                    className={`tabs-tab ${busesTabSelected ? 'active' : ''}`}
+                                    onClick={handleTabClick}
+                                >
+                                    Vehicule
+                                </div>
+                                <div
+                                    id="stations-tab"
+                                    className={`tabs-tab ${stationsTabSelected ? 'active' : ''}`}
+                                    onClick={handleTabClick}
+                                >
+                                    Stații
+                                </div>
+                                <div
+                                    id="tickets-tab"
+                                    className={`tabs-tab ${ticketsTabSelected ? 'active' : ''}`}
+                                    onClick={handleTabClick}
+                                >
+                                    Sesizări
                                 </div>
                             </div>
-                            <div className="main-content">
-                                <div className="main-content-tabs">
-                                    <div
-                                        id="buses-tab"
-                                        className={`tabs-tab ${busesTabSelected ? 'active' : ''}`}
-                                        onClick={handleTabClick}
-                                    >
-                                        Vehicule
-                                    </div>
-                                    <div
-                                        id="stations-tab"
-                                        className={`tabs-tab ${stationsTabSelected ? 'active' : ''}`}
-                                        onClick={handleTabClick}
-                                    >
-                                        Stații
-                                    </div>
-                                    <div
-                                        id="tickets-tab"
-                                        className={`tabs-tab ${ticketsTabSelected ? 'active' : ''}`}
-                                        onClick={handleTabClick}
-                                    >
-                                        Sesizări
-                                    </div>
-                                </div>
 
-                                {!loading && busesTabSelected && (
-                                    <BusTable
-                                        setQuery={setQuery}
-                                        query={query}
-                                        forceCacheReload={forceCacheReload}
-                                        setForceCacheReload={setForceCacheReload}
-                                    />
-                                )}
+                            {!loading && busesTabSelected && (
+                                <BusTable
+                                    setQuery={setQuery}
+                                    query={query}
+                                    forceCacheReload={forceCacheReload}
+                                    setForceCacheReload={setForceCacheReload}
+                                    user={user}
+                                />
+                            )}
 
-                                {stationsTabSelected && (
-                                    <StationsTable
-                                        setQuery={setQuery}
-                                        query={query}
-                                        forceCacheReload={forceCacheReload}
-                                        setForceCacheReload={setForceCacheReload}
-                                    />
-                                )}
+                            {stationsTabSelected && (
+                                <StationsTable
+                                    setQuery={setQuery}
+                                    query={query}
+                                    forceCacheReload={forceCacheReload}
+                                    setForceCacheReload={setForceCacheReload}
+                                    user={user}
+                                />
+                            )}
 
-                                {ticketsTabSelected && (
-                                    <TicketsTable
-                                        query={query}
-                                        forceCacheReload={forceCacheReload}
-                                        setForceCacheReload={setForceCacheReload}
-                                        newTicketSubmitted={newTicketSubmitted}
-                                        setNewTicketSubmitted={setNewTicketSubmitted}
-                                    />
-                                )}
-                            </div>
-                        </>
-                    ) : (
-                        !loading && (
-                            <div>
-                                <p>Pentru a vizualiza datele, trebuie să vă autentificați.</p>
-                            </div>
-                        )
-                    )}
+                            {ticketsTabSelected && (
+                                <TicketsTable
+                                    query={query}
+                                    forceCacheReload={forceCacheReload}
+                                    setForceCacheReload={setForceCacheReload}
+                                    newTicketSubmitted={newTicketSubmitted}
+                                    setNewTicketSubmitted={setNewTicketSubmitted}
+                                />
+                            )}
+                        </div>
+                    </>
                 </div>
 
                 <Tooltip id="error-message-tooltip" place="top" className="custom-tooltip-all" />

@@ -8,7 +8,7 @@ import {AnimatePresence, motion} from "framer-motion";
 import ConfirmationDialog from "../dialogs/ConfirmationDialog";
 import ScrollableContainer from "../utils/ScrollableContainer";
 
-const BusTable = ({ setQuery, query, forceCacheReload, setForceCacheReload }) => {
+const BusTable = ({ setQuery, query, forceCacheReload, setForceCacheReload, user }) => {
     console.log('BusTable RERENDER');
 
     const [buses, setBuses] = useState([]);
@@ -303,20 +303,24 @@ const BusTable = ({ setQuery, query, forceCacheReload, setForceCacheReload }) =>
                                                             `Ultima modificare: ${formatDateWithTimezone(new Date(selectedBus.created_at))}`
                                                     }
                                                 </p>
-                                                <div className="bus-details-actions row-actions">
-                                                    <button
-                                                        className="primaryButton"
-                                                        onClick={openDialog}
-                                                    >
-                                                        Modifică
-                                                    </button>
-                                                    <button
-                                                        className="deleteButton"
-                                                        onClick={sendDeleteRequest}
-                                                    >
-                                                        Șterge
-                                                    </button>
-                                                </div>
+                                                {
+                                                    user && (
+                                                        <div className="bus-details-actions row-actions">
+                                                            <button
+                                                                className="primaryButton"
+                                                                onClick={openDialog}
+                                                            >
+                                                                Modifică
+                                                            </button>
+                                                            <button
+                                                                className="deleteButton"
+                                                                onClick={sendDeleteRequest}
+                                                            >
+                                                                Șterge
+                                                            </button>
+                                                        </div>
+                                                    )
+                                                }
 
                                             </motion.div>
                                         )
