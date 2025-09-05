@@ -1,7 +1,7 @@
 import './styles/App.css';
 import React, { useState } from 'react';
 import { useUser } from './components/authentication/UserContext';
-import { Routes, Route, useParams } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import AdministratorPage from "./components/pages/AdministratorPage";
 import UserTicketPage from "./components/pages/UserTicketPage";
 

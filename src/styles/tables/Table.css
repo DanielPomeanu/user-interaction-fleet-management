@@ -21,6 +21,8 @@
             padding: 20px;
             background-color: rgba(180, 37, 146, 0.15);
             border-left: 2px solid #ccc;
+            position: relative;
+            z-index: 10;
 
             p {
                 margin: 10px 0;
